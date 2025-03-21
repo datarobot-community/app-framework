@@ -4,7 +4,7 @@ Guidelines for developing and contributing to this project.
 
 ## List of project maintainers
 
-- [Your Name](Your GitHub User URL)
+- [Carson Gee](https://github.com/carsongee)
 
 
 ## Opening new issues

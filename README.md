@@ -1,2 +1,5 @@
-# oss-template-repo
-Template Repository for DR Open Source Projects
+# Template Studio
+
+
+Repository and tooling for creating and updating Application Templates.
+
