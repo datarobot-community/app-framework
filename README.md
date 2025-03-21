@@ -1,5 +1,9 @@
 # Template Studio
 
 
-Repository and tooling for creating and updating Application Templates.
+Tooling to apply and update Template Components.
+
+
+* Program that runs copier with the appropriate settings such that
+  they can share items and put answers in expected places.
 
