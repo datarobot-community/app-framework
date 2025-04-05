@@ -12,4 +12,6 @@ Tooling to apply and update App Framework Components.
 
 ## Components
 
-* [Baseline] https://github.com/datarobot/af-component-base
+* Base: https://github.com/datarobot/af-component-base
+* React Frontend: https://github.com/datarobot/af-component-react
+* FastAPI Backend: https://github.com/datarobot/af-component-fastapi-backend
