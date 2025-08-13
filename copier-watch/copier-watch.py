@@ -148,6 +148,7 @@ class CopierSourceWatcher(FileSystemEventHandler):
         if remote_url.startswith("git@"):
             # Convert SSH URL to HTTPS
             remote_url = remote_url.replace(":", "/").replace("git@", "https://")
+        remote_url = remote_url.removesuffix(".git")  # We add it later, don't have double .git.git
 
         env = {
             **os.environ,
