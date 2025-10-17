@@ -37,7 +37,6 @@ class CopierSourceWatcher(FileSystemEventHandler):
         self.commit_message = commit_message
         self.debounce_seconds = debounce_seconds
         self.last_event_time = 0
-        self.is_first_commit = not append_only
         self.append_only = append_only
 
         # Initialize git repos
@@ -130,7 +129,7 @@ class CopierSourceWatcher(FileSystemEventHandler):
 
         # Check if there are any changes to commit
         if not template.git_repo.is_dirty(untracked_files=True):
-            logger.info("No changes detected in source repository. Skipping commit.")
+            logger.info(f"No changes detected in source repository {template.repo_id}. Skipping commit.")
             return False
 
         logger.info("Committing changes in source repository...")
@@ -144,7 +143,7 @@ class CopierSourceWatcher(FileSystemEventHandler):
         if template.is_first_commit:
             # First commit with provided message
             template.git_repo.git.commit(m=self.commit_message)
-            self.is_first_commit = False
+            template.is_first_commit = False
             logger.info(f"Initial commit created for {template.template_directory} with message: '{self.commit_message}'")
         else:
             # Amend existing commit
@@ -171,16 +170,21 @@ class CopierSourceWatcher(FileSystemEventHandler):
         logger.info("Destination repo reset to clean state")
 
         for answer in template.answers_file:
-            # Run copier update
+            relative_answer = os.path.relpath(answer, self.dest_dir)
+
+            # Run copier update -- some submodules use jinja extensions, hence the --with and the --trust
             cmd = [
                 "uvx",
+                "--with",
+                "copier_templates_extensions",
                 "copier",
                 "update",
                 "-r",
-                source_rev,
+                template.git_repo.active_branch.name,
                 "-a",
-                str(answer),
+                relative_answer,
                 "-A",
+                "--trust",
             ]
             # Because of https://github.com/gitpython-developers/gitpython/issues/571
             # we need to do some URL swapping for SSH URLs
@@ -219,9 +223,17 @@ class CopierSourceWatcher(FileSystemEventHandler):
 def cli():
     pass
 
-@cli.command("watch-repo", short_help="Watch a single repo.")
-@click.argument("source_dir", help="Source directory (copier template)", type=click.Path(file_okay=False, path_type=Path))
-@click.argument("dest_dir", help="Destination directory (where copier template is applied)", type=click.Path(file_okay=False, path_type=Path))
+@cli.command("watch-repo", short_help="Watch a single repo.", help="""
+USAGE:
+ 
+copier-watch watch-repo /path/to/component /path/to/application-template -a .datarobot/answer/component-answers.yml
+
+This starts a file watch on the component that *commits* and applies all changes
+to the component to the template. This is potentially very disruptive. Make sure
+any work is backed up before you start this and occasionally checkpoint.
+""".strip())
+@click.argument("source_dir", type=click.Path(file_okay=False, path_type=Path))
+@click.argument("dest_dir", type=click.Path(file_okay=False, path_type=Path))
 @click.option("--commit-message", "-m", default="Update copier template", help="Commit message for source repo changes", type=str)
 @click.option("--answers-file", "-a", required=True, type=click.Path(dir_okay=False, path_type=Path), help="Path to answer files for copier")
 @click.option("--debounce-seconds", default=2.0, type=float, help="Debounce time in seconds to group file changes.")
@@ -285,11 +297,19 @@ def watch_repo(
 
     observer.join()
 
-@cli.command("watch-all", short_help="Watch all answers.", help="""
-This parses the answers in the given --answers-directory to figure out which templates to watch
-and then watches the corresponding templates in the direction directory. This has the potential
-to mess up your directory as it commits. Make sure important local changes are backed up and
-create new git branches. If not
+@cli.command("watch-all", short_help="Watch all components.", help="""
+USAGE:
+
+copier-watch watch-repo -s /component/parent -d /path/to/application-template
+
+This identifies all components of the application-template, finds them in
+the sources directory, and watches all components, commiting any changes
+and applying all updates. This is disruptive, make sure you have all work
+saved before running this. If --clone-missing is provided, this will
+additionally clone any missing component repo into the provided directory.
+If --submodules is provided, it will recursively watch all submodules
+of the components (if --clone-missing is provided, it will also recursively
+clone them).
 """.strip())
 @click.option("--sources-dir", "-s", help="Source directory containing copier templates", type=click.Path(file_okay=False, path_type=Path), default=Path(".."))
 @click.option("--destination-dir", "-d", help="Destination directory (where copier template is applied)", type=click.Path(file_okay=False, path_type=Path), default=Path("."))
@@ -378,15 +398,20 @@ def watch_all(
     # 3. Clone missing
     if clone_missing:
         for repo in missing:
+            logger.info(f"Cloning repo {repo}.")
             _clone_repo(sources_dir, repo)
-            repo_directory = sources_dir / ":".split(repo)[1]
-            base_template_configurations[repo] = TemplateConfiguration(
+            repo_directory = sources_dir / repo.split('/')[1]
+            template = TemplateConfiguration(
                 template_directory=repo_directory,
                 answers_file=repos[repo]
             )
+            template.resync_submodules()
+            base_template_configurations[repo] = template
         
     # 4. Figure out submodules.
     if submodules:
+        # TODO: I plan to write another command to fix submodule setup before commit.
+        logger.warning("Currently the tool monkeys with your submodule setup to repoint submodules locally and doesn't clean up after itself.")
         examined_repos: set[str] = set()
         unexamined_repos: set[str] = set(base_template_configurations) - examined_repos
         while unexamined_repos:

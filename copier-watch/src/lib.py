@@ -4,13 +4,13 @@ import logging
 import os
 import re
 import subprocess
-import sys
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Generator, Self
+from typing import Any, Generator, Self
 
 import git
 import toml
+import yaml
 
 logger = logging.getLogger("copier_watch")
 
@@ -61,7 +61,7 @@ class TemplateConfiguration:
     template_directory: Path
     answers_file: list[Path]
     git_repo: git.Repo = field(init=False)
-    is_first_commit: bool = field(init=False, default=False)
+    is_first_commit: bool = field(init=False, default=True)
 
     def __post_init__(self):
         self.template_directory = self.template_directory.resolve()
@@ -78,15 +78,37 @@ class TemplateConfiguration:
     def submodules(self) -> list[Submodule]:
         return [s for s in map(Submodule.from_submodule, self.git_repo.submodules) if s]
     
+    def point_answer_at_local(self) -> None:
+        for answer in self.answers_file:
+            with open(answer) as f:
+                answer_contents: dict[str, Any] = yaml.safe_load(f)
+            answer_contents["_src_path"] = str(self.template_directory.absolute())
+            with open(answer, "w") as f:
+                yaml.safe_dump(answer_contents, f)
+    
+    def point_answer_at_remote(self) -> None:
+        if not self.git_repo.remotes:
+            return
+        
+        remote = self.git_repo.remotes[0].url
+
+        for answer in self.answers_file:
+            with open(answer) as f:
+                answer_contents: dict[str, Any] = yaml.safe_load(f)
+            answer_contents["_src_path"] = remote
+            with open(answer, "w") as f:
+                yaml.safe_dump(answer_contents, f)
+    
     def point_modules_at_local(self) -> None:
-        with self.modifying_git_module() as submodules:
+        with self._modifying_git_module() as submodules:
             for submodule, sub_config in submodules:
                 if submodule.local_path:
                     sub_config['url'] = str(os.path.relpath(self.template_directory, submodule.local_path))
+        
 
 
     def point_modules_at_remote(self) -> None:
-        with self.modifying_git_module() as submodules:
+        with self._modifying_git_module() as submodules:
             for submodule, sub_config in submodules:
                 if submodule.remote_url:
                     sub_config['url'] = submodule.remote_url
@@ -94,12 +116,16 @@ class TemplateConfiguration:
                     sub_config['url'] = f'git@github.com:{submodule.repo_id}'
 
     def change_modules_branch(self, branch: str) -> None:
-        with self.modifying_git_module() as submodules:
+        with self._modifying_git_module() as submodules:
             for _, sub_config in submodules:
                 sub_config['branch'] = branch
-                    
+
+    def resync_submodules(self):
+        if (self.template_directory / ".gitmodules").exists():
+            self._resync_submodules()
+
     @contextmanager
-    def modifying_git_module(self) -> Generator[list[tuple[Submodule, dict[str, str]]], None, None]:
+    def _modifying_git_module(self) -> Generator[list[tuple[Submodule, dict[str, str]]], None, None]:
         modules_file = self.template_directory / ".gitmodules"
 
         submodules = []
@@ -119,6 +145,58 @@ class TemplateConfiguration:
                     
             with open(modules_file, "w") as f:
                 toml.dump(module_content, f)
+
+            self._resync_submodules()
+        else:
+            yield []
+
+        
+
+    def _resync_submodules(self) -> None:
+        cmd = [
+            "git",
+            "submodule",
+            "sync"
+        ]
+        try:
+            result = subprocess.run(
+                        cmd,
+                        check=True,
+                        cwd=self.template_directory,
+                        text=True,
+                        capture_output=True
+                    )
+            logger.info("Synced %s", self.template_directory)
+            logger.debug(result.stdout)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Syncs failed: {e}")
+            logger.error(f"STDOUT: {e.stdout}")
+            logger.error(f"STDERR: {e.stderr}")
+            raise
+
+        cmd = [
+            "git",
+            "submodule",
+            "update",
+            "--init",
+            "--recursive",
+            "--remote"
+        ]
+        try:
+            result = subprocess.run(
+                        cmd,
+                        check=True,
+                        cwd=self.template_directory,
+                        text=True,
+                        capture_output=True
+                    )
+            logger.info("Synced %s", self.template_directory)
+            logger.debug(result.stdout)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Syncs failed: {e}")
+            logger.error(f"STDOUT: {e.stdout}")
+            logger.error(f"STDERR: {e.stderr}")
+            raise
 
 
 def extract_github_organization_repo_name(url: str) -> str | None:
@@ -177,7 +255,7 @@ def _clone_repo(sources_dir: Path, repo: str) -> Path:
         logger.error(f"Clone failed: {e}")
         logger.error(f"STDOUT: {e.stdout}")
         logger.error(f"STDERR: {e.stderr}")
-        sys.exit(1)
+        raise
     
-    return sources_dir / (repo.split(':')[1])
+    return sources_dir / (repo.split('/')[1])
         
