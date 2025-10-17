@@ -1,0 +1,16 @@
+[project]
+name = "copier-watch"
+version = "0.1.0"
+description = "A tool in App Framework Studio for watching changes to copier templates."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.3.0",
+    "gitpython>=3.1.45",
+    "pyyaml>=6.0.3",
+    "toml>=0.10.2",
+    "watchdog>=6.0.0",
+]
+
+[project.entry-points.console_scripts]
+copier-watch = "main:cli"
