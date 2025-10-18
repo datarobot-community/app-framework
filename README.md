@@ -43,10 +43,41 @@ you don't have to worry too much about the destination repo.
 >  the destination repo.**
 
 
-### Sample usage:
+### Installation
 
 ```
-uv run copier-watch/copier-watch.py --commit-message 'Adjusted backend' --answers-file .datarobot/answers/fastapi-web.yml ~/code/af-component-fastapi-backend ~/code/recipe-talk-to-my-docs
+cd copier-watch
+uv tool install .
+git config --global protocol.file.allow always
+```
+
+That git config line is there for stupid copier / git reasons.
+
+### Sample usage:
+
+The tool has subcommands, one to set up and watch all changes to all components of a template, `watch-all`, 
+and another to watch a specific repo, `watch-repo`. `watch-all` assumes by default that the template you
+are working on is the current working directory, and that all components should be in the parent directory
+(e.g. you put all repos in the same `~/code/` or `~/workspaces/` directory).
+
+```
+uvx copier-watch watch-all --commit-message 'Adjusted backend' --clone-missing --submodules
+```
+
+By specifying `--submodules` the tool will (a) modify the submodule url to point at local paths
+and (b) recursively watch all submodules (which will catch, e.g., libraries that aren't directly
+in the answer files). With `--clone-missing` the tool will pull the main branch of any components
+not already present locally. Combined, the tool will also recursively pull submodules.
+
+If your directory structure is not as described above, you can specify component and target
+directory.
+
+```
+uvx copier-watch
+```
+
+```
+uvx copier-watch watch-repo --commit-message 'Adjusted backend' --answers-file .datarobot/answers/fastapi-web.yml ~/code/af-component-fastapi-backend ~/code/recipe-talk-to-my-docs
 ```
 
 ### Demo:
