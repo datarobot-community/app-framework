@@ -38,6 +38,7 @@ class CopierSourceWatcher(FileSystemEventHandler):
         self.debounce_seconds = debounce_seconds
         self.last_event_time = 0
         self.append_only = append_only
+        self.first_dest_commit = True
 
         # Initialize git repos
         self.dest_repo = git.Repo(self.dest_dir)
@@ -103,12 +104,13 @@ class CopierSourceWatcher(FileSystemEventHandler):
             logger.debug("Path %s did not belong to any known templates.", path)
             return
 
+
         try:
             # 1. Commit changes in source repo
-            changes_made = self._commit_source_changes(changed_template)
+            changes_made = changed_template.commit_changes(self.commit_message)
             if not changes_made:
                 return
-
+            
             # 2. Get the current revision from source repo
             source_rev = changed_template.git_repo.active_branch.name
             logger.info(f"Source active branch: {source_rev}")
@@ -122,38 +124,12 @@ class CopierSourceWatcher(FileSystemEventHandler):
             logger.info("Update completed successfully")
 
         except Exception as e:
-            logger.error(f"Error processing changes: {str(e)}")
-
-    def _commit_source_changes(self, template: TemplateConfiguration) -> bool:
-        """Commit changes in the source repository. Returns True if changes were committed."""
-
-        # Check if there are any changes to commit
-        if not template.git_repo.is_dirty(untracked_files=True):
-            logger.info(f"No changes detected in source repository {template.repo_id}. Skipping commit.")
-            return False
-
-        logger.info("Committing changes in source repository...")
-        # Add all changes
-        template.git_repo.git.add(".")
-
-        self._commit_changes(template)
-        return True
-
-    def _commit_changes(self, template: TemplateConfiguration) -> None:
-        if template.is_first_commit:
-            # First commit with provided message
-            template.git_repo.git.commit(m=self.commit_message)
-            template.is_first_commit = False
-            logger.info(f"Initial commit created for {template.template_directory} with message: '{self.commit_message}'")
-        else:
-            # Amend existing commit
-            template.git_repo.git.commit("--amend", "--no-edit")
-            logger.info("Amended previous commit with new changes")
+            logger.error(f"Error processing changes: {str(e)}", exc_info=True)
     
     def _update_git_parent_modules(self, changed_submodule: TemplateConfiguration) -> None:
         parents = self.parent_module_map.get(changed_submodule.template_directory, [])
         for template in parents:
-            template.git_repo.submodule_update(recursive=True)
+            template.resync_submodules()
             # We're not going to bother to commit changes or recurse as this triggers another round of updates that will propagate and commit
 
 
@@ -163,13 +139,19 @@ class CopierSourceWatcher(FileSystemEventHandler):
             return
         
         logger.info("Updating destination repository...")
-
-        # Clean the destination repo
-        self.dest_repo.git.reset("--hard", "HEAD")
-        self.dest_repo.git.clean("-df")
-        logger.info("Destination repo reset to clean state")
-
         for answer in template.answers_file:
+            # Copier insists the the destination not be dirty, hence the commit.
+            if self.dest_repo.is_dirty():
+                self.dest_repo.git.add(".")
+                if self.first_dest_commit:
+                    self.dest_repo.git.commit(m=self.commit_message)
+                    self.first_dest_commit = False
+                    logger.info(f"Initial commit created for {self.dest_dir}")
+                else:
+                    self.dest_repo.git.commit("--amend", "--no-edit")
+                    logger.info(f"Amended commit on {self.dest_repo}")
+        
+
             relative_answer = os.path.relpath(answer, self.dest_dir)
 
             # Run copier update -- some submodules use jinja extensions, hence the --with and the --trust
@@ -186,21 +168,9 @@ class CopierSourceWatcher(FileSystemEventHandler):
                 "-A",
                 "--trust",
             ]
-            # Because of https://github.com/gitpython-developers/gitpython/issues/571
-            # we need to do some URL swapping for SSH URLs
-            remote_url = template.git_repo.remotes.origin.url
-            if remote_url.startswith("git@"):
-                # Convert SSH URL to HTTPS
-                remote_url = remote_url.replace(":", "/").replace("git@", "https://")
-            remote_url = remote_url.removesuffix(".git")  # We add it later, don't have double .git.git
-
-            env = {
-                **os.environ,
-                "GIT_CONFIG_PARAMETERS": f"'url.{template.git_repo.working_dir}.insteadOf={remote_url}.git'",
-            }
 
             logger.info(
-                f"Running: `{' '.join(cmd)}` with GIT_CONFIG_PARAMETERS={env['GIT_CONFIG_PARAMETERS']}"
+                f"Running: `{' '.join(cmd)}`"
             )
             try:
                 result = subprocess.run(
@@ -209,7 +179,6 @@ class CopierSourceWatcher(FileSystemEventHandler):
                     capture_output=True,
                     text=True,
                     check=True,
-                    env=env,
                 )
                 logger.info("Copier update completed")
                 logger.debug(result.stdout)
@@ -319,6 +288,8 @@ clone them).
 @click.option("--append-only", is_flag=True, help="Only amend existing commits, never create new ones")
 @click.option("--submodules", is_flag=True, help="Include watching submodules of watched components")
 @click.option("--clone-missing", is_flag=True, help="Clone any missing repos (including, transitively, submodules if --include-submodules set)")
+@click.option("--clone-branch", type=str, default=None, help="Branch to use for clones (defaults to main).")
+@click.option("--lie-to-copier", is_flag=True, help="Copier can be *really* annoying if you get out of sync. Recopy is probably what you should do, but this can work. Save beforehand.")
 def watch_all(
     sources_dir: Path,
     destination_dir: Path,
@@ -327,7 +298,9 @@ def watch_all(
     debounce_seconds: float,
     append_only: bool,
     submodules: bool,
-    clone_missing: bool
+    clone_missing: bool,
+    clone_branch: str | None,
+    lie_to_copier: bool
 ) -> None:
     if not sources_dir.exists():
         logger.error(f"Sources dir does not exist {sources_dir}.")
@@ -344,74 +317,41 @@ def watch_all(
     
     
     # 1. Figure out what repos are needed from the answer files.
-
-
-    repos: dict[str, list[Path]] = {}
-
-    remote_repos: dict[str, str] = {}
-    local_repos: dict[str, Path] = {}
-    
-
-    for file in answers_directory.iterdir():
-        if file.suffix in [".yml", ".yaml"]:
-            with file.open() as f:
-                contents: dict[str, Any] = yaml.safe_load(f)
-            logger.debug("Looking for source of answer file %s.", file, contents)
-            if remote := contents.get("_src_path"):
-                if repo := extract_github_organization_repo_name(remote):
-                    remote_repos[repo] = remote
-                    repos.setdefault(repo, []).append(file)
-                else: # This is likely a local reference: check if it's on disk.
-                    remote_path = Path(remote)
-                    if remote_path.exists():
-                        try:
-                            remote_repo = git.Repo(remote_path)
-                        except git.InvalidGitRepositoryError:
-                            logger.warning(f"For answer file {file}, the path {remote} exists, but not as a git repo.")
-                            continue
-                        if remote_repo.remotes and (repo := extract_github_organization_repo_name(remote_repo.remotes[0].url)):
-                            local_repos[repo] = remote_path
-                            repos.setdefault(repo, []).append(file)
+    answers_per_repo = _list_repos_from_answers(answers_directory)
 
                 
-    logger.info(f"Found the following components in answers: {repos}")
+    logger.info(f"Found the following components in answers: {answers_per_repo}")
 
     # 2. Figure out what repos we already have pulled.
-
+    local_repos = _list_git_repos(sources_dir)
+    
     base_template_configurations: dict[str, TemplateConfiguration] = {}
 
     repo_id_to_path: dict[str, Path] = {}
 
-    for directory in sources_dir.iterdir():
-        try:
-            repo = git.Repo(directory)
-        except git.InvalidGitRepositoryError:
-            continue
-        if repo.remotes and (repo_id := extract_github_organization_repo_name(repo.remotes[0].url)):
-            repo_id_to_path[repo_id] = directory
-            if answer_file := repos.get(repo_id):
-                base_template_configurations[repo_id] = TemplateConfiguration(directory, answer_file)
+    for repo_id, directory in local_repos.items():
+        repo_id_to_path[repo_id] = directory
+        if answer_file := answers_per_repo.get(repo_id):
+            base_template_configurations[repo_id] = TemplateConfiguration(directory, answer_file)
 
     
-    missing: set[str] = set(repos) - set(base_template_configurations)
+    missing: set[str] = set(answers_per_repo) - set(base_template_configurations)
 
     # 3. Clone missing
     if clone_missing:
         for repo in missing:
             logger.info(f"Cloning repo {repo}.")
-            _clone_repo(sources_dir, repo)
-            repo_directory = sources_dir / repo.split('/')[1]
+            path = _clone_repo(sources_dir, repo, clone_branch)
+            local_repos[repo] = path
             template = TemplateConfiguration(
-                template_directory=repo_directory,
-                answers_file=repos[repo]
+                template_directory=path,
+                answers_file=answers_per_repo[repo]
             )
             template.resync_submodules()
             base_template_configurations[repo] = template
         
     # 4. Figure out submodules.
     if submodules:
-        # TODO: I plan to write another command to fix submodule setup before commit.
-        logger.warning("Currently the tool monkeys with your submodule setup to repoint submodules locally and doesn't clean up after itself.")
         examined_repos: set[str] = set()
         unexamined_repos: set[str] = set(base_template_configurations) - examined_repos
         while unexamined_repos:
@@ -421,12 +361,17 @@ def watch_all(
                 # 4.1. Register and clone submodule
                 for submodule in template.submodules:
                     if not submodule.local_path and submodule.repo_id:
-                        submodule.clone(sources_dir)
+                        if local := local_repos.get(submodule.repo_id):
+                            submodule.local_path = local
+                        else:
+                            submodule.clone(sources_dir, clone_branch)
+                            assert submodule.local_path
+                            local_repos[submodule.repo_id] = submodule.local_path
 
                     if submodule.local_path and submodule.repo_id:
                         base_template_configurations[submodule.repo_id] = TemplateConfiguration(
                             submodule.local_path,
-                            repos[submodule.repo_id]
+                            answers_per_repo.get(submodule.repo_id,[])
                         )
                 
                 # 4.2. Repoint submodules at local.
@@ -437,6 +382,13 @@ def watch_all(
             unexamined_repos = set(base_template_configurations) - examined_repos
 
     templates = list(base_template_configurations.values())
+
+    for template in templates:
+        template.point_answer_at_local(lie_to_copier)
+        if submodules:
+            template.point_modules_at_local()
+            template.commit_changes(commit_message)
+        
 
     # Set up the file watcher
     event_handler = CopierSourceWatcher(
@@ -463,7 +415,48 @@ def watch_all(
     except KeyboardInterrupt:
         logger.info("Stopping watcher...")
         observer.stop()
-
+    
     observer.join()
 
+    logger.info("Cleaning up.")
+
+    for template in templates:
+        template.point_modules_at_remote()
+        template.point_answer_at_remote()
+        template.commit_changes(commit_message)
+
+def _list_repos_from_answers(answers_directory):
+    repos: dict[str, list[Path]] = {}
+    for file in answers_directory.iterdir():
+        logger.info(f"Parsing answer file {file}.")
+        if file.suffix in [".yml", ".yaml"]:
+            with file.open() as f:
+                contents: dict[str, Any] = yaml.safe_load(f)
+            logger.debug("Looking for source of answer file %s.", file, contents)
+            if remote := contents.get("_src_path"):
+                if repo := extract_github_organization_repo_name(remote):
+                    repos.setdefault(repo, []).append(file)
+                else: # This is likely a local reference: check if it's on disk.
+                    remote_path = Path(remote)
+                    if remote_path.exists():
+                        try:
+                            remote_repo = git.Repo(remote_path)
+                        except git.InvalidGitRepositoryError:
+                            logger.warning(f"For answer file {file}, the path {remote} exists, but not as a git repo.")
+                            continue
+                        if remote_repo.remotes and (repo := extract_github_organization_repo_name(remote_repo.remotes[0].url)):
+                            repos.setdefault(repo, []).append(file)
+    return repos
+
+def _list_git_repos(sources_dir):
+    local_repos: dict[str, Path] = {}
+
+    for p in sources_dir.iterdir():
+        try:
+            g = git.Repo(p)
+        except git.InvalidGitRepositoryError:
+            continue
+        if g.remotes and (repo := extract_github_organization_repo_name(g.remotes[0].url)):
+            local_repos[repo] = p
+    return local_repos
         

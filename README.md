@@ -48,7 +48,10 @@ you don't have to worry too much about the destination repo.
 ```
 cd copier-watch
 uv tool install .
+git config --global protocol.file.allow always
 ```
+
+That git config line is there for stupid copier / git reasons.
 
 ### Sample usage:
 

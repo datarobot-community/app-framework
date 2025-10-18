@@ -4,9 +4,10 @@ import logging
 import os
 import re
 import subprocess
+import sys
 from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Any, Generator, Self
+from typing import Generator, Self
 
 import git
 import toml
@@ -48,13 +49,13 @@ class Submodule:
             repo_id=repo_id
         )
     
-    def clone(self, dir: Path) -> Path | None:
+    def clone(self, dir: Path, branch: str | None) -> Path | None:
         if not self.repo_id:
             return None
-        self.local_path = _clone_repo(dir, self.repo_id)
+
+        self.local_path = _clone_repo(dir, self.repo_id, branch)
         return self.local_path
-    
-    
+
 
 @dataclass
 class TemplateConfiguration:
@@ -78,33 +79,30 @@ class TemplateConfiguration:
     def submodules(self) -> list[Submodule]:
         return [s for s in map(Submodule.from_submodule, self.git_repo.submodules) if s]
     
-    def point_answer_at_local(self) -> None:
-        for answer in self.answers_file:
-            with open(answer) as f:
-                answer_contents: dict[str, Any] = yaml.safe_load(f)
-            answer_contents["_src_path"] = str(self.template_directory.absolute())
-            with open(answer, "w") as f:
-                yaml.safe_dump(answer_contents, f)
-    
-    def point_answer_at_remote(self) -> None:
-        if not self.git_repo.remotes:
-            return
-        
-        remote = self.git_repo.remotes[0].url
+    def commit_changes(self, commit_message: str) -> bool:
+        if not self.git_repo.is_dirty(untracked_files=True):
+            logger.info(f"No changes detected in source repository {self.repo_id}. Skipping commit.")
+            return False
 
-        for answer in self.answers_file:
-            with open(answer) as f:
-                answer_contents: dict[str, Any] = yaml.safe_load(f)
-            answer_contents["_src_path"] = remote
-            with open(answer, "w") as f:
-                yaml.safe_dump(answer_contents, f)
+        logger.info("Committing changes in source repository...")
+
+        self.git_repo.git.add(".")
+
+        if self.is_first_commit:
+            self.git_repo.git.commit(m=commit_message)
+            self.is_first_commit = False
+            logger.info(f"Initial commit created for {self.repo_id} with message: '{commit_message}'")
+        else:
+            self.git_repo.git.commit("--amend", "--no-edit")
+            logger.info("Amended previous commit with new changes")
+        
+        return True
     
     def point_modules_at_local(self) -> None:
         with self._modifying_git_module() as submodules:
             for submodule, sub_config in submodules:
                 if submodule.local_path:
-                    sub_config['url'] = str(os.path.relpath(self.template_directory, submodule.local_path))
-        
+                    sub_config['url'] = str(submodule.local_path.absolute())
 
 
     def point_modules_at_remote(self) -> None:
@@ -114,6 +112,23 @@ class TemplateConfiguration:
                     sub_config['url'] = submodule.remote_url
                 elif submodule.repo_id:
                     sub_config['url'] = f'git@github.com:{submodule.repo_id}'
+
+    def point_answer_at_local(self, overwrite_) -> None:
+        for answer in self.answers_file:
+            with open(answer) as f:
+                contents = yaml.safe_load(f)
+            contents["_src_path"] = str(self.template_directory.absolute())
+            contents["_commit"] = str(self.git_repo.git.rev_parse("HEAD", short=True))
+            with open(answer, "w") as f:
+                yaml.safe_dump(contents, f)
+    
+    def point_answer_at_remote(self) -> None:
+        for answer in self.answers_file:
+            with open(answer) as f:
+                contents = yaml.safe_load(f)
+            contents["_src_path"] = self.git_repo.remotes[0].url
+            with open(answer, "w") as f:
+                yaml.safe_dump(contents, f)
 
     def change_modules_branch(self, branch: str) -> None:
         with self._modifying_git_module() as submodules:
@@ -131,9 +146,15 @@ class TemplateConfiguration:
         submodules = []
 
         if modules_file.exists():
-            module_content = toml.loads(modules_file.read_text())
+            # gitmodules is an annoying bespoke format that isn't quite TOML. We mangle it to TOML and then mangle back
+            content = modules_file.read_text()
+            content = re.sub(r'\[submodule "([^"\]]+)"\]', lambda m: f'["sub_{m.group(1)}"]', content)
+            content = re.sub(r'\s*(\w+)\s*=\s*([^\s]+)', lambda m: f'\n{m.group(1)} = """{m.group(2)}"""', content)
+
+            module_content = toml.loads(content)
+                
             for submodule in self.submodules:
-                key = f'submodule "{submodule.name}"'
+                key = f'sub_{submodule.name}'
                 if key not in module_content:
                     logger.warning(f"Module {submodule.repo_id} not found in .gitmodules")
                     continue
@@ -142,15 +163,17 @@ class TemplateConfiguration:
                 submodules.append((submodule, sub_config))
 
             yield submodules
-                    
-            with open(modules_file, "w") as f:
-                toml.dump(module_content, f)
+            
+            new_content = toml.dumps(module_content)
+            new_content = re.sub(r'\["sub_([^"\]]+)"\]', lambda m: f"[submodule \"{m.group(1)}\"]", new_content)
+            new_content = re.sub(r'(\w+) = (?:"|\\")+([^\s"\\]+)(?:"|\\")+', lambda m: f'\t{m.group(1)} = {m.group(2)}', new_content)
 
-            self._resync_submodules()
+            with open(modules_file, "w") as f:
+                f.write(new_content)
         else:
             yield []
 
-        
+        self._resync_submodules()
 
     def _resync_submodules(self) -> None:
         cmd = [
@@ -180,7 +203,7 @@ class TemplateConfiguration:
             "update",
             "--init",
             "--recursive",
-            "--remote"
+            "--remote",
         ]
         try:
             result = subprocess.run(
@@ -235,12 +258,8 @@ def extract_github_organization_repo_name(url: str) -> str | None:
     return None
 
 
-def _clone_repo(sources_dir: Path, repo: str) -> Path:
-    cmd = [
-        "git",
-        "clone",
-        f"git@github.com:{repo}.git"
-    ]
+def _clone_repo(sources_dir: Path, repo: str, branch: str | None) -> Path:
+    cmd = ["git", "clone", f"git@github.com:{repo}.git"]
     try:
         result = subprocess.run(
                     cmd,
@@ -255,7 +274,12 @@ def _clone_repo(sources_dir: Path, repo: str) -> Path:
         logger.error(f"Clone failed: {e}")
         logger.error(f"STDOUT: {e.stdout}")
         logger.error(f"STDERR: {e.stderr}")
-        raise
     
-    return sources_dir / (repo.split('/')[1])
+    path = sources_dir / (repo.split('/')[1])
         
+    try:
+        git.Repo(path).git.checkout(branch)
+    except:
+        logger.warning(f"Branch {branch} not found on {repo}")
+
+    return path
