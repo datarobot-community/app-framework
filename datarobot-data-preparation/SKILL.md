@@ -1,5 +1,5 @@
 ---
-name: dr-data-preparation
+name: datarobot-data-preparation
 description: Tools and guidance for data upload, dataset management, data validation, and preparing data for DataRobot projects.
 ---
 

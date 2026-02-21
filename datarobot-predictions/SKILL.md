@@ -1,5 +1,5 @@
 ---
-name: dr-predictions
+name: datarobot-predictions
 description: Tools and guidance for making predictions with DataRobot models, including real-time predictions, batch scoring, and prediction dataset generation.
 ---
 

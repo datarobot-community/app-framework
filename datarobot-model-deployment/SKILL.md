@@ -1,5 +1,5 @@
 ---
-name: dr-model-deployment
+name: datarobot-model-deployment
 description: Tools and guidance for deploying DataRobot models, managing deployments, configuring prediction environments, and deployment operations.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: dr-model-monitoring
+name: datarobot-model-monitoring
 description: Tools and guidance for monitoring model performance, tracking data drift, managing model health, and detecting prediction anomalies.
 ---
 

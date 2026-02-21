@@ -1,5 +1,5 @@
 ---
-name: dr-model-explainability
+name: datarobot-model-explainability
 description: Tools and guidance for model explainability, prediction explanations, feature impact analysis, SHAP values, and model diagnostics.
 ---
 
