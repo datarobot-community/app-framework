@@ -43,10 +43,10 @@ add_secret() {
     local secret_name=$1
     local secret_description=$2
     local secret_value=""
-    
+
     echo "📝 Setting up: $secret_name"
     echo "   $secret_description"
-    
+
     if [ "$secret_name" = "LARGE_SECRET_PASSPHRASE" ]; then
         # For GPG passphrase, offer to read from user input
         echo "   (This is your GPG encryption passphrase)"
@@ -56,7 +56,7 @@ add_secret() {
         read -sp "   Enter value: " secret_value
         echo ""
     fi
-    
+
     if [ -n "$secret_value" ]; then
         echo "$secret_value" | gh secret set "$secret_name" --repo "$REPO"
         echo "   ✅ Added $secret_name"

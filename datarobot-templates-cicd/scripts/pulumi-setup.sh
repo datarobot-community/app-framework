@@ -31,7 +31,7 @@ setup_pulumi_cloud() {
     echo ""
     read -sp "Pulumi Access Token: " PULUMI_TOKEN
     echo ""
-    
+
     export PULUMI_ACCESS_TOKEN="$PULUMI_TOKEN"
     pulumi login
     echo "✅ Logged in to Pulumi Cloud"
@@ -46,13 +46,13 @@ setup_azure_backend() {
     read -p "Azure Container Name: " AZURE_CONTAINER
     read -sp "Azure Storage Key: " AZURE_KEY
     echo ""
-    
+
     export AZURE_STORAGE_ACCOUNT="$AZURE_ACCOUNT"
     export AZURE_STORAGE_KEY="$AZURE_KEY"
-    
+
     pulumi login "azblob://$AZURE_CONTAINER"
     echo "✅ Logged in to Azure Blob backend"
-    
+
     # Add to .env if it exists
     if [ -f .env ]; then
         echo "AZURE_STORAGE_ACCOUNT=$AZURE_ACCOUNT" >> .env
@@ -70,13 +70,13 @@ setup_s3_backend() {
     read -p "AWS Access Key ID: " AWS_KEY_ID
     read -sp "AWS Secret Access Key: " AWS_SECRET
     echo ""
-    
+
     export AWS_ACCESS_KEY_ID="$AWS_KEY_ID"
     export AWS_SECRET_ACCESS_KEY="$AWS_SECRET"
-    
+
     pulumi login "s3://$S3_BUCKET"
     echo "✅ Logged in to S3 backend"
-    
+
     # Add to .env if it exists
     if [ -f .env ]; then
         echo "AWS_ACCESS_KEY_ID=$AWS_KEY_ID" >> .env
@@ -91,10 +91,10 @@ create_stack() {
     echo "📚 Creating Pulumi stack"
     echo "------------------------"
     read -p "Stack name (e.g., dev, staging, prod): " STACK_NAME
-    
+
     pulumi stack select --create "$STACK_NAME"
     echo "✅ Created and selected stack: $STACK_NAME"
-    
+
     echo ""
     echo "📋 Available commands:"
     echo "  pulumi up       - Deploy the stack"
@@ -106,7 +106,7 @@ create_stack() {
 # Main setup flow
 main() {
     install_pulumi
-    
+
     echo ""
     echo "🔧 Choose Pulumi backend:"
     echo "1) Pulumi Cloud (recommended)"
@@ -114,7 +114,7 @@ main() {
     echo "3) AWS S3"
     echo "4) Skip (already configured)"
     read -p "Selection [1-4]: " BACKEND_CHOICE
-    
+
     case $BACKEND_CHOICE in
         1)
             setup_pulumi_cloud
@@ -133,9 +133,9 @@ main() {
             exit 1
             ;;
     esac
-    
+
     create_stack
-    
+
     echo ""
     echo "🎉 Pulumi setup complete!"
     echo ""

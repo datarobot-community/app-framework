@@ -21,23 +21,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      
+
       - name: Install Pulumi
         run: |
           curl -fsSL https://get.pulumi.com | sh
           echo "$HOME/.pulumi/bin" >> $GITHUB_PATH
-      
+
       - name: Setup Project Dependencies
         run: |
           command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
           uv venv .venv
           source .venv/bin/activate
           uv pip install -r requirements.txt
-      
+
       - name: Destroy Pulumi Stack
         run: |
           source .venv/bin/activate

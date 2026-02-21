@@ -31,6 +31,42 @@ Use this skill when you need to:
 - Automate infrastructure provisioning with Pulumi
 - Create DevOps workflows for AI applications
 
+## Implementation Pattern
+
+When implementing CI/CD for an application template, follow this structure:
+
+**Project Structure:**
+```
+application-template-root/
+├── infra/
+│   └── scripts/                    # Copy entire scripts/ directory here
+│       ├── README.md               # Copy from scripts/infra-README.md
+│       ├── setup-github-secrets.sh
+│       ├── setup-gitlab-variables.sh
+│       ├── encrypt-secrets.sh
+│       ├── decrypt-secrets.sh
+│       ├── pulumi-setup.sh
+│       ├── gitlab-ci.yml
+│       ├── github-deploy.yml
+│       ├── github-destroy.yml
+│       └── taskfile-snippets.yaml
+├── .env                            # User's secrets (never commit!)
+├── .env.gpg                        # Encrypted secrets (commit for GitHub)
+├── .gitlab-ci.yml                  # Copy from infra/scripts/gitlab-ci.yml
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml              # Copy from infra/scripts/github-deploy.yml
+│       └── destroy.yml             # Copy from infra/scripts/github-destroy.yml
+└── Taskfile.yml                    # Extend with tasks from taskfile-snippets.yaml
+```
+
+**Key Points:**
+- All CI/CD scripts go in `infra/scripts/` directory
+- `.env` and `.env.gpg` stay in project root
+- Scripts in `infra/scripts/` reference `../../.env` (two levels up)
+- Root `Taskfile.yml` is extended with tasks that run scripts in `infra/scripts/`
+- CI/CD configs (`.gitlab-ci.yml`, `.github/workflows/`) are copied to standard locations
+
 ## Key capabilities
 
 ### 1. Testing and Linting
@@ -80,29 +116,30 @@ Use this skill when you need to:
 **User request**: "Set up GitLab CI/CD for my application template with automated testing and manual review deployments"
 
 **Agent workflow**:
-1. Create `.gitlab-ci.yml` in repository root
-2. Configure `before_script` to install Task and dependencies
-3. Add `lint` and `test` stages that run on merge requests
-4. Add manual `review_app` stage with Pulumi deployment
-5. Configure environment variables in GitLab project settings
-6. Set up Pulumi DIY backend (Azure Blob) for state management
-7. Add cleanup job to destroy review stacks
-8. Test pipeline with a sample merge request
+1. Create `infra/scripts/` directory in project root: `mkdir -p infra`
+2. Copy entire scripts directory: `cp -R <skill-path>/scripts infra/scripts`
+3. Make scripts executable: `chmod +x infra/scripts/*.sh`
+4. Copy CI/CD configs to standard locations:
+   - GitLab: `cp infra/scripts/gitlab-ci.yml .gitlab-ci.yml`
+   - GitHub: `cp infra/scripts/github-*.yml .github/workflows/`
+5. Extend existing `Taskfile.yml` with CI/CD tasks from `infra/scripts/taskfile-snippets.yaml`
+6. Guide user to run `task setup-github-secrets` or `task setup-gitlab-vars`
+7. If GitHub, guide user to run `task encrypt-secrets` to encrypt `.env` file
+8. Test pipeline with a sample PR/MR
 
 ### Example 2: Set up GitHub Actions with encrypted secrets
 
 **User request**: "Configure GitHub Actions CI/CD with GPG-encrypted secrets and review deployments"
 
 **Agent workflow**:
-1. Create `.github/workflows/deploy.yml` workflow file
-2. Encrypt `.env` file with GPG: `gpg --symmetric --cipher-algo AES256 .env`
-3. Add encrypted `.env.gpg` to repository
-4. Store GPG passphrase in GitHub repository secrets
-5. Configure workflow to decrypt secrets at runtime
-6. Add Pulumi deployment step that creates PR-specific stacks
-7. Configure workflow to comment on PR with deployment URLs
-8. Create destroy workflow for manual resource cleanup
-9. Set up Pulumi Cloud backend with access token
+1. Create `infra/scripts/` directory: `mkdir -p infra && cp -R <skill-path>/scripts infra/scripts`
+2. Make scripts executable: `chmod +x infra/scripts/*.sh`
+3. Copy GitHub workflows: `cp infra/scripts/github-*.yml .github/workflows/`
+4. Extend existing `Taskfile.yml` with CI/CD tasks from `infra/scripts/taskfile-snippets.yaml`
+5. Guide user to encrypt `.env` with `task encrypt-secrets`
+6. Guide user to set up GitHub secrets with `task setup-github-secrets`
+7. Add encrypted `.env.gpg` to repository
+8. Test workflow with a sample pull request
 
 ### Example 3: Configure continuous delivery
 
@@ -137,33 +174,33 @@ tasks:
       - uv venv .venv
       - source .venv/bin/activate && uv pip install -r requirements.txt
       - task: react:install
-  
+
   python-lint:
     desc: 🧹 Lint Python code
     cmds:
       - ruff format .
       - ruff check . --fix
       - mypy --pretty .
-  
+
   python-lint-check:
     desc: 🧹 Check Python linting without fixes
     cmds:
       - ruff format --check .
       - ruff check .
       - mypy --pretty .
-  
+
   lint:
     deps:
       - react:lint
       - python-lint
     desc: 🧹 Lint all code
-  
+
   lint-check:
     deps:
       - react:lint-check
       - python-lint-check
     desc: 🧹 Check linting for all code
-  
+
   test:
     deps:
       - react:test
@@ -549,7 +586,8 @@ gh secret remove SECRET_NAME
 
 ```bash
 # Use the provided script (recommended)
-./scripts/encrypt-secrets.sh
+cd infra/scripts && ./encrypt-secrets.sh
+# Or from root: task encrypt-secrets
 
 # Or manually with GPG:
 gpg --symmetric --cipher-algo AES256 .env
@@ -584,8 +622,8 @@ git push
 **Decrypt locally for testing:**
 
 ```bash
-./scripts/decrypt-secrets.sh
-# Or add as Task:
+cd infra/scripts && ./decrypt-secrets.sh
+# Or from root:
 task decrypt-secrets
 ```
 
@@ -867,24 +905,47 @@ deploy_production:
   when: manual
 ```
 
-## Helper Scripts
+## Helper Scripts and Configuration
 
-This skill includes practical scripts and configuration examples in the `scripts/` directory:
+When implementing CI/CD for an application template, create an `infra/` directory in the project root to house all CI/CD and infrastructure-related files:
+
+**Directory Structure:**
+```
+project-root/
+├── infra/
+│   └── scripts/
+│       ├── setup-github-secrets.sh
+│       ├── setup-gitlab-variables.sh
+│       ├── encrypt-secrets.sh
+│       ├── decrypt-secrets.sh
+│       ├── pulumi-setup.sh
+│       ├── gitlab-ci.yml
+│       ├── github-deploy.yml
+│       ├── github-destroy.yml
+│       ├── taskfile-snippets.yaml
+│       └── README.md
+├── .gitlab-ci.yml          # Copied from infra/scripts/
+├── .github/
+│   └── workflows/
+│       ├── deploy.yml       # Copied from infra/scripts/
+│       └── destroy.yml      # Copied from infra/scripts/
+└── Taskfile.yml            # Extended with CI/CD tasks
+```
 
 **CI/CD Configurations:**
-- `scripts/gitlab-ci.yml` - Complete GitLab CI/CD pipeline configuration
-- `scripts/github-deploy.yml` - GitHub Actions deployment workflow
-- `scripts/github-destroy.yml` - GitHub Actions destroy workflow
+- `infra/scripts/gitlab-ci.yml` - Complete GitLab CI/CD pipeline configuration
+- `infra/scripts/github-deploy.yml` - GitHub Actions deployment workflow
+- `infra/scripts/github-destroy.yml` - GitHub Actions destroy workflow
 
 **Secrets Management:**
-- `scripts/setup-github-secrets.sh` - Interactive GitHub secrets setup via gh CLI
-- `scripts/setup-gitlab-variables.sh` - Interactive GitLab variables setup via glab CLI
-- `scripts/encrypt-secrets.sh` - Encrypt .env file with GPG for GitHub Actions
-- `scripts/decrypt-secrets.sh` - Decrypt .env.gpg for local development
-- `scripts/taskfile-snippets.yaml` - Ready-to-use Task definitions for CI/CD operations
+- `infra/scripts/setup-github-secrets.sh` - Interactive GitHub secrets setup via gh CLI
+- `infra/scripts/setup-gitlab-variables.sh` - Interactive GitLab variables setup via glab CLI
+- `infra/scripts/encrypt-secrets.sh` - Encrypt .env file with GPG for GitHub Actions
+- `infra/scripts/decrypt-secrets.sh` - Decrypt .env.gpg for local development
 
 **Infrastructure Setup:**
-- `scripts/pulumi-setup.sh` - Interactive Pulumi backend configuration
+- `infra/scripts/pulumi-setup.sh` - Interactive Pulumi backend configuration
+- `infra/scripts/README.md` - Documentation for the infra/scripts directory
 
 ### Using the Scripts
 **Set up GitHub secrets (automated):**

@@ -2,6 +2,9 @@
 # GPG encryption script for .env files
 # Used for GitHub Actions secrets management
 # See: https://docs.github.com/en/actions/security-for-github-actions/using-encrypted-secrets
+#
+# This script should be run from the infra/ directory
+# It will encrypt ../.env to ../.env.gpg
 
 set -euo pipefail
 
@@ -9,15 +12,15 @@ echo "🔒 Encrypt .env file with GPG"
 echo "=============================="
 echo ""
 
-# Check if .env exists
-if [ ! -f .env ]; then
-    echo "❌ Error: .env file not found"
-    echo "Create a .env file first with your secrets"
+# Check if .env exists in parent directory
+if [ ! -f ../.env ]; then
+    echo "❌ Error: .env file not found in project root"
+    echo "Create a .env file in the project root first with your secrets"
     exit 1
 fi
 
 # Check if .env.gpg already exists
-if [ -f .env.gpg ]; then
+if [ -f ../.env.gpg ]; then
     echo "⚠️  Warning: .env.gpg already exists"
     read -p "Overwrite? (y/N): " -n 1 -r
     echo
@@ -32,10 +35,10 @@ echo "Enter a strong passphrase for encryption:"
 echo "(You'll need to add this to GitHub Secrets as LARGE_SECRET_PASSPHRASE)"
 echo ""
 
-# Encrypt the file
-gpg --symmetric --cipher-algo AES256 .env
+# Encrypt the file (run from infra/scripts/, encrypt project root .env)
+cd ../.. && gpg --symmetric --cipher-algo AES256 .env && cd infra/scripts
 
-if [ -f .env.gpg ]; then
+if [ -f ../../.env.gpg ]; then
     echo ""
     echo "✅ Successfully encrypted .env → .env.gpg"
     echo ""

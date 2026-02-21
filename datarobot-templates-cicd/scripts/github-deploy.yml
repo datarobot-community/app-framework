@@ -16,26 +16,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Decrypt Secrets
         run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output .env .env.gpg
         env:
           # Store this in GitHub repository secrets
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      
+
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      
+
       - name: Install Task
         run: pip install go-task-bin
-      
+
       - name: Install Dependencies
         run: task install
-      
+
       - name: Lint
         run: task lint-check
-      
+
       - name: Test
         run: task test
 
@@ -46,28 +46,28 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Decrypt Secrets
         run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output .env .env.gpg
         env:
           LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
-      
+
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      
+
       - name: Install Pulumi
         run: |
           curl -fsSL https://get.pulumi.com | sh
           echo "$HOME/.pulumi/bin" >> $GITHUB_PATH
-      
+
       - name: Setup Project Dependencies
         run: |
           command -v uv >/dev/null 2>&1 || curl -LsSf https://astral.sh/uv/install.sh | sh
           uv venv .venv
           source .venv/bin/activate
           uv pip install -r requirements.txt
-      
+
       - name: Plan Pulumi Update
         id: plan_pulumi_update
         run: |
@@ -88,7 +88,7 @@ jobs:
         env:
           # Store this in GitHub repository secrets
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-      
+
       - name: Comment PR with App URL
         uses: peter-evans/create-or-update-comment@v4
         with:

@@ -1,5 +1,6 @@
 # Taskfile snippets for CI/CD
-# Add these tasks to your existing Taskfile.yaml
+# Add these tasks to your existing Taskfile.yaml in the project root
+# These tasks assume scripts are in infra/scripts/ directory and .env is in project root
 
 # =============================================================================
 # Secrets Management Tasks
@@ -7,17 +8,19 @@
 
   encrypt-secrets:
     desc: 🔒 Encrypt .env file for GitHub Actions
+    dir: infra/scripts
     cmds:
-      - ./scripts/encrypt-secrets.sh
+      - ./encrypt-secrets.sh
     preconditions:
-      - test -f .env
+      - test -f ../../.env
 
   decrypt-secrets:
     desc: 🔓 Decrypt .env.gpg file for local use
+    dir: infra/scripts
     cmds:
-      - ./scripts/decrypt-secrets.sh
+      - ./decrypt-secrets.sh
     preconditions:
-      - test -f .env.gpg
+      - test -f ../../.env.gpg
 
   verify-secrets:
     desc: 🔍 Verify .env file has required variables
@@ -35,6 +38,18 @@
           exit 1
         fi
         echo "✅ All required variables present"
+
+  setup-github-secrets:
+    desc: 🔐 Setup GitHub secrets interactively
+    dir: infra/scripts
+    cmds:
+      - ./setup-github-secrets.sh
+
+  setup-gitlab-vars:
+    desc: 🔐 Setup GitLab variables interactively
+    dir: infra/scripts
+    cmds:
+      - ./setup-gitlab-variables.sh
 
 # =============================================================================
 # CI/CD Deployment Tasks

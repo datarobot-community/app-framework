@@ -26,7 +26,9 @@ Transform your DataRobot application templates from manual deployments to automa
 
 ### Example Configurations
 
-The `scripts/` directory contains ready-to-use configuration files:
+The `scripts/` directory contains reference implementations that should be copied to the application template's `infra/` directory:
+
+- **infra-README.md**: Documentation for the infra/ directory explaining structure and usage
 
 - **gitlab-ci.yml**: Complete GitLab CI/CD pipeline
   - Automated testing and linting
@@ -55,11 +57,13 @@ The `scripts/` directory contains ready-to-use configuration files:
   - Configures all required variables for CI/CD
 
 - **encrypt-secrets.sh**: GPG encryption for .env files
+  - Encrypts root .env to .env.gpg
   - Interactive encryption workflow
   - GitHub Actions secrets preparation
   - Step-by-step instructions
 
 - **decrypt-secrets.sh**: GPG decryption for local development
+  - Decrypts root .env.gpg to .env
   - Safe local secrets management
   - Testing workflow simulation
 
@@ -67,7 +71,7 @@ The `scripts/` directory contains ready-to-use configuration files:
   - Secrets management commands
   - Pulumi deployment tasks
   - CI/CD testing helpers
-  - Copy/paste into your existing Taskfile
+  - Add these to the project's existing root Taskfile.yml
 
 - **pulumi-setup.sh**: Interactive Pulumi setup script
   - Backend configuration (Cloud, Azure, AWS)
@@ -76,51 +80,56 @@ The `scripts/` directory contains ready-to-use configuration files:
 
 ## Quick Start
 
+When implementing CI/CD for an application template:
+
 1. **Choose your platform**: GitLab or GitHub
 
-2. **Copy the appropriate config**:
+2. **Create infra directory and copy scripts**:
    ```bash
-   # For GitLab
-   cp scripts/gitlab-ci.yml .gitlab-ci.yml
+   # Create infra directory in project root and copy entire scripts folder
+   mkdir -p infra
+   cp -R <skill-path>/scripts infra/scripts
+   chmod +x infra/scripts/*.sh
    
-   # For GitHub
+   # For GitLab - copy to root
+   cp infra/scripts/gitlab-ci.yml .gitlab-ci.yml
+   
+   # For GitHub - copy to .github/workflows/
    mkdir -p .github/workflows
-   cp scripts/github-deploy.yml .github/workflows/deploy.yml
-   cp scripts/github-destroy.yml .github/workflows/destroy.yml
+   cp infra/scripts/github-deploy.yml .github/workflows/deploy.yml
+   cp infra/scripts/github-destroy.yml .github/workflows/destroy.yml
    ```
 
-3. **Set up Pulumi**:
+3. **Extend existing Taskfile.yml**:
    ```bash
-   chmod +x scripts/pulumi-setup.sh
-   ./scripts/pulumi-setup.sh
+   # Add CI/CD tasks from infra/scripts/taskfile-snippets.yaml
+   # to your project's existing root Taskfile.yml
+   # See the snippets file for task examples
    ```
 
-4. **Configure secrets** in your platform:
-   
-   For GitHub (automated):
+4. **Set up Pulumi**:
    ```bash
+   cd infra/scripts
+   ./pulumi-setup.sh
+   cd ../..
    # Install GitHub CLI: brew install gh
    gh auth login
-   ./scripts/setup-github-secrets.sh
+   task setup-github-secrets
    ```
-   
+
    For GitLab (automated):
    ```bash
    # Install GitLab CLI: brew install glab
    glab auth login
-   ./scripts/setup-gitlab-variables.sh
+   task setup-gitlab-vars
    ```
 
-5. **Encrypt your secrets** (for GitHub only):
+6. **Encrypt your secrets** (for GitHub only):
    ```bash
-   ./scripts/encrypt-secrets.sh
+   # Creates .env.gpg in project root from .env
+   task encrypt-secrets
    git add .env.gpg
-   ```
-
-6. **Add CI/CD tasks** to your existing Taskfile:
-   ```bash
-   # Copy relevant sections from taskfile-snippets.yaml
-   cat scripts/taskfile-snippets.yaml >> Taskfile.yaml
+   git commit -m "Add encrypted secrets"
    ```
 
 ## Key Features

@@ -44,13 +44,13 @@ add_variable() {
     local var_description=$2
     local var_value=""
     local mask_flag="--masked"  # Mask by default for security
-    
+
     echo "📝 Setting up: $var_name"
     echo "   $var_description"
-    
+
     read -sp "   Enter value: " var_value
     echo ""
-    
+
     if [ -n "$var_value" ]; then
         # GitLab CLI command to set variable
         glab variable set "$var_name" "$var_value" --scope="*" $mask_flag --repo "$PROJECT" 2>/dev/null || \
@@ -81,7 +81,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "2) AWS S3"
     echo "3) Google Cloud Storage"
     read -p "Selection [1-3]: " BACKEND_CHOICE
-    
+
     case $BACKEND_CHOICE in
         1)
             add_variable "AZURE_STORAGE_ACCOUNT" "Azure Storage account name"
