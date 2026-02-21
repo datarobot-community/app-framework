@@ -1,5 +1,5 @@
 ---
-name: dr-model-training
+name: datarobot-model-training
 description: Comprehensive guidance for training models in DataRobot, including project creation, AutoML configuration, feature engineering, and model selection.
 ---
 

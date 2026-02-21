@@ -1,5 +1,5 @@
 ---
-name: dr-feature-engineering
+name: datarobot-feature-engineering
 description: Guidance for feature engineering, feature discovery, feature importance analysis, and understanding DataRobot's automated feature engineering capabilities.
 ---
 
