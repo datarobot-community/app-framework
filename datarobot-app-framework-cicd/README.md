@@ -71,7 +71,7 @@ The `scripts/` directory contains reference implementations that should be copie
   - Secrets management commands
   - Pulumi deployment tasks
   - CI/CD testing helpers
-  - Add these to the project's existing root Taskfile.yml
+  - Add an `includes` entry in the project's root `Taskfile.yml` pointing to `infra/Taskfile.yaml` (do NOT add tasks to root)
 
 - **pulumi-setup.sh**: Interactive Pulumi setup script
   - Backend configuration (Cloud, Azure, AWS)
@@ -90,21 +90,26 @@ When implementing CI/CD for an application template:
    mkdir -p infra
    cp -R <skill-path>/scripts infra/scripts
    chmod +x infra/scripts/*.sh
-   
+
    # For GitLab - copy to root
    cp infra/scripts/gitlab-ci.yml .gitlab-ci.yml
-   
+
    # For GitHub - copy to .github/workflows/
    mkdir -p .github/workflows
    cp infra/scripts/github-deploy.yml .github/workflows/deploy.yml
    cp infra/scripts/github-destroy.yml .github/workflows/destroy.yml
    ```
 
-3. **Extend existing Taskfile.yml**:
+3. **Create `infra/Taskfile.yaml`**:
    ```bash
-   # Add CI/CD tasks from infra/scripts/taskfile-snippets.yaml
-   # to your project's existing root Taskfile.yml
-   # See the snippets file for task examples
+   # Copy taskfile-snippets.yaml to infra/Taskfile.yaml
+   cp infra/scripts/taskfile-snippets.yaml infra/Taskfile.yaml
+   # Then add a single includes entry to root Taskfile.yml:
+   # includes:
+   #   infra:
+   #     taskfile: ./infra/Taskfile.yaml
+   #     dir: .
+   # ⚠️  Do NOT paste CI/CD tasks into the root Taskfile.yml
    ```
 
 4. **Set up Pulumi**:

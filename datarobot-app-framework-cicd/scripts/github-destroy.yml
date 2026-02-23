@@ -11,16 +11,27 @@ on:
         required: true
         type: string
 
-env:
-  PULUMI_STACK_NAME: github-pr-${{ github.event.repository.name }}-${{ github.event.number }}
-  PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-
 jobs:
   destroy:
     name: pulumi-destroy-stack
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      # Bind the user-supplied input to PULUMI_STACK so it is never interpolated
+      # directly into the shell script (prevents script injection attacks).
+      PULUMI_STACK: ${{ github.event.inputs.stack_name }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Decrypt Secrets
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase="$CICD_SECRET_PASSPHRASE" --output .env .env.gpg
+          # Load all .env variables into the GitHub Actions environment for subsequent steps
+          grep -v '^#' .env | grep -v '^$' >> $GITHUB_ENV
+        env:
+          # Only this one secret needs to be stored in GitHub repository secrets
+          CICD_SECRET_PASSPHRASE: ${{ secrets.CICD_SECRET_PASSPHRASE }}
 
       - uses: actions/setup-python@v5
         with:
@@ -41,6 +52,6 @@ jobs:
       - name: Destroy Pulumi Stack
         run: |
           source .venv/bin/activate
-          pulumi stack select ${{ github.event.inputs.stack_name }}
+          # PULUMI_STACK env var identifies the stack for all commands
           pulumi destroy --yes
-          pulumi stack rm --yes ${{ github.event.inputs.stack_name }}
+          pulumi stack rm --yes

@@ -12,7 +12,7 @@ brew install gh  # macOS
 gh auth login
 
 # Run setup script
-./scripts/setup-github-secrets.sh
+./infra/scripts/setup-github-secrets.sh
 ```
 
 ### Manual Commands
@@ -20,10 +20,8 @@ gh auth login
 # Add individual secrets
 echo "your-value" | gh secret set SECRET_NAME
 
-# Required secrets
-echo "your-gpg-passphrase" | gh secret set LARGE_SECRET_PASSPHRASE
-echo "your-pulumi-token" | gh secret set PULUMI_ACCESS_TOKEN
-echo "your-dr-token" | gh secret set DATAROBOT_API_TOKEN
+# Only ONE secret is required — all other credentials live in .env.gpg
+echo "your-gpg-passphrase" | gh secret set CICD_SECRET_PASSPHRASE
 
 # List secrets
 gh secret list
@@ -44,7 +42,7 @@ brew install glab  # macOS
 glab auth login
 
 # Run setup script
-./scripts/setup-gitlab-variables.sh
+./infra/scripts/setup-gitlab-variables.sh
 ```
 
 ### Manual Commands
@@ -52,14 +50,11 @@ glab auth login
 # Add individual variables (masked for security)
 glab variable set VAR_NAME "your-value" --masked
 
-# Required variables
-glab variable set DATAROBOT_API_TOKEN "your-token" --masked
-glab variable set PULUMI_CONFIG_PASSPHRASE "your-passphrase" --masked
+# Only TWO variables are required — all other credentials live in .env.gpg
+# CICD_SECRET_PASSPHRASE: GPG passphrase to decrypt .env.gpg
+glab variable set CICD_SECRET_PASSPHRASE "your-gpg-passphrase" --masked
+# GITLAB_API_TOKEN: needed for posting MR comments (GitLab-specific, not in .env)
 glab variable set GITLAB_API_TOKEN "your-gitlab-token" --masked
-
-# For Azure backend
-glab variable set AZURE_STORAGE_ACCOUNT "account-name" --masked
-glab variable set AZURE_STORAGE_KEY "account-key" --masked
 
 # List variables
 glab variable list
@@ -76,7 +71,7 @@ glab variable delete VAR_NAME
 ### Encrypt .env for GitHub
 ```bash
 # Automated
-./scripts/encrypt-secrets.sh
+./infra/scripts/encrypt-secrets.sh
 
 # Manual
 gpg --symmetric --cipher-algo AES256 .env
@@ -87,7 +82,7 @@ git commit -m "Add encrypted secrets"
 ### Decrypt .env Locally
 ```bash
 # Automated
-./scripts/decrypt-secrets.sh
+./infra/scripts/decrypt-secrets.sh
 
 # Manual
 gpg --quiet --batch --yes --decrypt --output .env .env.gpg
@@ -97,7 +92,7 @@ gpg --quiet --batch --yes --decrypt --output .env .env.gpg
 
 ### Interactive Setup
 ```bash
-./scripts/pulumi-setup.sh
+./infra/scripts/pulumi-setup.sh
 ```
 
 ### Manual Setup
@@ -116,25 +111,50 @@ export AWS_SECRET_ACCESS_KEY=...
 pulumi login s3://bucket-name
 ```
 
+## Migrating Stacks to a Different Backend
+
+Run `pulumi-setup.sh` — it detects backend mismatches automatically. For manual migration:
+
+```bash
+# 1. Check current backend and local stacks
+pulumi whoami --verbose   # note "Backend URL:"
+ls Pulumi.*.yaml          # stack files present locally
+
+# 2. Export each stack (while still on the old backend)
+pulumi stack export --stack <stackname> --file <stackname>-backup.json
+
+# 3. Login to the new backend (set credentials first)
+pulumi login azblob://my-container   # or s3://, or pulumi login for Cloud
+
+# 4. Import into new backend
+pulumi stack select --create <stackname>
+pulumi stack import --file <stackname>-backup.json
+rm <stackname>-backup.json
+```
+
+> Migration is needed when `pulumi whoami --verbose` shows a different Backend URL than
+> the CI/CD target (e.g., local `file://` vs CI `azblob://`).
+
 ## Common Task Commands
 
 ### From taskfile-snippets.yaml
+> ⚠️ Tasks are namespaced under `infra:` (included from `infra/Taskfile.yaml`)
 ```bash
 # Secrets
-task encrypt-secrets
-task decrypt-secrets
-task verify-secrets
+task infra:encrypt-secrets
+task infra:decrypt-secrets
+task infra:verify-secrets
 
 # Pulumi
-task pulumi-login-cloud
-task pulumi-login-azure
-task pulumi-deploy
-task pulumi-destroy
-task pulumi-output
+task infra:pulumi-login-cloud
+task infra:pulumi-login-azure
+task infra:pulumi-deploy
+task infra:pulumi-destroy
+task infra:pulumi-output
 
 # Testing
-task ci-test-local
-task ci-simulate-deploy
+task infra:ci-test-local
+task infra:ci-simulate-deploy
 ```
 
 ## Quick Start Workflow
@@ -146,8 +166,8 @@ brew install gh
 
 # 2. Setup
 gh auth login
-./scripts/setup-github-secrets.sh
-./scripts/encrypt-secrets.sh
+./infra/scripts/encrypt-secrets.sh     # encrypts .env → .env.gpg
+./infra/scripts/setup-github-secrets.sh  # sets only CICD_SECRET_PASSPHRASE
 git add .env.gpg .github/
 
 # 3. Push and test
@@ -162,7 +182,7 @@ brew install glab
 
 # 2. Setup
 glab auth login
-./scripts/setup-gitlab-variables.sh
+./infra/scripts/setup-gitlab-variables.sh
 git add .gitlab-ci.yml
 
 # 3. Push and test

@@ -6,7 +6,8 @@ This directory contains all CI/CD and infrastructure-related scripts for the app
 
 ```
 project-root/
-├── infra/                          
+├── infra/
+│   ├── Taskfile.yaml               # ⚠️ CI/CD tasks go HERE (copy from infra/scripts/taskfile-snippets.yaml)
 │   └── scripts/                    # CI/CD scripts directory
 │       ├── setup-github-secrets.sh     # GitHub secrets setup (gh CLI)
 │       ├── setup-gitlab-variables.sh   # GitLab variables setup (glab CLI)
@@ -16,7 +17,7 @@ project-root/
 │       ├── gitlab-ci.yml               # GitLab CI/CD template
 │       ├── github-deploy.yml           # GitHub Actions deploy template
 │       ├── github-destroy.yml          # GitHub Actions destroy template
-│       ├── taskfile-snippets.yaml      # Tasks to add to root Taskfile.yml
+│       ├── taskfile-snippets.yaml      # Source for infra/Taskfile.yaml (do NOT paste into root Taskfile.yml)
 │       └── README.md                   # This file
 ├── .env                            # Secrets (never commit!)
 ├── .env.gpg                        # Encrypted secrets (commit this)
@@ -25,7 +26,7 @@ project-root/
 │   └── workflows/
 │       ├── deploy.yml              # Copied from infra/scripts/github-deploy.yml
 │       └── destroy.yml             # Copied from infra/scripts/github-destroy.yml
-└── Taskfile.yml                    # Extended with tasks from infra/scripts/taskfile-snippets.yaml
+└── Taskfile.yml                    # Root Taskfile — ONLY add includes entry for infra/Taskfile.yaml
 ```
 
 ## Scripts Overview
@@ -133,16 +134,18 @@ cp infra/scripts/github-destroy.yml .github/workflows/destroy.yml
 ### Taskfile Integration
 
 #### `taskfile-snippets.yaml`
-Contains Task definitions to add to your root `Taskfile.yml`:
+Contains Task definitions to copy to `infra/Taskfile.yaml`.
 
-- `encrypt-secrets` - Encrypt .env for GitHub
-- `decrypt-secrets` - Decrypt .env.gpg locally
-- `verify-secrets` - Check required variables
-- `setup-github-secrets` - Interactive GitHub secrets setup
-- `setup-gitlab-vars` - Interactive GitLab variables setup
-
-**Usage:**
-Add the relevant tasks from this file to your project's root `Taskfile.yml`.
+> ⚠️ **Do NOT paste these tasks into the root `Taskfile.yml`.** Instead:
+> 1. Copy this file: `cp infra/scripts/taskfile-snippets.yaml infra/Taskfile.yaml`
+> 2. Add a single `includes` entry to the root `Taskfile.yml`:
+>    ```yaml
+>    includes:
+>      infra:
+>        taskfile: ./infra/Taskfile.yaml
+>        dir: .
+>    ```
+> 3. Run tasks as: `task infra:encrypt-secrets`, `task infra:setup-github-secrets`, etc.
 
 ## Quick Start
 
@@ -197,13 +200,13 @@ Add the relevant tasks from this file to your project's root `Taskfile.yml`.
 - **Secrets**: `.env` and `.env.gpg` are in the **project root**, not in `infra/`
 - **Scripts**: All scripts are in `infra/scripts/` directory
 - **CI/CD configs**: Copied from `infra/scripts/` to their standard locations (`.gitlab-ci.yml`, `.github/workflows/`)
-- **Taskfile**: Root `Taskfile.yml` is extended with tasks that execute scripts in `infra/scripts/`
+- **Taskfile**: `infra/Taskfile.yaml` contains all CI/CD tasks. Root `Taskfile.yml` includes it via `includes: {infra: {taskfile: ./infra/Taskfile.yaml}}`
 
 ## Security Notes
 
 - **Never commit `.env`** - Add to `.gitignore`
 - **Do commit `.env.gpg`** - It's encrypted and safe
-- **Store GPG passphrase** in GitHub Secrets as `LARGE_SECRET_PASSPHRASE`
+- **Store GPG passphrase** in GitHub Secrets as `CICD_SECRET_PASSPHRASE`
 - **Mark GitLab variables** as "Masked" to hide in logs
 - **Rotate credentials** regularly
 

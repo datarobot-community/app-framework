@@ -6,22 +6,32 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Restrict default permissions for all jobs — each job grants only what it needs.
+permissions:
+  contents: read
+
 env:
-  PULUMI_STACK_NAME: github-pr-${{ github.event.repository.name }}-${{ github.event.number }}
+  PULUMI_STACK: ${{ vars.PULUMI_STACK_REVIEW_NAME }}-${{ github.event.number }}
 
 jobs:
   # Test and lint job - runs first
   test:
     name: test-and-lint
     runs-on: ubuntu-latest
+    # Skip entirely for fork PRs — secrets are withheld by GitHub for forks anyway,
+    # but this makes the intent explicit and avoids wasting CI minutes.
+    if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@v4
 
       - name: Decrypt Secrets
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output .env .env.gpg
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase="$CICD_SECRET_PASSPHRASE" --output .env .env.gpg
+          # Load all .env variables into the GitHub Actions environment for subsequent steps
+          grep -v '^#' .env | grep -v '^$' >> $GITHUB_ENV
         env:
-          # Store this in GitHub repository secrets
-          LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+          # Only this one secret needs to be stored in GitHub repository secrets
+          CICD_SECRET_PASSPHRASE: ${{ secrets.CICD_SECRET_PASSPHRASE }}
 
       - uses: actions/setup-python@v5
         with:
@@ -44,13 +54,22 @@ jobs:
     name: pulumi-deploy-stack
     runs-on: ubuntu-latest
     needs: test
+    # Same fork guard as the test job above.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read        # required for actions/checkout on private repos
+      pull-requests: write  # required for peter-evans/create-or-update-comment
     steps:
       - uses: actions/checkout@v4
 
       - name: Decrypt Secrets
-        run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output .env .env.gpg
+        run: |
+          gpg --quiet --batch --yes --decrypt --passphrase="$CICD_SECRET_PASSPHRASE" --output .env .env.gpg
+          # Load all .env variables into the GitHub Actions environment for subsequent steps
+          grep -v '^#' .env | grep -v '^$' >> $GITHUB_ENV
         env:
-          LARGE_SECRET_PASSPHRASE: ${{ secrets.LARGE_SECRET_PASSPHRASE }}
+          # Only this one secret needs to be stored in GitHub repository secrets
+          CICD_SECRET_PASSPHRASE: ${{ secrets.CICD_SECRET_PASSPHRASE }}
 
       - uses: actions/setup-python@v5
         with:
@@ -73,7 +92,8 @@ jobs:
         run: |
           source .venv/bin/activate
           export $(grep -v '^#' .env | xargs)
-          pulumi stack select --create $PULUMI_STACK_NAME
+          # PULUMI_STACK env var selects the stack; --create initialises it if it doesn't exist yet
+          pulumi stack select --create $PULUMI_STACK
           pulumi up --yes
           # Store JSON output once and parse it for all values
           PULUMI_OUTPUT=$(pulumi stack output --json)
@@ -85,9 +105,7 @@ jobs:
           echo "deployment_url=${DEPLOYMENT_URL}" >> $GITHUB_OUTPUT
           echo "app_id=${APP_ID}" >> $GITHUB_OUTPUT
           echo "llm_id=${LLM_ID}" >> $GITHUB_OUTPUT
-        env:
-          # Store this in GitHub repository secrets
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          # PULUMI_ACCESS_TOKEN and all other secrets are sourced from .env.gpg above
 
       - name: Comment PR with App URL
         uses: peter-evans/create-or-update-comment@v4
@@ -103,4 +121,4 @@ jobs:
             - **Deployment URL:** [${{ steps.plan_pulumi_update.outputs.deployment_url }}](${{ steps.plan_pulumi_update.outputs.deployment_url }})
             - **Deployment ID:** `${{ steps.plan_pulumi_update.outputs.llm_id }}`
             ### Pulumi Stack
-            - **Stack Name:** `${{ env.PULUMI_STACK_NAME }}`
+            - **Stack Name:** `${{ env.PULUMI_STACK }}`
