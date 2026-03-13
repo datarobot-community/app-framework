@@ -34,6 +34,7 @@ Thumbs.db
 *.parquet
 *.json
 !gemini-extension.json
+!.cursor-plugin/plugin.json
 
 # Environment variables
 .env
