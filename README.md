@@ -161,7 +161,6 @@ This repository contains skills for common DataRobot workflows. You can also con
 | `skills/datarobot-model-monitoring/` | Tools for monitoring model performance, tracking data drift, and managing model health. | [SKILL.md](skills/datarobot-model-monitoring/SKILL.md) |
 | `skills/datarobot-model-explainability/` | Tools for model explainability, prediction explanations, SHAP values, and model diagnostics. | [SKILL.md](skills/datarobot-model-explainability/SKILL.md) |
 | `skills/datarobot-data-preparation/` | Utilities for data upload, dataset management, and data validation. | [SKILL.md](skills/datarobot-data-preparation/SKILL.md) |
-| `skills/datarobot-app-framework-agent/` | Build and deploy multi-agent systems (CrewAI, LangGraph, LlamaIndex) to DataRobot. | [SKILL.md](skills/datarobot-app-framework-agent/SKILL.md) |
 | `skills/datarobot-app-framework-cicd/` | Set up CI/CD pipelines for DataRobot application templates with GitLab and GitHub Actions. | [SKILL.md](skills/datarobot-app-framework-cicd/SKILL.md) |
 
 ## Using skills in your coding agent
