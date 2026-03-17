@@ -38,6 +38,11 @@
       "name": "datarobot-model-explainability",
       "description": "Tools and guidance for model explainability, prediction explanations, SHAP values, and model diagnostics",
       "path": "skills/datarobot-model-explainability/SKILL.md"
+    },
+    {
+      "name": "datarobot-app-framework-cicd",
+      "description": "Tools and guidance for setting up CI/CD pipelines for DataRobot application templates, including GitLab and GitHub Actions workflows",
+      "path": "skills/datarobot-app-framework-cicd/SKILL.md"
     }
   ]
 }
