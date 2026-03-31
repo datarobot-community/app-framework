@@ -1,0 +1,13 @@
+{
+  "name": "datarobot-app-framework-studio",
+  "description": "DataRobot App Framework skills for building and deploying applications using the component system",
+  "version": "1.0.0",
+  "author": {
+    "name": "DataRobot"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["datarobot", "app-framework", "agent", "fastapi", "llm", "crewai", "langgraph"],
+  "skills": [
+    "datarobot-app-framework"
+  ]
+}

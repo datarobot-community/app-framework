@@ -1,0 +1,13 @@
+{
+  "name": "datarobot-app-framework-studio",
+  "version": "1.0.0",
+  "description": "DataRobot App Framework skills for building and deploying applications using the component system",
+  "author": "DataRobot",
+  "skills": [
+    {
+      "name": "datarobot-app-framework",
+      "description": "Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows (CrewAI, LangGraph, LlamaIndex)",
+      "path": "datarobot-app-framework/SKILL.md"
+    }
+  ]
+}
