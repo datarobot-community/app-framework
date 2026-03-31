@@ -1,43 +1,52 @@
 # DataRobot skills
 
+## Overview
+
+Agentic skills are modular, task-specific capability packages that help an AI agent move from general reasoning to reliable execution. Each skill bundles instructions, examples, and supporting resources so that the agent can load only what it needs for the current task, reducing context overload and improving tool use within a given workflow.
+
 DataRobot Skills are Agent Context Protocol (ACP) definitions for AI/ML tasks such as model training, deployment, predictions, feature engineering, and model monitoring. They work with major coding agents, including OpenAI Codex, Anthropic Claude Code, Google Gemini CLI, Cursor, and VS Code Copilot.
+
+> [!NOTE]
+> "Skills" is an Anthropic term used in Claude AI and Claude Code, but the concept applies more broadly. OpenAI Codex uses `AGENTS.md` to define agent instructions, and Gemini uses `gemini-extension.json` for extensions. This repository is compatible with all of them, and more.
 
 ## Quick start
 
-Install skills for **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills):
+> [!NOTE]
+> Supported agents for DataRobot skills include: Claude Code, Cursor, Codex, Amp, VS Code Copilot (GitHub Copilot), Gemini CLI, Goose, Letta, Kilo Code, and OpenCode.
+
+Install all DataRobot skills or just specific skillsfor **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills).
+
+**For all skills:**
 
 ```bash
 # Install this entire skill library to all agents at once
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills
+```
 
-# Or install a specific skill
+**For a specific skill:**
+
+```bash
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills/datarobot-predictions
+```
 
+**For a specific agent:**
+
+```bash
 # Install to a specific agent only
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills --agent cursor
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills --agent claude
 ```
 
-**Supported agents:** Claude Code, Cursor, Codex, Amp, VS Code Copilot (GitHub Copilot), Gemini CLI, Goose, Letta, Kilo Code, and OpenCode.
+> [!NOTE]
+> By default, the installer copies skills to all supported agents at the same time. No configuration is required.
+> For agent-specific installation methods, see the [Installation](#installation) section below.
 
-By default, the installer copies skills to all supported agents at the same time. No configuration is required.
-
-For agent-specific installation methods, see the [Installation](#installation) section below.
-
-## What are skills?
+## How do skills work?
 
 Skills are self-contained folders that package instructions, scripts, and resources for a specific use case. Each folder includes a `SKILL.md` file with YAML frontmatter (`name` and `description`), followed by the guidance your coding agent uses while the skill is active.
 
 > [!NOTE]
-> "Skills" is an Anthropic term used in Claude AI and Claude Code, but the concept applies more broadly. OpenAI Codex uses `AGENTS.md` to define agent instructions, and Gemini uses `gemini-extension.json` for extensions. This repository is compatible with all of them, and more.
-
-## Naming convention
-
-All DataRobot skills follow the naming convention `datarobot-<category>`, where `<category>` describes the skill's focus area. This provides:
-
-- Clear identification of DataRobot-specific skills
-- Consistent naming across the skill library
-- Easy discovery and organization
+> All DataRobot skills follow the naming convention `datarobot-<category>`, where `<category>` describes the skill's focus area. This provides clear identification of DataRobot-specific skills, consistent naming across the skill library, and easy discovery and organization.
 
 ## Installation
 
