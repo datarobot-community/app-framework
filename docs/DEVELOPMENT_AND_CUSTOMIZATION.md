@@ -1,11 +1,23 @@
 # Development and customization
 
-This guide covers how to create or customize a DataRobot skill, validate changes, and understand how skills work with DataRobot.
+Use this guide to create or customize a DataRobot skill, validate your changes, and understand how skills execute DataRobot workflows.
 
-## Contribute or customize a skill
+## Before you start
 
-1. Copy one of the existing skill folders (for example, `skills/datarobot-model-training/`) and rename it.
-2. Update the new folder's `SKILL.md` frontmatter:
+To use DataRobot skills, you need:
+
+- **A DataRobot account** with API access
+- **A DataRobot API token** and endpoint
+- **A Python environment** where your coding agent can install packages
+
+The agent installs the `datarobot` Python package automatically when needed.
+
+## Create or customize a skill
+
+The easiest way to create a new skill is to start from an existing one that is close to your use case.
+
+1. Copy one of the existing skill folders, such as `skills/datarobot-model-training/`, and rename it.
+2. Update the new folder's `SKILL.md` frontmatter and instructions:
 
    ```yaml
    ---
@@ -13,26 +25,29 @@ This guide covers how to create or customize a DataRobot skill, validate changes
    description: Describe what the skill does and when to use it
    ---
 
-   # Skill Title
+   # Skill title
    Guidance + examples + guardrails
    ```
 
-3. **Important:** Follow the naming convention `datarobot-<category>` for all skill names and folder names.
-4. Add or edit supporting scripts, templates, and documents referenced by your instructions.
-5. Reinstall or reload the skill bundle in your coding agent so the updated folder is available.
+3. Follow the naming convention `datarobot-<category>` for both the folder name and the `name` field in `SKILL.md`.
+4. Add or update any supporting scripts, templates, or documents referenced by the skill.
+5. Reinstall or reload the skill bundle in your coding agent so the updated skill is available.
+6. Test the skill with a prompt that exercises the workflow you expect users to follow.
 
-## Development and validation
+## Validate your changes
 
-This repository includes automated validation and linting tools to help maintain consistency and quality across all skills.
+This repository includes validation and linting tools to help maintain consistency and quality across all skills.
 
-### Prerequisites
+### Local prerequisites
 
-- [Task](https://taskfile.dev/) - Task runner (install: `brew install go-task` or `sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d`)
-- [uv](https://docs.astral.sh/uv/) - Fast Python package installer (install: `curl -LsSf https://astral.sh/uv/install.sh | sh`)
+Install these tools before running validation tasks:
 
-### Available tasks
+- [Task](https://taskfile.dev/) - Task runner (install with `brew install go-task` or `sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d`)
+- [uv](https://docs.astral.sh/uv/) - Python package and environment manager (install with `curl -LsSf https://astral.sh/uv/install.sh | sh`)
 
-Run `task --list` to see the available tasks:
+### Common tasks
+
+Run `task --list` to see the full task list. The most useful commands during development are:
 
 ```bash
 # Validate all skills (naming convention, structure, frontmatter)
@@ -50,6 +65,8 @@ task lint
 # Default task (runs lint)
 task
 ```
+
+If you want a single command before opening a pull request, run `task lint`.
 
 ### Validation rules
 
@@ -74,31 +91,21 @@ datarobot-my-skill/
 
 This repository uses GitHub Actions for automated checks:
 
-- **[Validate Skills](../.github/workflows/validate-skills.yml)** - Validates skill naming and structure on every push and pull request.
-- **[Trivy Security Scan](../.github/workflows/trivy-scan.yml)** - Scans for secrets and security issues daily and on every push and pull request.
+- **[Validate Skills](../.github/workflows/validate-skills.yml)** - Validates skill naming and structure on every push and pull request
+- **[Trivy Security Scan](../.github/workflows/trivy-scan.yml)** - Scans for secrets and security issues daily and on every push and pull request
 
-All checks must pass before merging pull requests.
+All checks must pass before merging a pull request.
 
 ## How skills work with DataRobot
 
-Skills guide your coding agent to use the **DataRobot Python SDK** directly. The agent will:
+By default, DataRobot skills guide your coding agent to use the **DataRobot Python SDK** directly. A typical flow looks like this:
 
-1. Install the `datarobot` Python package if needed.
-2. Use the SDK based on skill instructions and examples.
-3. Write and execute Python code to interact with DataRobot.
+1. The agent installs the `datarobot` package if it is not already available.
+2. The agent reads the relevant skill instructions and examples.
+3. The agent writes and runs Python code to interact with DataRobot.
 
-For example, when you ask, "Generate a prediction dataset template," the agent reads `skills/datarobot-predictions/SKILL.md`, then writes Python code with the `datarobot` SDK to retrieve deployment features and generate the template.
+For example, if you ask for a prediction dataset template, the agent reads `skills/datarobot-predictions/SKILL.md`, then writes Python code with the `datarobot` SDK to retrieve deployment features and generate the template.
 
 ### Optional: MCP server support
 
 If you have a DataRobot MCP server running, agents can also use MCP tools instead of calling the SDK directly. See the [MCP Server Template](https://github.com/datarobot-community/datarobot-mcp-template) for more information.
-
-## Runtime prerequisites
-
-To use DataRobot skills, you need:
-
-- **A DataRobot account** with API access
-- **A DataRobot API token** and endpoint
-- **A Python environment** where your coding agent can install packages
-
-The agent will automatically install the `datarobot` Python package when needed.

@@ -14,12 +14,11 @@ DataRobot Skills are Agent Context Protocol (ACP) definitions for AI/ML tasks su
 > [!NOTE]
 > Supported agents for DataRobot skills include: [Claude Code](https://www.anthropic.com/claude-code/), [Cursor](https://cursor.com), [Codex](https://developers.openai.com/codex/), [Amp](https://ampcode.com/), [VS Code Copilot (GitHub Copilot)](https://github.com/features/copilot), [Gemini CLI](https://geminicli.com/), [Goose](https://block.github.io/goose/), [Letta](https://www.letta.com/), [Kilo Code](https://kilocode.ai/), and [OpenCode](https://opencode.ai/).
 
-Install all DataRobot skills or just specific skillsfor **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills).
+Install all DataRobot skills or just specific skills for **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills).
 
 **For all skills:**
 
 ```bash
-# Install this entire skill library to all agents at once
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills
 ```
 
@@ -32,7 +31,6 @@ npx ai-agent-skills install datarobot-oss/datarobot-agent-skills/datarobot-predi
 **For a specific agent:**
 
 ```bash
-# Install to a specific agent only
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills --agent cursor
 npx ai-agent-skills install datarobot-oss/datarobot-agent-skills --agent claude
 ```
@@ -41,14 +39,14 @@ npx ai-agent-skills install datarobot-oss/datarobot-agent-skills --agent claude
 > By default, the installer copies skills to all supported agents at the same time. No configuration is required.
 > For agent-specific installation methods, see the [Installation to your coding agent](#installation-to-your-coding-agent) section below.
 
-## How do skills work?
+### How do skills work?
 
 Skills are self-contained folders that package instructions, scripts, and resources for a specific use case. Each folder includes a `SKILL.md` file with YAML frontmatter (`name` and `description`), followed by the guidance your coding agent uses while the skill is active.
 
 > [!NOTE]
 > All DataRobot skills follow the naming convention `datarobot-<category>`, where `<category>` describes the skill's focus area. This provides clear identification of DataRobot-specific skills, consistent naming across the skill library, and easy discovery and organization.
 
-## Installation to your coding agent
+### Installation to your coding agent
 
 DataRobot skills are compatible with Claude Code, Codex, Gemini CLI, Cursor, and VS Code Copilot. Support for Windsurf and Continue is planned.
 Click on the section that corresponds to your coding agent to see the installation instructions.
