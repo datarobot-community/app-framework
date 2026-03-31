@@ -228,7 +228,7 @@ client = dr.Client(
 ## Resources
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
-- [DataRobot Model Monitoring Documentation](https://docs.datarobot.com/en/docs/mlops/monitoring/index.html)
-- [Data Drift Detection Guide](https://docs.datarobot.com/en/docs/mlops/monitoring/data-drift/index.html)
-- [Model Health Monitoring](https://docs.datarobot.com/en/docs/mlops/monitoring/model-health/index.html)
+- [DataRobot Model Monitoring Documentation](https://docs.datarobot.com/en/docs/mlops/monitor/index.html)
+- [Data Drift Detection Guide](https://docs.datarobot.com/en/docs/mlops/monitor/index.html)
+- [Model Health Monitoring](https://docs.datarobot.com/en/docs/mlops/monitor/index.html)
 

@@ -1,28 +1,30 @@
-# Using DataRobot Skills with LangGraph
+# Using DataRobot skills with LangGraph
 
-## How Skills Work (General)
+## How skills work (general)
 
 Skills are **instruction files** (`SKILL.md`) that guide AI agents. They work differently depending on the agent framework:
 
 ### For Claude Code / Codex / Gemini CLI
-- Skills are **loaded automatically** when triggered
-- Agent reads `SKILL.md` → writes Python code → executes code
-- Skills act as **prompts/instructions** for the agent
 
-### For LangGraph (Programmatic Agents)
-- Skills need to be **explicitly loaded and used**
-- You read `SKILL.md` content → use it as prompts → guide your agent nodes
-- Skills become **part of your agent's prompt engineering**
+- Skills are **loaded automatically** when triggered.
+- The agent reads `SKILL.md`, writes Python code, and executes it.
+- Skills act as **prompts and instructions** for the agent.
 
-## LangGraph Integration Approaches
+### For LangGraph (programmatic agents)
 
-## Dependency Note (LangGraph / LangChain)
+- Skills must be **explicitly loaded and used**.
+- You read the `SKILL.md` content, use it as prompt text, and apply it in your agent nodes.
+- Skills become **part of your agent's prompt engineering**.
+
+## LangGraph integration approaches
+
+## Dependency note (LangGraph / LangChain)
 
 LangGraph and LangChain packages evolve quickly and can be version-sensitive. If you see import errors like:
 
 - `ImportError: cannot import name 'RemoveMessage' from 'langchain_core.messages'`
 
-upgrade the LangChain stack to compatible versions (for example, `langgraph`, `langchain-core`, and `langchain-openai`) in the same environment.
+Upgrade the LangChain stack to compatible versions, such as `langgraph`, `langchain-core`, and `langchain-openai`, in the same environment.
 
 ### Approach 1: Load Skills as System Prompts
 

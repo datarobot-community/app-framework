@@ -4,7 +4,7 @@
 
 Agentic skills are modular, task-specific capability packages that help an AI agent move from general reasoning to reliable execution. Each skill bundles instructions, examples, and supporting resources so that the agent can load only what it needs for the current task, reducing context overload and improving tool use within a given workflow.
 
-DataRobot Skills are Agent Context Protocol (ACP) definitions for AI/ML tasks such as model training, deployment, predictions, feature engineering, and model monitoring. They work with major coding agents, including OpenAI Codex, Anthropic Claude Code, Google Gemini CLI, Cursor, and VS Code Copilot.
+DataRobot skills are Agent Context Protocol (ACP) definitions for AI/ML tasks such as model training, deployment, predictions, feature engineering, and model monitoring. They work with major coding agents, including OpenAI Codex, Anthropic Claude Code, Google Gemini CLI, Cursor, and VS Code Copilot.
 
 > [!NOTE]
 > "Skills" is an Anthropic term used in Claude AI and Claude Code, but the concept applies more broadly. OpenAI Codex uses `AGENTS.md` to define agent instructions, and Gemini uses `gemini-extension.json` for extensions. This repository is compatible with all of them, and more.
@@ -14,7 +14,7 @@ DataRobot Skills are Agent Context Protocol (ACP) definitions for AI/ML tasks su
 > [!NOTE]
 > Supported agents for DataRobot skills include: [Claude Code](https://www.anthropic.com/claude-code/), [Cursor](https://cursor.com), [Codex](https://developers.openai.com/codex/), [Amp](https://ampcode.com/), [VS Code Copilot (GitHub Copilot)](https://github.com/features/copilot), [Gemini CLI](https://geminicli.com/), [Goose](https://block.github.io/goose/), [Letta](https://www.letta.com/), [Kilo Code](https://kilocode.ai/), and [OpenCode](https://opencode.ai/).
 
-Install all DataRobot skills or just specific skills for **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills).
+Install all DataRobot skills, or only the ones you need, for **all** your AI agents with one command by using the [universal skills installer](https://github.com/skillcreatorai/Ai-Agent-Skills).
 
 **For all skills:**
 

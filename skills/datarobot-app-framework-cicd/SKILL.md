@@ -590,5 +590,5 @@ Reference implementations:
 - [Pulumi State and Backends](https://www.pulumi.com/docs/iac/concepts/state-and-backends/)
 - [GitLab CI/CD](https://docs.gitlab.com/ci/)
 - [GitHub Actions](https://docs.github.com/actions)
-- [DataRobot Application Templates](https://docs.datarobot.com/en/docs/workbench/wb-apps/app-templates/)
-- [DataRobot Codespaces](https://docs.datarobot.com/en/docs/workbench/wb-apps/codespaces/)
+- [DataRobot Application Templates](https://docs.datarobot.com/en/docs/wb-apps/app-templates/index.html)
+- [DataRobot Codespaces](https://docs.datarobot.com/en/docs/workbench/wb-notebook/codespaces/index.html)
