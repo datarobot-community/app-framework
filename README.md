@@ -174,7 +174,7 @@ In Copilot Chat, reference skills naturally:
 - "Following the datarobot-model-training skill, create a new project for customer churn prediction"
 - "Check the datarobot-model-monitoring skill and help me analyze data drift"
 
->[!TIP]
+> [!TIP]
 > You can also use the `@workspace` agent in Copilot Chat to give it full context about the repository and available skills.
 
 </details>

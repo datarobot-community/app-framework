@@ -267,6 +267,6 @@ client = dr.Client(
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
 - [DataRobot AutoML Documentation](https://docs.datarobot.com/en/docs/modeling/index.html)
-- [Time Series Modeling Guide](https://docs.datarobot.com/en/docs/modeling/index.html)
-- [Feature Engineering Documentation](https://docs.datarobot.com/en/docs/modeling/index.html)
+- [General Modeling Documentation – Time Series](https://docs.datarobot.com/en/docs/modeling/index.html)
+- [General Modeling Documentation – Feature Engineering](https://docs.datarobot.com/en/docs/modeling/index.html)
 
