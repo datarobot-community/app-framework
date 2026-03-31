@@ -53,8 +53,7 @@ Skills are self-contained folders that package instructions, scripts, and resour
 DataRobot skills are compatible with Claude Code, Codex, Gemini CLI, Cursor, and VS Code Copilot. Support for Windsurf and Continue is planned.
 Click on the section that corresponds to your coding agent to see the installation instructions.
 
-- <details>
-<summary><strong>Claude Code</strong></summary>
+- <details><summary><strong>Claude Code</strong></summary>
 
 Register the repository as a plugin marketplace:
 
@@ -73,6 +72,7 @@ For example:
 ```bash
 /plugin install datarobot-model-training@datarobot-skills
 ```
+
 </details>
 
 - <details>
@@ -109,8 +109,7 @@ See the Gemini CLI extensions documentation for more information. <!-- Hyperlink
 
 </details>
 
-- <details>
-<summary><strong>Cursor</strong></summary>
+- <details><summary><strong>Cursor</strong></summary>
 
 Cursor can automatically detect and use skills from this repository in two main ways:
 
