@@ -24,25 +24,18 @@ Use this skill when the user:
 | What you want to build | Scenario |
 |---|---|
 | Agent API + playground UI (no custom frontend) | **Default — see below** |
-| Agent + React chat UI | `scenarios/agent-with-ui.md` |
-| Agent + custom tools | `scenarios/agent-with-tools.md` |
 | Simple FastAPI app / custom web UI | `scenarios/fastapi-app.md` |
 | LLM integration in a notebook | `scenarios/llm-notebook.md` |
 
 ## Component Map
 
-| Component | Role | Tier |
-|---|---|---|
-| af-component-base | Foundation — always first | core |
-| af-component-fastapi-backend | Simple FastAPI app | core |
-| af-component-llm | LLM connectivity | core |
-| af-component-agent | Agent orchestration: CrewAI / LangGraph / LlamaIndex | agent |
-| af-component-fastapi-backend-chat | Chat backend (for agent + UI) | agent+UI |
-| af-component-react | React frontend | agent+UI |
-| af-component-tool | Custom agent tool | tools |
-| af-component-global-tool | Shared tool across agents | tools |
-| af-component-fastapi-backend-oauth | Auth plugin | optional |
-| af-component-fastapi-backend-persistence-sqlite | Chat history / memory | optional |
+| Component | Role |
+|---|---|
+| af-component-base | Foundation — always first |
+| af-component-llm | LLM connectivity |
+| af-component-agent | Agent orchestration: CrewAI / LangGraph / LlamaIndex |
+| af-component-fastapi-backend | Simple FastAPI app |
+| af-component-react | React frontend |
 
 For extended scenarios, load the relevant file from `scenarios/`.
 
