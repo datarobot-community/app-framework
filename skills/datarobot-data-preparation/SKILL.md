@@ -240,6 +240,6 @@ client = dr.Client(
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
 - [DataRobot Data Management Documentation](https://docs.datarobot.com/en/docs/data/index.html)
-- [Dataset Upload Guide](https://docs.datarobot.com/en/docs/data/datasets/index.html)
-- [Data Quality Best Practices](https://docs.datarobot.com/en/docs/data/data-quality/index.html)
+- [Data Management: Uploading Datasets](https://docs.datarobot.com/en/docs/data/index.html)
+- [Data Management: Data Quality and Validation](https://docs.datarobot.com/en/docs/data/index.html)
 

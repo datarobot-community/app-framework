@@ -201,7 +201,7 @@ See these live implementations:
 - [SKILL.md](SKILL.md) - Complete documentation
 - [Task](https://taskfile.dev) - Workflow management
 - [Pulumi](https://www.pulumi.com/docs/) - Infrastructure as Code
-- [DataRobot Application Templates](https://docs.datarobot.com/en/docs/workbench/wb-apps/app-templates/)
+- [DataRobot Application Templates](https://docs.datarobot.com/en/docs/wb-apps/app-templates/index.html)
 
 ## Contributing
 

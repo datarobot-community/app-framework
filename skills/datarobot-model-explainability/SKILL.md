@@ -245,6 +245,6 @@ client = dr.Client(
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
 - [DataRobot Model Insights Documentation](https://docs.datarobot.com/en/docs/modeling/analyze-models/index.html)
-- [Prediction Explanations Guide](https://docs.datarobot.com/en/docs/predictions/pred-explanations/index.html)
+- [Prediction Explanations Guide](https://docs.datarobot.com/en/docs/api/dev-learning/python/modeling/insights/prediction_explanations.html)
 - [SHAP Documentation](https://shap.readthedocs.io/)
 

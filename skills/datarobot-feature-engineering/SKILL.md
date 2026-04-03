@@ -224,7 +224,7 @@ client = dr.Client(
 ## Resources
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
-- [DataRobot Feature Engineering Documentation](https://docs.datarobot.com/en/docs/modeling/feature-engineering/index.html)
-- [Feature Importance Guide](https://docs.datarobot.com/en/docs/modeling/analyze-models/feature-importance/index.html)
-- [Feature Discovery Documentation](https://docs.datarobot.com/en/docs/modeling/feature-engineering/feature-discovery/index.html)
+- [DataRobot Feature Engineering Documentation](https://docs.datarobot.com/en/docs/modeling/index.html)
+- [Feature Importance Guide](https://docs.datarobot.com/en/docs/modeling/analyze-models/index.html)
+- [Feature Discovery Documentation](https://docs.datarobot.com/en/docs/data/transform-data/feature-discovery/index.html)
 

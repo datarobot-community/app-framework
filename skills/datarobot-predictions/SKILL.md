@@ -290,6 +290,6 @@ Set these environment variables or pass them directly:
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
 - [DataRobot Predictions Documentation](https://docs.datarobot.com/en/docs/predictions/index.html)
-- [DataRobot API Reference](https://docs.datarobot.com/en/docs/api/api-reference/index.html)
-- [Batch Predictions Guide](https://docs.datarobot.com/en/docs/predictions/batch-predictions/index.html)
+- [DataRobot API Reference](https://docs.datarobot.com/en/docs/api/reference/index.html)
+- [Batch Predictions Guide](https://docs.datarobot.com/en/docs/api/reference/sdk/batch-predictions.html)
 

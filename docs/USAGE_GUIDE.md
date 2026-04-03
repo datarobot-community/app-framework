@@ -1,20 +1,20 @@
-# How to Use DataRobot Skills
+# How to use DataRobot skills
 
 ## Overview
 
-DataRobot Skills work like Hugging Face Skills - they guide your coding agent to use the **DataRobot Python SDK directly**. No server component is required.
+DataRobot skills work like Hugging Face skills: they guide your coding agent to use the **DataRobot Python SDK** directly. No server component is required.
 
-## How It Works
+## How it works
 
-```
+```text
 User → Coding Agent → Skill Instructions → Python Code (using SDK) → DataRobot API
 ```
 
-1. **User installs a skill** (e.g., `datarobot-predictions`)
-2. **User asks agent** to do something (e.g., "Generate a prediction dataset template")
-3. **Agent reads skill** (`datarobot-predictions/SKILL.md`)
-4. **Agent writes Python code** using DataRobot SDK based on skill instructions
-5. **Agent executes code** and returns results
+1. **User installs a skill** (for example, `datarobot-predictions`).
+2. **User asks the agent** to do something (for example, "Generate a prediction dataset template").
+3. **The agent reads the skill** in `datarobot-predictions/SKILL.md`.
+4. **The agent writes Python code** with the DataRobot SDK based on the skill instructions.
+5. **The agent executes the code** and returns the results.
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ User → Coding Agent → Skill Instructions → Python Code (using SDK) → Dat
 - **Python environment** where your coding agent can install packages
 - **Coding agent** (Claude Code, Cursor, Codex, etc.)
 
-The agent will automatically install `datarobot` Python package when needed.
+The agent will automatically install the `datarobot` Python package when needed.
 
 ## Installation
 
@@ -36,7 +36,7 @@ The agent will automatically install `datarobot` Python package when needed.
 
 ### Codex
 
-Codex automatically reads `AGENTS.md` - no installation needed.
+Codex automatically reads `AGENTS.md`, so no installation is needed.
 
 ### Gemini CLI
 
@@ -44,9 +44,9 @@ Codex automatically reads `AGENTS.md` - no installation needed.
 gemini extensions install https://github.com/datarobot-oss/datarobot-agent-skills.git --consent
 ```
 
-## Usage Examples
+## Usage examples
 
-### Example 1: Generate Prediction Dataset Template
+### Example 1: Generate prediction dataset template
 
 **User**: "Generate a prediction dataset template for deployment abc123 with 10 rows"
 
@@ -66,7 +66,7 @@ gemini extensions install https://github.com/datarobot-oss/datarobot-agent-skill
    ```
 4. Executes code and returns CSV template
 
-### Example 2: Train a Model
+### Example 2: Train a model
 
 **User**: "Create a new project with sales_data.csv, set 'revenue' as target, and start Quick AutoML"
 
@@ -84,22 +84,22 @@ gemini extensions install https://github.com/datarobot-oss/datarobot-agent-skill
    ```
 4. Executes code and monitors training
 
-## What Skills Provide
+## What skills provide
 
 Each skill includes:
 
-1. **Quick Start** - Most common use case with 3-step workflow
-2. **When to use** - When this skill is appropriate
-3. **Key capabilities** - What you can do with this skill
+1. **Quick start** - The most common use case with a three-step workflow
+2. **When to use** - When the skill is appropriate
+3. **Key capabilities** - What you can do with the skill
 4. **Workflow examples** - Step-by-step agent workflows
 5. **Using DataRobot SDK** - SDK operations and methods
 6. **Common patterns** - Complete code examples
 7. **Best practices** - Tips and recommendations
-8. **SDK Setup** - How to install and initialize the SDK
+8. **SDK setup** - How to install and initialize the SDK
 
-## SDK Usage Summary
+## SDK usage summary
 
-### Primary Approach: Direct SDK Usage
+### Primary approach: Direct SDK usage
 
 **How it works**:
 - Agent installs `datarobot` package
@@ -123,16 +123,17 @@ predictions_df = deployment.predict_batch(pd.DataFrame([data]))
 print(predictions_df)
 ```
 
-### Optional: MCP Server
+### Optional: MCP server
 
 If you have a DataRobot MCP server running, agents can also use MCP tools as an alternative. This provides:
+
 - Standardized tool interface
 - Better security (credentials on server)
 - Dynamic tool registration
 
-But **MCP server is NOT required** - skills work with direct SDK usage.
+However, an **MCP server is not required**. Skills work with direct SDK usage.
 
-## Environment Setup
+## Environment setup
 
 The agent needs these environment variables:
 
@@ -143,7 +144,7 @@ export DATAROBOT_ENDPOINT="https://app.datarobot.com"
 
 Or the agent can prompt the user for these values.
 
-## Complete Workflow Example
+## Complete workflow example
 
 **User request**: "I want to predict sales for next week for store_A with temperatures of 75°F each day and no promotions."
 
@@ -169,7 +170,7 @@ Or the agent can prompt the user for these values.
    ```
 7. **Returns results** to user
 
-## Best Practices
+## Best practices
 
 1. **Install skills** for workflows you use frequently
 2. **Provide API credentials** to your agent (securely)
@@ -189,12 +190,13 @@ Or the agent can prompt the user for these values.
 - Ensure token has necessary permissions
 
 ### Import Errors
+
 - Ensure `datarobot` package is installed
 - Check Python version (3.7+)
 
-## Additional Resources
+## Additional resources
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
-- [DataRobot API Documentation](https://docs.datarobot.com/en/docs/api/api-reference/index.html)
-- [Skill Documentation](README.md) - List of all available skills
+- [DataRobot API Documentation](https://docs.datarobot.com/en/docs/api/reference/index.html)
+- [Skill documentation](../README.md) - A list of all available skills
 

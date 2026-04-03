@@ -1,4 +1,4 @@
-# DataRobot Skills for Codex
+# DataRobot skills for Codex
 
 This file provides instructions for OpenAI Codex to use DataRobot skills. Codex will automatically load these instructions when working with DataRobot-related tasks.
 
@@ -60,7 +60,7 @@ Skills provide instructions, workflows, and code examples - the agent writes and
 
 For complex tasks, you may need to use multiple skills in sequence.
 
-## SDK Usage
+## SDK usage
 
 Skills guide you to use the **DataRobot Python SDK** directly. Each skill includes:
 
@@ -72,6 +72,7 @@ Skills guide you to use the **DataRobot Python SDK** directly. Each skill includ
 Install the SDK: `pip install datarobot`
 
 Initialize client:
+
 ```python
 import datarobot as dr
 import os

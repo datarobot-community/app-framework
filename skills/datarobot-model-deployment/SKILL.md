@@ -219,7 +219,7 @@ client = dr.Client(
 ## Resources
 
 - [DataRobot Python SDK Documentation](https://datarobot-public-api-client.readthedocs-hosted.com/)
-- [DataRobot Deployment Documentation](https://docs.datarobot.com/en/docs/deploy/index.html)
-- [Prediction Environments Guide](https://docs.datarobot.com/en/docs/deploy/pred-environments/index.html)
-- [Challenger Models Documentation](https://docs.datarobot.com/en/docs/deploy/challengers/index.html)
+- [DataRobot Deployment Documentation](https://docs.datarobot.com/en/docs/mlops/deployment/deploy-methods/add-deploy-info.html)
+- [Prediction Environments Guide](https://docs.datarobot.com/en/docs/mlops/deployment/prediction-env/pred-env-deploy.html)
+- [Challenger Models Documentation](https://docs.datarobot.com/en/docs/mlops/monitor/challengers.html)
 
