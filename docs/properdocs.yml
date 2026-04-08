@@ -1,0 +1,53 @@
+site_name: DataRobot App Framework Documentation
+site_url: https://datarobot-oss.github.io/app-framework/
+site_description: Documentation for the DataRobot App Framework
+repo_url: https://github.com/datarobot-oss/app-framework
+repo_name: datarobot-oss/app-framework
+edit_uri: edit/main/docs/src/
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+
+plugins:
+  - search
+
+# Output configuration
+site_dir: site
+docs_dir: src
+
+# Navigation structure
+nav:
+  - Home: index.md
+  - Developer guide: developer.md
+
+# Exclude patterns to avoid processing non-documentation files
+exclude_docs: |
+  site/
+  .venv/
+  pyproject.toml

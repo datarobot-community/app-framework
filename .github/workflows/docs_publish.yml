@@ -37,18 +37,17 @@ jobs:
           version: "latest"
       - name: Set up Python
         run: uv python install
-      - name: Build MkDocs site
+      - name: Build ProperDocs site
         run: |
           cd docs
           uv sync
-          uv run mkdocs build
+          uv run properdocs build
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire docs directory (includes dev-preview/ and symlinks)
-          path: 'docs/'
+          path: 'docs/site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

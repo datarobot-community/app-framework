@@ -1,0 +1,9 @@
+[project]
+name = "datarobot-app-framework-docs"
+version = "0.1.0"
+description = "Documentation for DataRobot App Framework"
+requires-python = ">=3.9"
+dependencies = [
+    "properdocs>=1.6.7",
+    "mkdocs-material>=9.5.0",
+]
