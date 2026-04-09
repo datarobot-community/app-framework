@@ -7,6 +7,19 @@ edit_uri: edit/main/docs/src/
 
 theme:
   name: material
+  palette:
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
   features:
     - navigation.instant
     - navigation.tracking
@@ -34,6 +47,9 @@ markdown_extensions:
   - attr_list
   - md_in_html
 
+extra_css:
+  - stylesheets/extra.css
+
 plugins:
   - search
 
@@ -44,7 +60,24 @@ docs_dir: src
 # Navigation structure
 nav:
   - Home: index.md
-  - Developer guide: developer.md
+  - Design:
+    - design/index.md
+    - Principles: design/principles.md
+    - Component Model: design/component-model.md
+    - CLI: design/cli.md
+    - Declarative API: design/declarative-api.md
+  - Components:
+    - components/index.md
+    - Base: components/base.md
+    - LLM: components/llm.md
+    - FastAPI Backend: components/fastapi-backend.md
+    - React Frontend: components/react.md
+    - Agent: components/agent.md
+  - Guides:
+    - guides/zero-vibe.md
+    - guides/custom-pages.md
+    - guides/vector-database.md
+  - Developer Guide: developer.md
   - Skills: skills.md
 
 # Exclude patterns to avoid processing non-documentation files
