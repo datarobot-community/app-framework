@@ -27,7 +27,7 @@ Or with copier directly:
 uvx copier copy datarobot-community/af-component-react .
 ```
 
-The wizard asks for a `react_app` name (e.g. `frontend`). This namespaces all generated files and the answers file.
+The wizard asks for a `react_app` name (e.g., `frontend`). This name namespaces all generated files and the answers file.
 
 ## Component dependencies
 
@@ -79,18 +79,18 @@ uvx copier update -a .datarobot/answers/react-REACT_APP.yml -A
 
 ## Troubleshooting
 
-**Frontend assets not included in the deployed app**
+### Frontend assets not included in the deployed app
 
 You likely skipped the `ApplicationSource` wiring step above. Confirm that `files=` uses `.stdout.apply(...)` rather than calling `get_*_app_files(...)` directly.
 
-**`uvx copier copy` fails on Node version**
+### `uvx copier copy` fails on Node version
 
 The Vite build requires Node.js 18+. Run `node --version` and upgrade if needed.
 
-**Multiple frontends stomping on each other**
+### Multiple frontends stomping on each other
 
 Each `react_app` name must be unique. Check `.datarobot/answers/` — each frontend should have its own `react-NAME.yml` file.
 
-**Copier update overwrites local changes**
+### Copier update overwrites local changes
 
 Customizations should be placed in files copier does not manage. Copier tracks generated files via the answers file and re-applies them on update.

@@ -24,7 +24,7 @@ The CLI solves two core problems:
 
 1. **Onboarding friction** — Getting credentials, configuring environments, and starting App development used to require multiple stops across multiple websites and manual file editing. The CLI makes this a single guided experience.
 
-2. **Monorepo complexity** — Full App Template solutions involve multiple languages, task managers, and configuration systems. The CLI provides a unified interface with tab completion across all of them.
+2. **Monorepo complexity** — Full app template solutions involve multiple languages, task managers, and configuration systems. The CLI provides a unified interface with tab completion across all of them.
 
 ## Core commands
 

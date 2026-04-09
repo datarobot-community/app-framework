@@ -2,10 +2,10 @@
 
 ![Studio Component Model](../img/studio-component-model.png)
 
-The App Framework — Template Studio is the templating and update management layer. It solves two core problems:
+The App Framework Template Studio is the templating and update management layer. It solves two core problems:
 
-1. **Maintenance at scale** — A bugfix to all 5 Foundation App Templates with 100 apps per template means the fix needs to reach 500 cloned apps. Manual propagation doesn't scale.
-2. **Template creation speed** — There is market value in standing up the latest AI blueprint on DataRobot fast. You need good lego blocks.
+1. **Maintenance at scale** — A bug fix to five foundation app templates with 100 apps per template means the fix needs to reach 500 cloned apps. Manual propagation does not scale.
+2. **Template creation speed** — There is value in standing up the latest AI blueprint on DataRobot quickly. You need good building blocks.
 
 Components are `copier`-style templates. Each is a top-level folder or file-set you can add to your recipe. The answers you give during template application are recorded in `.datarobot/` as YAML, enabling future automated updates at the component-instance level.
 
@@ -33,6 +33,6 @@ These can be applied multiple times as you build out the template:
 
 ![Copier Update](../img/studio-copier-update.png)
 
-The Studio uses a Dependabot-like approach: automated pull requests to all App Template repos that use the component answers, with PR-per-component granularity. App Template authors can selectively or completely disable updates at the component-instance level.
+The Studio uses a Dependabot-like approach: automated pull requests to all app template repos that use the component answers, with one PR per component. App template authors can selectively or completely disable updates at the component-instance level.
 
 This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates PRs when updates are available. To set it up, request your repo be added to the Diffington watch list in the `#applications` Slack channel.

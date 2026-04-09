@@ -15,7 +15,7 @@ App Framework components are [copier](https://copier.readthedocs.io/) templates 
 
 ## Typical apply order
 
-```
+```text
 base → llm → fastapi-backend → react
                  ↓
               agent
@@ -26,7 +26,7 @@ base → datarobot-mcp
 
 ## Adding a component
 
-Using the CLI (recommended):
+Use the CLI:
 
 ```bash
 dr component add https://github.com/datarobot-community/af-component-NAME .

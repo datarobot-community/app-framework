@@ -5,7 +5,7 @@
 - [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - [Task](https://taskfile.dev/installation/)
 
-### Install Task
+### Install the Task runner
 
 #### macOS
 
@@ -31,25 +31,25 @@ choco install go-task
 task docs-serve
 ```
 
-This will install dependencies and start a local server at [http://localhost:8000](http://localhost:8000). The site reloads automatically as you edit files in the `docs/` directory.
+This command installs dependencies and starts a local server at [http://localhost:8000](http://localhost:8000). The site reloads automatically as you edit files in the `docs/` directory.
 
 ---
 
 ## Copier watch
 
-`tools/copier-watch/copier-watch.py` is a development tool for iterating rapidly on [copier](https://copier.readthedocs.io/en/stable/) templates — the component repos like `af-component-fastapi-backend`.
+`tools/copier-watch/copier-watch.py` is a development tool for iterating quickly on [copier](https://copier.readthedocs.io/en/stable/) templates such as `af-component-fastapi-backend`.
 
 The script watches all file changes in a source template repo. When you edit a template, it:
 
 1. Creates a local commit on the source repo (amending it on each subsequent change).
 2. Runs `copier update` on the destination repo using that local commit.
 
-This lets you iterate with Jinja templates without pushing remote commits. For each change in the source, it also resets the destination repo to apply the full changeset from scratch — so you don't accumulate partial state.
+This lets you iterate on Jinja templates without pushing remote commits. For each change in the source repo, it also resets the destination repo and applies the full changeset from scratch, so you do not accumulate partial state.
 
 !!! warning
     This script modifies git repositories and can cause data loss. Ensure the destination repo has a clean `git status` before use. It runs `git reset` and `git clean` on the destination.
 
-### Usage
+### Copier watch usage
 
 ```bash
 uv run tools/copier-watch/copier-watch.py \
@@ -65,8 +65,8 @@ Arguments:
 |----------|-------------|
 | `--commit-message` | Message for the local amend commit on the source repo. |
 | `--answers-file` | Path to the copier answers file in the destination repo. |
-| `<source>` | Path to the component template repo being edited. |
-| `<destination>` | Path to the recipe repo to apply changes to. |
+| `SOURCE_REPO` | Path to the component template repo being edited. |
+| `DESTINATION_REPO` | Path to the recipe repo that receives the changes. |
 
 ### Typical workflow
 
@@ -80,9 +80,9 @@ Arguments:
 
 ## Component doc update
 
-`tools/af_component_doc_update` generates a `README.generated.md` scaffold for App Framework component repos. It reads the component's `copier-module.yaml` — which declares the module name, description, dependencies, and whether the component is repeatable — and renders a structured README template with all the standard sections pre-filled and placeholder comments for the parts that need human authoring.
+`tools/af_component_doc_update` generates a `README.generated.md` scaffold for App Framework component repos. It reads the component's `copier-module.yaml`, which declares the module name, description, dependencies, and whether the component is repeatable, and renders a structured README template with standard sections prefilled plus placeholder comments for the parts that need human authoring.
 
-### Usage
+### Component doc update usage
 
 From the `tools/af_component_doc_update` directory:
 

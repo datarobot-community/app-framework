@@ -1,8 +1,8 @@
 # App Framework Studio
 
-Tooling to apply and update App Framework Components.
+Tooling to apply and update App Framework components.
 
-**Documentation:** https://af.datarobot.com
+**Documentation:** [af.datarobot.com](https://af.datarobot.com)
 
 ## Installing skills
 
@@ -25,4 +25,4 @@ npx ai-agent-skills install datarobot-community/app-framework
 
 ## Development
 
-See the [Developer Guide](https://datarobot-oss.github.io/app-framework/developer/) for setup instructions, running docs locally, and the `copier-watch` tool for iterating on component templates.
+See the [Developer guide](https://datarobot-oss.github.io/app-framework/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.

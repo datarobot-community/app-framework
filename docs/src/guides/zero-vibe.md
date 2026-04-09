@@ -16,7 +16,7 @@ Every App Framework recipe starts the same way, regardless of what you're buildi
 
 1. Head to the [datarobot-oss](https://github.com/datarobot-oss) GitHub org and create a new repository.
 2. Name it with a `recipe-` prefix if you're making a reusable template.
-3. Start from [`oss-template-repo`](https://github.com/datarobot-oss/oss-template-repo) — it has all the good stuff baked in.
+3. Start from [`oss-template-repo`](https://github.com/datarobot-oss/oss-template-repo). It includes the standard project scaffolding.
 
 **Important Git settings:**
 
@@ -44,22 +44,22 @@ Run the base component copier and answer the interactive questions:
 uvx copier copy https://github.com/datarobot/af-component-base .
 ```
 
-The copier will ask about your recipe name, which components you want, and other configuration. Answer thoughtfully — these shape the structure of your recipe. You now have the foundation. Everything from here is customization.
+Copier prompts for your recipe name, the components you want, and other configuration. Answer thoughtfully because those choices shape the structure of your recipe. You now have the foundation in place, and everything from here is customization.
 
 ---
 
 ## Example 1: Simple FastAPI application
 
-### Overview
+### Notebook overview
 
 A two-component App Framework app covering a wide range of typical functionality: a FastAPI backend served as a DataRobot Custom Application, with a React frontend baked in.
 
-### Key components
+### Notebook components
 
 - [`af-component-fastapi-backend`](https://github.com/datarobot-community/af-component-fastapi-backend)
 - [`af-component-react`](https://github.com/datarobot-community/af-component-react) (optional)
 
-### Implementation
+### Notebook implementation
 
 After bootstrapping with `af-component-base`, add the FastAPI backend:
 
@@ -102,7 +102,7 @@ When you're happy locally, deploy:
 dr run deploy
 ```
 
-The CLI previews what will be created and asks for confirmation:
+The CLI previews the resources to be created and asks for confirmation:
 
 ![Pulumi deploy preview](../img/zero-vibe-deploy.png)
 
@@ -110,7 +110,7 @@ After deployment, your app is live at the URL in the output. Visit it with `cmd-
 
 ![Deployed app on DataRobot](../img/zero-vibe-deployed-app.png)
 
-With just these steps you get unit tests, linters, deployments, fast local iterations, and everything needed for team-driven development via GitHub Actions.
+With these steps, you get unit tests, linters, deployments, fast local iteration, and everything needed for team-driven development through GitHub Actions.
 
 **Lifecycle commands:**
 
@@ -124,15 +124,15 @@ dr auth set-url      # Switch to a different DR environment.
 
 ## Example 2: LLM with notebook
 
-### Overview
+### Agent overview
 
 For fast iteration on LLM use cases that don't yet need a full agentic workflow, use the LLM component and iterate in a Python notebook — locally or in DataRobot.
 
-### Key components
+### Agent components
 
 - [`af-component-llm`](https://github.com/datarobot-community/af-component-llm)
 
-### Implementation
+### Agent implementation
 
 Apply the LLM component to your recipe:
 
@@ -286,7 +286,7 @@ When prompted, choose your agent framework: **CrewAI**, **LangGraph**, **LlamaIn
 
 The component creates:
 
-```
+```text
 agent/
 ├── agent/myagent.py   # Agent workflow
 ├── cli.py             # Command-line interface

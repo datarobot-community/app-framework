@@ -25,7 +25,7 @@ Or with copier directly:
 uvx copier copy datarobot-community/af-component-datarobot-mcp .
 ```
 
-The wizard asks for an `mcp_app_name` (e.g. `mcp`). This scopes all generated files and the answers file, allowing multiple instances in the same project.
+The wizard asks for an `mcp_app_name` (e.g., `mcp`). This scopes all generated files and the answers file, allowing multiple instances in the same project.
 
 ## Component dependencies
 
@@ -35,7 +35,7 @@ The wizard asks for an `mcp_app_name` (e.g. `mcp`). This scopes all generated fi
 
 ## What it adds
 
-```
+```text
 MCP_APP_NAME/
 ├── MCP_APP_NAME/   # MCP server source (tools, server entrypoint)
 └── dev.md            # Local dev guide and OAuth setup
@@ -96,10 +96,10 @@ uvx copier update -a .datarobot/answers/drmcp-*.yml -A
 
 ## Troubleshooting
 
-**Integration tools return auth errors**
+### Integration tools return auth errors
 
-OAuth providers must be configured in DataRobot before integration tools will work. See the generated `dev.md` inside the template directory.
+OAuth providers must be configured in DataRobot before integration tools work. See the generated `dev.md` inside the template directory.
 
-**Multiple instances conflict**
+### Multiple instances conflict
 
-Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories will collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-NAME.yml`.
+Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-NAME.yml`.
