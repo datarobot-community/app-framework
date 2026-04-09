@@ -73,6 +73,7 @@ nav:
     - FastAPI Backend: components/fastapi-backend.md
     - React Frontend: components/react.md
     - Agent: components/agent.md
+    - DataRobot MCP: components/datarobot-mcp.md
   - Guides:
     - guides/zero-vibe.md
     - guides/custom-pages.md

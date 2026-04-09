@@ -27,6 +27,7 @@ The framework is built around three ideas:
 | [**react**](components/react.md) | React + Vite frontend with dev proxy and static asset build |
 | [**llm**](components/llm.md) | LLM Gateway or external model integration |
 | [**agent**](components/agent.md) | CrewAI, LangGraph, LlamaIndex, or NeMo agent workflow |
+| [**datarobot-mcp**](components/datarobot-mcp.md) | FastMCP server with DataRobot predictive tools and third-party integrations |
 
 **The CLI** (`dr`) is your primary interface. It handles authentication, environment setup, local development, and deployment so you never have to manually edit YAML or track down the right command.
 

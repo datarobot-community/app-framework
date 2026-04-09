@@ -11,6 +11,7 @@ App Framework components are [copier](https://copier.readthedocs.io/) templates 
 | [**fastapi-backend**](fastapi-backend.md) | FastAPI server deployed as a DataRobot Custom Application. | Yes |
 | [**react**](react.md) | React + Vite frontend wired to a FastAPI backend, with dev proxy and production asset build. | Yes |
 | [**agent**](agent.md) | Agentic workflow scaffold supporting CrewAI, LangGraph, LlamaIndex, and NeMo Agent Toolkit. | Yes |
+| [**datarobot-mcp**](datarobot-mcp.md) | FastMCP server with DataRobot predictive tools and third-party integrations (Google Drive, Jira, Confluence, Microsoft Graph). | Yes |
 
 ## Typical apply order
 
@@ -18,9 +19,10 @@ App Framework components are [copier](https://copier.readthedocs.io/) templates 
 base → llm → fastapi-backend → react
                  ↓
               agent
+base → datarobot-mcp
 ```
 
-`base` must always come first. `agent` requires both `base` and `llm`. `react` requires both `base` and `fastapi-backend`.
+`base` must always come first. `agent` requires both `base` and `llm`. `react` requires both `base` and `fastapi-backend`. `datarobot-mcp` only requires `base`.
 
 ## Adding a component
 
