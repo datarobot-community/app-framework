@@ -29,14 +29,14 @@ Use this skill when the user:
 Run this command against the component repo to produce `README.generated.md`:
 
 ```bash
-uvx --from "git+https://github.com/datarobot-community/app-framework-studio#subdirectory=tools/af_component_doc_update" af-component-doc-update <repo_path>
+uvx --from "git+https://github.com/datarobot-community/app-framework#subdirectory=tools/af_component_doc_update" af-component-doc-update <repo_path>
 ```
 
-If working from a local clone of `app-framework-studio` (use this for branch testing before pushing):
+If working from a local clone of `app-framework` (use this for branch testing before pushing):
 
 ```bash
 # Run from the app-framework-studio workspace root
-cd <path-to-app-framework-studio>
+cd <path-to-app-framework>
 uv run --project tools/af_component_doc_update af-component-doc-update <repo_path>
 ```
 
