@@ -30,12 +30,12 @@ The CLI solves two core problems:
 
 | Command | What it does |
 |---------|--------------|
-| `dr auth set-url` | Configure your DataRobot endpoint |
-| `dr dotenv setup` | Interactive environment setup wizard |
-| `dr component add <name>` | Add a component to your recipe |
-| `dr run dev` | Start local development server with hot reload |
-| `dr task deploy` | Deploy all infrastructure to DataRobot |
-| `dr task infra:info` | Show deployed resource IDs and URLs |
-| `dr task infra:down` | Tear down deployed infrastructure |
+| `dr auth set-url` | Configure your DataRobot endpoint. |
+| `dr dotenv setup` | Interactive environment setup wizard. |
+| `dr component add NAME` | Add a component to your recipe. |
+| `dr run dev` | Start local development server with hot reload. |
+| `dr task deploy` | Deploy all infrastructure to DataRobot. |
+| `dr task infra:info` | Show deployed resource IDs and URLs. |
+| `dr task infra:down` | Tear down deployed infrastructure. |
 
-The CLI reads from `.datarobot/<component>.yml` configuration files to know what environment variables are needed and how to prompt for them.
+The CLI reads from `.datarobot/COMPONENT.yml` configuration files to know what environment variables are needed and how to prompt for them.

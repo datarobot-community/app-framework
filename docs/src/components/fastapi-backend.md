@@ -45,7 +45,7 @@ dr run dev
 Or directly with uvicorn:
 
 ```bash
-uv run uvicorn <fastapi_app>.app:app --reload --port 8080
+uv run uvicorn FASTAPI_APP.app:app --reload --port 8080
 ```
 
 The server is available at `http://localhost:8080`. FastAPI autodocs are at `/docs` and `/redoc`.
@@ -54,15 +54,15 @@ The server is available at `http://localhost:8080`. FastAPI autodocs are at `/do
 
 | Path | Purpose |
 |------|---------|
-| `<fastapi_app>/app/__init__.py` | FastAPI application and routes |
-| `<fastapi_app>/templates/index.html` | Jinja template served by the catch-all route |
-| `<fastapi_app>/app/static/` | Static assets served at `/static/` |
-| `infra/infra/<fastapi_app>.py` | Pulumi Custom Application resources |
+| `FASTAPI_APP/app/__init__.py` | FastAPI application and routes. |
+| `FASTAPI_APP/templates/index.html` | Jinja template served by the catch-all route. |
+| `FASTAPI_APP/app/static/` | Static assets served at `/static/`. |
+| `infra/infra/FASTAPI_APP.py` | Pulumi Custom Application resources. |
 
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/fastapi-<fastapi_app>.yml -A
+uvx copier update -a .datarobot/answers/fastapi-FASTAPI_APP.yml -A
 ```
 
 ## Adding multiple backends

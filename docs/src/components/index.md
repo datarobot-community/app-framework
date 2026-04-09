@@ -7,7 +7,7 @@ App Framework components are [copier](https://copier.readthedocs.io/) templates 
 | Component | Description | Repeatable |
 |-----------|-------------|-----------|
 | [**base**](base.md) | Task runner, Pulumi project, CI/CD scaffolding, and `.datarobot/` config. Required first for every recipe. | No |
-| [**llm**](llm.md) | LLM Gateway or external model integration via DataRobot's LLM Deployment. | Yes |
+| [**llm**](llm.md) | LLM Gateway or external model integration via the DataRobot LLM Deployment. | Yes |
 | [**fastapi-backend**](fastapi-backend.md) | FastAPI server deployed as a DataRobot Custom Application. | Yes |
 | [**react**](react.md) | React + Vite frontend wired to a FastAPI backend, with dev proxy and production asset build. | Yes |
 | [**agent**](agent.md) | Agentic workflow scaffold supporting CrewAI, LangGraph, LlamaIndex, and NeMo Agent Toolkit. | Yes |
@@ -29,13 +29,13 @@ base → datarobot-mcp
 Using the CLI (recommended):
 
 ```bash
-dr component add https://github.com/datarobot-community/af-component-<name> .
+dr component add https://github.com/datarobot-community/af-component-NAME .
 ```
 
 Using copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-<name> .
+uvx copier copy datarobot-community/af-component-NAME .
 ```
 
 ## Updating a component
@@ -43,7 +43,7 @@ uvx copier copy datarobot-community/af-component-<name> .
 Each applied component leaves an answers file in `.datarobot/answers/`. Pass it to `copier update` to pull in changes non-interactively:
 
 ```bash
-uvx copier update -a .datarobot/answers/<component>-<name>.yml -A
+uvx copier update -a .datarobot/answers/COMPONENT-NAME.yml -A
 ```
 
 To update all components at once:

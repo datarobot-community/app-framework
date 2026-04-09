@@ -43,10 +43,10 @@ When prompted for `INFRA_ENABLE_LLM`, choose your integration type:
 
 | Option | When to use |
 |--------|-------------|
-| `gateway_direct.py` | LLM Gateway — simplest, most production-ready |
-| `blueprint_with_llm_gateway.py` | LLM Gateway + Vector Database support |
-| `blueprint_with_external_llm.py` | External model (OpenAI, Anthropic, etc.) via LLM Gateway |
-| `deployed_llm.py` | An already-deployed DataRobot LLM Deployment |
+| `gateway_direct.py` | LLM Gateway — simplest, most production-ready. |
+| `blueprint_with_llm_gateway.py` | LLM Gateway + Vector Database support. |
+| `blueprint_with_external_llm.py` | External model (OpenAI, Anthropic, etc.) via LLM Gateway. |
+| `deployed_llm.py` | An already-deployed DataRobot LLM Deployment. |
 
 ## Deploy
 
@@ -63,12 +63,12 @@ dr task infra:info
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/llm-<llm_name>.yml -A
+uvx copier update -a .datarobot/answers/llm-LLM_NAME.yml -A
 ```
 
 ## What it adds
 
-- `infra/infra/llm.py` — Pulumi resources for the LLM deployment and playground
-- `infra/configurations/llm/` — LLM configuration blueprints
-- `.datarobot/answers/llm-<name>.yml` — recorded answers
-- `.datarobot/cli/llm.yml` — CLI configuration for `dr dotenv setup`
+- `infra/infra/llm.py`&mdash;Pulumi resources for the LLM deployment and playground.
+- `infra/configurations/llm/`&mdash;LLM configuration blueprints.
+- `.datarobot/answers/llm-NAME.yml`&mdash;recorded answers.
+- `.datarobot/cli/llm.yml`&mdash;CLI configuration for `dr dotenv setup`.

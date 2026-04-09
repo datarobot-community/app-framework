@@ -28,11 +28,11 @@ When prompted, choose your agent framework:
 
 | Framework | When to use |
 |-----------|-------------|
-| `base` | Minimal scaffold — bring your own agentic logic |
-| `crewai` | Role-based multi-agent crews |
-| `langgraph` | Graph-based stateful agent workflows |
-| `llamaindex` | RAG and document-aware agent workflows |
-| `nat` | YAML-based NeMo Agent Toolkit |
+| `base` | Minimal scaffold — bring your own agentic logic. |
+| `crewai` | Role-based multi-agent crews. |
+| `langgraph` | Graph-based stateful agent workflows. |
+| `llamaindex` | RAG and document-aware agent workflows. |
+| `nat` | YAML-based NeMo Agent Toolkit. |
 
 ## Component dependencies
 
@@ -61,12 +61,12 @@ dr dotenv setup
 
 The wizard asks for:
 
-- Agent port (default: 8842)
-- DataRobot execution environment
-- Execution environment version ID
-- Pulumi passphrase
-- DataRobot default use case (optional)
-- LLM Gateway configuration
+- Agent port (default: 8842).
+- DataRobot execution environment.
+- Execution environment version ID.
+- Pulumi passphrase.
+- DataRobot default use case (optional).
+- LLM Gateway configuration.
 
 ## Local development
 
@@ -93,7 +93,7 @@ task test
 Test a specific framework:
 
 ```bash
-task test-<agent_framework>
+task test-AGENT_FRAMEWORK
 ```
 
 Test the CLI:
@@ -114,15 +114,15 @@ After deployment, the agent is available in the DataRobot workbench under your u
 
 Edit `agent/agent/myagent.py` to:
 
-- Change agent roles and goals
-- Modify task descriptions
-- Add agents to the crew
-- Integrate MCP tools
+- Change agent roles and goals.
+- Modify task descriptions.
+- Add agents to the crew.
+- Integrate MCP tools.
 
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/agent-<agent_app>.yml -A
+uvx copier update -a .datarobot/answers/agent-AGENT_APP.yml -A
 ```
 
 ## End-to-end test
