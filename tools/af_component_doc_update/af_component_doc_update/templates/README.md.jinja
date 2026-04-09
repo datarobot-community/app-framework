@@ -127,15 +127,17 @@ and compatibility with the latest DataRobot App Framework.
 
 For automatic updates to the latest version, run the following command in your project directory:
 ```bash
-dr component update .datarobot/answers/drmcp-{{ mcp_app_name }}.yml
-```
+{% if answers_file %}dr component update {{ answers_file }}
+{% else %}dr component update .datarobot/answers/<component>.yml
+{% endif %}```
 
 If you need more fine grained control and prefer using copier directly,
 you can run this to have more control over the process:
 
 ```bash
-uvx copier update -a .datarobot/answers/drmcp-{{ mcp_app_name }}.yml -A
-```
+{% if answers_file %}uvx copier update -a {{ answers_file }} -A
+{% else %}uvx copier update -a .datarobot/answers/<component>.yml -A
+{% endif %}```
 
 # Troubleshooting
 
