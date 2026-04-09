@@ -1,0 +1,224 @@
+<p align="center">
+  <a href="https://github.com/datarobot-community/{{ module }}">
+    <img src="https://af.datarobot.com/img/datarobot_logo.avif" width="600px" alt="DataRobot Logo"/>
+  </a>
+</p>
+<p align="center">
+    <span style="font-size: 1.5em; font-weight: bold; display: block;">{{ module }}</span>
+</p>
+
+<p align="center">
+  <a href="https://datarobot.com">Homepage</a>
+  ·
+  <a href="https://af.datarobot.com">Documentation</a>
+  ·
+  <a href="https://docs.datarobot.com/en/docs/get-started/troubleshooting/general-help.html">Support</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/datarobot-community/{{ module }}/tags">
+    <img src="https://img.shields.io/github/v/tag/datarobot-community/{{ module }}?label=version" alt="Latest Release">
+  </a>
+  <a href="/LICENSE">
+    <img src="https://img.shields.io/github/license/datarobot-community/{{ module }}" alt="License">
+  </a>
+</p>
+
+{{ short_description }}
+
+[[INSERT PROJECT OVERVIEW HERE]]
+
+<!--
+- Add a basic intro: Use 2-3 sentences to describe what the project is, who it is for, and how it fits with DataRobot.
+- Add a scope statement: In a new paragraph, another 2-3 sentences to state hat ships in the repo (for example, agentic workflow, CLI, MCP server) and the main runtime or deployment model.
+- **Reader orientation**: briefly state the intended audience (for example app developers, platform engineers, internal teams) and what they can accomplish with the project.
+- This section does not need a header.
+-->
+
+
+# Table of contents
+
+[[INSERT TOC HERE]]
+<!--
+- Auto-generated or hand-maintained **TOC** linking to major H1 (and H2, if needed) sections.
+- Keep depth shallow where possible(typically one level under the main headings).
+-->
+
+# Prerequisites
+
+- Python 3.11+
+- [`uv`](https://docs.astral.sh/uv/) installed
+- [`dr`](https://cli.datarobot.com)) installed
+
+[[INSERT PREREQUISITES HERE]]
+<!--
+- **Bulleted or table list** of required tools with **minimum versions** and short descriptions.
+- **Link** each tool to official install docs where helpful.
+- **Environment notes**: codespaces vs local; OS-specific caveats (Windows/WSL, symlink notes, and so on).
+- **Optional dependencies** in a separate subsection (Docker, cloud credentials, Node for client setup, and so on).-->
+
+# Quick start
+
+Run the following command in your project directory:
+
+```bash
+dr component add https://github.com/datarobot-community/{{ module }} .
+```
+
+Alternatively, you can use `uvx` copier:
+
+```bash
+uvx copier copy datarobot-community/{{ module }} .
+```
+
+[[INSERT QUICK START HERE]]
+
+<!--
+- Make this the **fastest path to first success**.
+- Write it from the perspective of a new user; list each and every step, from installation/clone/etc. to final deploy.
+- Be as brief as possible, but include all the steps required to get the project running.
+- Move long wizard walkthroughs into a collapsible section (<details>...</details> block) or a linked doc if they interrupt the flow.
+- **First success check**: send a test message, hit a health URL, or run a smoke command.
+- **Platform subsections** when install steps differ (for example **macOS**, **Linux**, **Windows (PowerShell)**).
+-->
+
+
+# Component dependencies
+{% if depends_on %}
+
+## Required
+
+The following components must be applied to the project **before** this component:
+
+| Name | Repository | Repeatable |
+|------|-----------|------------|
+{% for name, info in depends_on.items() -%}
+| `{{ name }}` | {% if info.get('url') %}[{{ info.get('url') }}]({{ info.get('url') }}){% endif %} | {{ "Yes" if info.get("repeatable") else "No" }} |
+{% endfor %}
+{% endif %}
+{% if collaborates_with %}
+
+## Collaborates with
+
+The following components integrate with this component when present:
+
+| Name | Repository | Repeatable |
+|------|-----------|------------|
+{% for name, info in collaborates_with.items() -%}
+| `{{ name }}` | {% if info.get('url') %}[{{ info.get('url') }}]({{ info.get('url') }}){% endif %} | {{ "Yes" if info.get("repeatable") else "No" }} |
+{% endfor %}
+{% endif %}
+
+# Local development
+
+[[INSERT LOCAL DEVELOPMENT HERE]]
+<!--
+- **How to run services**: all-in-one vs individual processes; mention **ports** in a table (port, component, configurable yes/no).
+- **Codespace / remote dev**: which ports to expose and where to configure them.
+- **Hot paths**: directories that matter (for example `agent/agent/`, `dr_mcp/`, `frontend_web/`).
+- **Repo structure**: include only a short tree or a few key paths; move full repository tours into separate docs.
+- **Links** to deeper docs: customize agent, add tools, LLM configuration, architecture.
+-->
+
+# Troubleshooting
+
+[[INSERT TROUBLESHOOTING HERE]]
+
+<!--
+- Add a short **common issues** section when users are likely to hit setup or runtime problems.
+- Organize by **symptom and solution**, not by internal implementation detail.
+- Common categories include:
+  - command not found / PATH
+  - version mismatch / update required
+  - port conflicts
+  - service startup failures
+  - client connection failures
+  - build or dependency issues
+-->
+
+# Next steps and cross-links
+
+[[INSERT NEXT STEPS AND CROSS-LINKS HERE]]
+<!--
+- End with a short list of **where to go next**: product docs, API reference, full command docs, architecture docs, related templates, or tutorials.
+-->
+
+# Contributing, changelog, support, and legal
+
+[[INSERT CONTRIBUTING, CHANGELOG, SUPPORT, AND LEGAL HERE]]
+<!--
+- **Contributing**: fork/branch, tests, lint, license headers (if required), PR process; link to `CONTRIBUTING.md`.
+- **Changelog / versioning**: link to `CHANGELOG.md` and state the versioning approach if the project follows one.
+- **Getting help**: GitHub Issues, Discussions, support channel, security contact.
+- **Acknowledgments** (optional): key libraries or tools.
+- **License**: name and link to `LICENSE`; copyright line if used in sibling repos.
+-->
+
+<!--
+
+# OPTIONAL SECTIONS
+
+Add these only when they improve comprehension or reduce user error. If they become long, house them in separate documentation pages and link to them from the README.
+
+## Use cases and fit {: #use-cases-and-fit }
+
+- Add a short **“When to use this”** section when the repository serves a specific need or replaces ad hoc approaches.
+- If useful, include a compact **decision table** such as “Use this when...” / “Do not use this when...” to help readers self-select quickly.
+- Mention notable **non-goals** so readers do not expect unsupported workflows.
+
+## Architecture and workflow {: #architecture-and-workflow }
+
+- Use this when readers benefit from understanding **how the parts fit together** before they customize or deploy the project.
+- Prefer a simple system diagram, dependency tree, or request/data-flow diagram only when it explains relationships better than prose.
+- Focus on major components, external dependencies, and what changes between local development and deployment.
+
+## Feature-focused sections {: #feature-focused-sections }
+
+- **MCP**: protocol role, server layout, tools or resources.
+- **OAuth**: providers, redirect URLs, links to product OAuth docs.
+- **Agent-to-agent (A2A)**: feature flags, configuration blocks, endpoints.
+- **CLI reference**: pointer to full command docs; optional common issues tied to CLI.
+
+## Advanced options {: #advanced-options }
+
+- **Feature flags** or environment toggles.
+- **Runtime parameters** or infrastructure hooks (where to add Pulumi or metadata changes).
+- **Target types** or compatibility modes for older environments.
+
+---
+
+# BETTER AS SEPARATE DOCS PAGES
+
+These topics often make a README feel dense or intimidating. Prefer linked docs pages when the content is more than a short overview:
+
+- **Detailed architecture**: component diagrams, dependency trees, request/data flow, and deployment topology.
+- **Full command or API reference**: every CLI command, runtime parameter, environment variable, or interface field.
+- **Comprehensive local development guide**: full repo tour, service-by-service dev workflows, and editor-specific setup.
+- **Testing and debugging guide**: interactive test modes, log locations, debugging workflows, and common diagnostics.
+- **Advanced configuration**: feature flags, compatibility modes, infrastructure customization, and runtime parameter design.
+- **Feature-specific deep dives**: MCP, OAuth, A2A, auth providers, deployment variants, or platform-specific behavior.
+- **Troubleshooting catalog**: long symptom-by-symptom matrices are better in docs than in the main README.
+
+For the README itself, keep only the short version:
+
+- one-paragraph architecture summary, if needed
+- one quick-reference table for the most common commands or settings
+- one short local-dev section
+- a handful of common issues
+- links to deeper docs for everything else
+
+# PATTERNS TO MIRROR
+
+| Pattern | Typical use |
+| ------- | ----------- |
+| Versioned prerequisite table | Quick scan for “do I have the right stack?” |
+| Single primary install + alternatives | Reduces friction; experts use binaries or source |
+| “Use this / Don’t use this” guidance | Helps readers decide quickly whether the repo fits |
+| Minimal example before deep reference | Shows success path before detail |
+| Short repo structure tree | Speeds orientation without turning the README into a repo tour |
+| Wizard steps in a collapsible or linked doc | Keeps the main README readable |
+| Port table | Essential for multi-service templates |
+| Changelog + versioning link | Sets expectations for updates and compatibility |
+| Example “outputs” block after deploy | Users know what URLs/IDs to copy |
+| Symptom / solution troubleshooting | Faster resolution than narrative-only text |
+| Link out long deep dives | Keeps the README approachable for new users |

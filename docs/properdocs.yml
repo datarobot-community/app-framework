@@ -1,6 +1,6 @@
-site_name: DataRobot App Framework Documentation
+site_name: DataRobot App Framework
 site_url: https://datarobot-oss.github.io/app-framework/
-site_description: Documentation for the DataRobot App Framework
+site_description: Documentation and enablement for the DataRobot App Framework
 repo_url: https://github.com/datarobot-oss/app-framework
 repo_name: datarobot-oss/app-framework
 edit_uri: edit/main/docs/src/
@@ -45,6 +45,7 @@ docs_dir: src
 nav:
   - Home: index.md
   - Developer guide: developer.md
+  - Skills: skills.md
 
 # Exclude patterns to avoid processing non-documentation files
 exclude_docs: |

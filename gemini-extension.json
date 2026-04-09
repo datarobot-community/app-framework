@@ -8,6 +8,11 @@
       "name": "datarobot-app-framework",
       "description": "Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows (CrewAI, LangGraph, LlamaIndex)",
       "path": "datarobot-app-framework/SKILL.md"
+    },
+    {
+      "name": "datarobot-app-framework-doc-update",
+      "description": "Generate and intelligently merge README documentation for a DataRobot App Framework component using its copier-module.yaml schema",
+      "path": "datarobot-app-framework-doc-update/SKILL.md"
     }
   ]
 }
