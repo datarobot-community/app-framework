@@ -38,21 +38,21 @@ The wizard asks for a `react_app` name (e.g. `frontend`). This namespaces all ge
 
 ## Wiring to the FastAPI backend
 
-After applying both components, one manual step connects them in Pulumi. In `infra/infra/<fastapi_app>.py`, import the React frontend module and update the `ApplicationSource` to wait for the Vite build:
+After applying both components, one manual step connects them in Pulumi. In `infra/infra/FASTAPI_APP.py`, import the React frontend module and update the `ApplicationSource` to wait for the Vite build:
 
 ```python
-from .<react_app_name> import <react_app_name>
+from .REACT_APP_NAME import REACT_APP_NAME
 ```
 
 ```diff
- <fastapi_app>_app_source = pulumi_datarobot.ApplicationSource(
--    files=get_<fastapi_app>_app_files(runtime_parameter_values=<fastapi_app>_app_runtime_parameters),
+ FASTAPI_APP_app_source = pulumi_datarobot.ApplicationSource(
+-    files=get_FASTAPI_APP_app_files(runtime_parameter_values=FASTAPI_APP_app_runtime_parameters),
 +    files=frontend_web.stdout.apply(
-+        lambda _: get_<fastapi_app>_app_files(
-+            runtime_parameter_values=<fastapi_app>_app_runtime_parameters
++        lambda _: get_FASTAPI_APP_app_files(
++            runtime_parameter_values=FASTAPI_APP_app_runtime_parameters
 +        )
 +    ),
-     runtime_parameter_values=<fastapi_app>_app_runtime_parameters,
+     runtime_parameter_values=FASTAPI_APP_app_runtime_parameters,
      ...
  )
 ```
@@ -64,7 +64,7 @@ This ensures the Vite build completes before Pulumi collects the compiled assets
 Start the Vite dev server from the generated frontend directory:
 
 ```bash
-cd frontend_<react_app_name>
+cd frontend_REACT_APP_NAME
 npm install
 npm run dev
 ```
@@ -74,7 +74,7 @@ The dev server proxies API requests to the FastAPI backend on its configured por
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/react-<react_app>.yml -A
+uvx copier update -a .datarobot/answers/react-REACT_APP.yml -A
 ```
 
 ## Troubleshooting
@@ -89,7 +89,7 @@ The Vite build requires Node.js 18+. Run `node --version` and upgrade if needed.
 
 **Multiple frontends stomping on each other**
 
-Each `react_app` name must be unique. Check `.datarobot/answers/` — each frontend should have its own `react-<name>.yml` file.
+Each `react_app` name must be unique. Check `.datarobot/answers/` — each frontend should have its own `react-NAME.yml` file.
 
 **Copier update overwrites local changes**
 

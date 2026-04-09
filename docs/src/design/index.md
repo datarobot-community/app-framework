@@ -8,15 +8,15 @@ Application Templates are code-first recipes for building full-stack DataRobot a
 
 ![App Framework Architecture Overview](../img/architecture-overview.png)
 
-Our North Star is enabling customers to deploy something like an NVIDIA VSS directly on DataRobot, add DataRobot's value, make it production-grade, and keep it easily customizable.
+The north star is enabling customers to deploy something like an NVIDIA VSS directly on DataRobot, add DataRobot value, make it production-grade, and keep it easily customizable.
 
 Foundation App Templates are the reference implementations built from this framework:
 
 | Template | Description |
 |----------|-------------|
-| [Talk to My Docs](https://github.com/datarobot-community/talk-to-my-docs-agents) | Guarded RAG Assistant |
-| [Talk to My Data](https://github.com/datarobot-community/talk-to-my-data-agent) | Data Analyst |
-| [DataRobot Agent Application](https://github.com/datarobot-community/datarobot-agent-application) | Multi-agent orchestration starter |
+| [Talk to My Docs](https://github.com/datarobot-community/talk-to-my-docs-agents) | Guarded RAG Assistant. |
+| [Talk to My Data](https://github.com/datarobot-community/talk-to-my-data-agent) | Data Analyst. |
+| [DataRobot Agent Application](https://github.com/datarobot-community/datarobot-agent-application) | Multi-agent orchestration starter. |
 
 Each Foundation App Template is a private repo that publishes to a corresponding OSS repo via GitHub release mechanics.
 
@@ -26,7 +26,7 @@ Simply put: the software and templates that build App Templates, and enable them
 
 ## In this section
 
-- [**Principles**](principles.md) — The design decisions that guide every component
-- [**Component Model**](component-model.md) — How templates are structured, applied, and updated
-- [**CLI**](cli.md) — The `dr` command and what it handles
-- [**Declarative API**](declarative-api.md) — Infrastructure-as-code for DataRobot resources
+- [**Principles**](principles.md)&mdash;The design decisions that guide every component.
+- [**Component model**](component-model.md)&mdash;How templates are structured, applied, and updated.
+- [**CLI**](cli.md)&mdash;The `dr` command and what it handles.
+- [**Declarative API**](declarative-api.md)&mdash;Infrastructure-as-code for DataRobot resources.

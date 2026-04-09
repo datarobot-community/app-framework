@@ -1,4 +1,4 @@
-# Component Model
+# Component model
 
 ![Studio Component Model](../img/studio-component-model.png)
 
@@ -15,8 +15,8 @@ These appear once per app template:
 
 | Component | Repository | Description |
 |-----------|------------|-------------|
-| **Base** | [af-component-base](https://github.com/datarobot-community/af-component-base) | Pulumi project, task runner, `.datarobot/` config, CI/CD scaffolding, `LICENSE`, `CODEOWNERS` |
-| **LLM** | [af-component-llm](https://github.com/datarobot-community/af-component-llm) | LLM Gateway or external model integration via DataRobot's LLM Deployment |
+| **Base** | [af-component-base](https://github.com/datarobot-community/af-component-base) | Pulumi project, task runner, `.datarobot/` config, CI/CD scaffolding, `LICENSE`, `CODEOWNERS`. |
+| **LLM** | [af-component-llm](https://github.com/datarobot-community/af-component-llm) | LLM Gateway or external model integration via the DataRobot LLM Deployment. |
 
 ## One-to-many components
 
@@ -24,10 +24,10 @@ These can be applied multiple times as you build out the template:
 
 | Component | Repository | Description |
 |-----------|------------|-------------|
-| **FastAPI Backend** | [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) | Local dev tasks, FastAPI autodocs, Pulumi config for Custom App deployment |
-| **React Frontend** | [af-component-react](https://github.com/datarobot-community/af-component-react) | Dev server, proxy to API, static asset build, pre-baked tests |
-| **Agent** | [af-component-agent](https://github.com/datarobot-community/af-component-agent) | CrewAI, LangGraph, LlamaIndex, or YAML-based NeMo Agent Toolkit |
-| **DataRobot MCP** | [af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp) | FastMCP server with DataRobot predictive tools and third-party integrations |
+| **FastAPI Backend** | [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) | Local dev tasks, FastAPI autodocs, Pulumi config for Custom App deployment. |
+| **React Frontend** | [af-component-react](https://github.com/datarobot-community/af-component-react) | Dev server, proxy to API, static asset build, pre-baked tests. |
+| **Agent** | [af-component-agent](https://github.com/datarobot-community/af-component-agent) | CrewAI, LangGraph, LlamaIndex, or YAML-based NeMo Agent Toolkit. |
+| **DataRobot MCP** | [af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp) | FastMCP server with DataRobot predictive tools and third-party integrations. |
 
 ## Update model
 
@@ -35,4 +35,4 @@ These can be applied multiple times as you build out the template:
 
 The Studio uses a Dependabot-like approach: automated pull requests to all App Template repos that use the component answers, with PR-per-component granularity. App Template authors can selectively or completely disable updates at the component-instance level.
 
-This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates PRs when updates are available. To set it up, request your repo be added to Diffington's watch list in the `#applications` Slack channel.
+This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates PRs when updates are available. To set it up, request your repo be added to the Diffington watch list in the `#applications` Slack channel.

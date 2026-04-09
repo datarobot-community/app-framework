@@ -14,8 +14,8 @@ This registers the following skills in your AI assistant:
 
 | Skill | Description |
 |-------|-------------|
-| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows |
-| `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema |
+| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows. |
+| `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema. |
 
 ## Available skills
 
@@ -24,26 +24,26 @@ This registers the following skills in your AI assistant:
 Guides your AI assistant through scaffolding, configuring, and deploying App Framework recipes using `af-component-*` building blocks. Covers agents (CrewAI, LangGraph, LlamaIndex), FastAPI backends, React frontends, and LLM integrations.
 
 Trigger it by asking your assistant to:
-- Build or deploy an app on DataRobot using the App Framework
-- Add a component (`dr component add`, `uvx copier copy`)
-- Wire components together or configure an agent
+- Build or deploy an app on DataRobot using the App Framework.
+- Add a component (`dr component add`, `uvx copier copy`).
+- Wire components together or configure an agent.
 
 ### `datarobot-app-framework-doc-update`
 
 Generates a structured `README.generated.md` scaffold from a component's `copier-module.yaml`, then intelligently merges it with the existing `README.md` — preserving human-written content and using the template's authoring hints to fill any gaps.
 
 Trigger it by asking your assistant to:
-- Update or regenerate the README for a component repo
-- Generate documentation from `copier-module.yaml`
+- Update or regenerate the README for a component repo.
+- Generate documentation from `copier-module.yaml`.
 
 #### Running locally (before pushing to GitHub)
 
 ```bash
-# Step 1 — generate the scaffold (from the app-framework-studio root)
+# Step 1 — generate the scaffold (from the app-framework-studio root).
 cd ~/code/app-framework-studio
 uv run --project tools/af_component_doc_update af-component-doc-update ~/code/<your-component>
 
-# Step 2 — invoke the skill in Copilot chat
+# Step 2 — invoke the skill in Copilot chat.
 ```
 
 ```

@@ -36,11 +36,11 @@ The wizard asks for an `mcp_app_name` (e.g. `mcp`). This scopes all generated fi
 ## What it adds
 
 ```
-<mcp_app_name>/
-├── <mcp_app_name>/   # MCP server source (tools, server entrypoint)
+MCP_APP_NAME/
+├── MCP_APP_NAME/   # MCP server source (tools, server entrypoint)
 └── dev.md            # Local dev guide and OAuth setup
-infra/infra/<mcp_app_name>.py   # Pulumi deployment resources
-.datarobot/answers/drmcp-<mcp_app_name>.yml
+infra/infra/MCP_APP_NAME.py   # Pulumi deployment resources
+.datarobot/answers/drmcp-MCP_APP_NAME.yml
 ```
 
 ## Available tools
@@ -49,22 +49,22 @@ infra/infra/<mcp_app_name>.py   # Pulumi deployment resources
 
 | Category | Tools |
 |----------|-------|
-| Data management | Upload datasets to AI Catalog, list catalog items |
-| Deployment info | Get deployment info, generate prediction templates, validate data |
-| Deployment management | List deployments, get model info, deploy a model |
-| Model management | Get best model, score datasets, list models |
-| Predictions | Batch predictions (file or AI Catalog), real-time predictions, time series |
-| Project management | List projects, get project datasets |
-| Training & analysis | Analyze datasets, suggest use cases, start Autopilot, ROC curve, feature impact, lift chart |
+| Data management | Upload datasets to AI Catalog, list catalog items. |
+| Deployment info | Get deployment info, generate prediction templates, validate data. |
+| Deployment management | List deployments, get model info, deploy a model. |
+| Model management | Get best model, score datasets, list models. |
+| Predictions | Batch predictions (file or AI Catalog), real-time predictions, time series. |
+| Project management | List projects, get project datasets. |
+| Training & analysis | Analyze datasets, suggest use cases, start Autopilot, ROC curve, feature impact, lift chart. |
 
 ### Integration tools (requires OAuth)
 
 | Platform | Tools |
 |----------|-------|
-| Google Drive | Read files, manage access |
-| Jira | Search, get, create, update, and transition issues |
-| Confluence | Get, create, update pages; add comments; search |
-| Microsoft Graph | Search SharePoint and OneDrive content |
+| Google Drive | Read files, manage access. |
+| Jira | Search, get, create, update, and transition issues. |
+| Confluence | Get, create, update pages; add comments; search. |
+| Microsoft Graph | Search SharePoint and OneDrive content. |
 
 Integration tools require OAuth providers configured in DataRobot. See the generated `dev.md` for setup instructions.
 
@@ -73,7 +73,7 @@ Integration tools require OAuth providers configured in DataRobot. See the gener
 Run the MCP server locally:
 
 ```bash
-uv run python -m <mcp_app_name>
+uv run python -m MCP_APP_NAME
 ```
 
 ## Deploy
@@ -85,7 +85,7 @@ dr task deploy
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/drmcp-<mcp_app_name>.yml -A
+uvx copier update -a .datarobot/answers/drmcp-MCP_APP_NAME.yml -A
 ```
 
 To update all instances at once:
@@ -102,4 +102,4 @@ OAuth providers must be configured in DataRobot before integration tools will wo
 
 **Multiple instances conflict**
 
-Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories will collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-<name>.yml`.
+Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories will collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-NAME.yml`.

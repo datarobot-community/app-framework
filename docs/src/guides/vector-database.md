@@ -1,4 +1,4 @@
-# Adding a Vector Database to Your Agent App
+# Adding a vector database to your agent app
 
 You've got an agent application running and it's doing its thing — but you want to ground it in your own documents. Maybe you've got a knowledge base, some internal docs, or a collection of PDFs that your agent should actually know about instead of making things up.
 
@@ -9,7 +9,7 @@ This guide walks through adding a Vector Database (VDB) to your agent app. A fol
 - An App Framework recipe with the [Agentic Starter Application](https://github.com/datarobot/recipe-datarobot-agent-application) or similar setup
 - The LLM component applied
 
-## The Setup
+## The setup
 
 First, tell your infrastructure to use the LLM configuration that supports vector databases. In your `.env`:
 
@@ -19,7 +19,7 @@ INFRA_ENABLE_LLM="blueprint_with_llm_gateway.py"
 
 This switches to an LLM Blueprint that supports VDB retrieval alongside the LLM Gateway.
 
-## Your Knowledge Base
+## Your knowledge base
 
 Create a `knowledgebase/` folder at the root of your project and add your documents — PDFs, text files, markdown, whatever you've got:
 
@@ -35,7 +35,7 @@ your-project/
 
 This folder is version-controlled alongside your code. When you update your documents, just redeploy.
 
-## The VDB Infrastructure
+## The VDB infrastructure
 
 Create `infra/infra/vdb.py`:
 
@@ -87,7 +87,7 @@ knowledgebase_dataset = pulumi_datarobot.DatasetFromFile(
     opts=pulumi.ResourceOptions(depends_on=[use_case]),
 )
 
-# Chunking parameters are all configurable via environment variables
+# Chunking parameters are all configurable via environment variables.
 chunking_method = os.environ.get("VDB_CHUNKING_METHOD", "recursive")
 chunk_size = int(os.environ.get("VDB_CHUNK_SIZE", "512"))
 chunk_overlap = int(os.environ.get("VDB_CHUNK_OVERLAP_PERCENTAGE", "10"))
@@ -112,14 +112,14 @@ export("AGENTIC_STARTER_VECTOR_DATABASE_ID", vector_database.id)
 
 This code:
 
-1. Zips up your `knowledgebase/` folder
-2. Creates a DataRobot dataset from that zip
-3. Builds a vector database with configurable chunking (512 token chunks, 10% overlap by default)
-4. Uses `intfloat/e5-large-v2` as the embedding model
+1. Zips up your `knowledgebase/` folder.
+2. Creates a DataRobot dataset from that zip.
+3. Builds a vector database with configurable chunking (512 token chunks, 10% overlap by default).
+4. Uses `intfloat/e5-large-v2` as the embedding model.
 
 All chunking parameters are tunable via environment variables in your `.env` — no code changes required.
 
-## Wire It Up
+## Wire it up
 
 Open `infra/infra/llm.py` and add the import at the top:
 
@@ -145,31 +145,31 @@ llm_blueprint = datarobot.LlmBlueprint(
 
 That's it. Your agent is now grounded in your documents.
 
-## Deploy and Test
+## Deploy and test
 
 ```bash
 task deploy
 ```
 
-Once deployed, your agent will pull relevant context from the knowledgebase instead of hallucinating. Ask it questions about your docs.
+Once deployed, your agent pulls relevant context from the knowledgebase instead of hallucinating. Ask it questions about your docs.
 
-## Why This Approach Works
+## Why this approach works
 
-- **Version-controlled** — your knowledge base lives in git alongside your code
-- **Tunable without code changes** — chunking parameters are env vars
-- **Automatically rebuilt** — updating your docs is just adding files and redeploying
-- **Infrastructure-as-code** — the whole stack is reproducible
+- **Version-controlled**&mdash;your knowledge base lives in git alongside your code.
+- **Tunable without code changes**&mdash;chunking parameters are env vars.
+- **Automatically rebuilt**&mdash;updating your docs is just adding files and redeploying.
+- **Infrastructure-as-code**&mdash;the whole stack is reproducible.
 
-## This Works Everywhere
+## This works everywhere
 
 This same approach works for any App Template — Talk to My Docs, Talk to My Data, any of them. The pattern is identical: create `vdb.py`, wire it into `llm.py`, redeploy.
 
-## Pro Tips
+## Pro tips
 
 **Chunk sizes:**
 
-- Smaller chunks (256–512 tokens): better for precise, targeted retrieval
-- Larger chunks (1024+ tokens): better when more context per retrieval hit is important
+- Smaller chunks (256–512 tokens)&mdash;better for precise, targeted retrieval.
+- Larger chunks (1024+ tokens)&mdash;better when more context per retrieval hit is important.
 
 **Embedding models:**
 
