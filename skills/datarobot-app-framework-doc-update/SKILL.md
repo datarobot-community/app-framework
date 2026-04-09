@@ -17,10 +17,8 @@ Use this skill when the user:
 
 ## Prerequisites
 
-```bash
-# Ensure the repo has a copier-module.yaml at its root.
-# The tool will error clearly if it is missing.
-```
+Ensure the repo has a copier-module.yaml at its root.
+The tool will error clearly if it is missing.
 
 ## Steps
 
@@ -73,7 +71,9 @@ Produce a single merged README using these rules:
 
 ### Step 4 — Write merged README
 
-Write the merged content to `<repo_path>/README.md`.
+* Write the merged content to `<repo_path>/README.md`.
+* The merged content must be grammatically correct, well-structured, have followed the instructions in the template prompts, and comprehensive — it must be a high-quality README using the style guide in `./documentation-style-spec.md`
+* Every heading section must have a sentence/paragraph of intro text.
 
 ### Step 5 — Clean up
 

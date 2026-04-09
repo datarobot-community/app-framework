@@ -65,7 +65,7 @@ Run the following command in your project directory:
 dr component add https://github.com/datarobot-community/{{ module }} .
 ```
 
-Alternatively, you can use `uvx` copier:
+If you need additional control, you can run this to use copier directly:
 
 ```bash
 uvx copier copy datarobot-community/{{ module }} .
@@ -109,7 +109,7 @@ The following components integrate with this component when present:
 {% endfor %}
 {% endif %}
 
-# Local development
+## Local development
 
 [[INSERT LOCAL DEVELOPMENT HERE]]
 <!--
@@ -119,6 +119,23 @@ The following components integrate with this component when present:
 - **Repo structure**: include only a short tree or a few key paths; move full repository tours into separate docs.
 - **Links** to deeper docs: customize agent, add tools, LLM configuration, architecture.
 -->
+
+## Updating
+
+All components should be regularly updated to pick up bug fixes, new features,
+and compatibility with the latest DataRobot App Framework.
+
+For automatic updates to the latest version, run the following command in your project directory:
+```bash
+dr component update .datarobot/answers/drmcp-{{ mcp_app_name }}.yml
+```
+
+If you need more fine grained control and prefer using copier directly,
+you can run this to have more control over the process:
+
+```bash
+uvx copier update -a .datarobot/answers/drmcp-{{ mcp_app_name }}.yml -A
+```
 
 # Troubleshooting
 
@@ -222,3 +239,4 @@ For the README itself, keep only the short version:
 | Example “outputs” block after deploy | Users know what URLs/IDs to copy |
 | Symptom / solution troubleshooting | Faster resolution than narrative-only text |
 | Link out long deep dives | Keeps the README approachable for new users |
+-->
