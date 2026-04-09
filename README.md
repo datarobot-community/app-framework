@@ -21,6 +21,7 @@ npx ai-agent-skills install datarobot-community/app-framework
 | [`af-component-react`](https://github.com/datarobot-community/af-component-react) | React frontend |
 | [`af-component-llm`](https://github.com/datarobot-community/af-component-llm) | LLM Gateway / external model integration |
 | [`af-component-agent`](https://github.com/datarobot-community/af-component-agent) | Agentic workflows (CrewAI, LangGraph, LlamaIndex) |
+| [`af-component-datarobot-mcp`](https://github.com/datarobot-community/af-component-datarobot-mcp) | FastMCP server with DataRobot predictive tools and third-party integrations |
 
 ## Development
 

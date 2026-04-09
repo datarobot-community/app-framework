@@ -27,6 +27,7 @@ These can be applied multiple times as you build out the template:
 | **FastAPI Backend** | [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) | Local dev tasks, FastAPI autodocs, Pulumi config for Custom App deployment |
 | **React Frontend** | [af-component-react](https://github.com/datarobot-community/af-component-react) | Dev server, proxy to API, static asset build, pre-baked tests |
 | **Agent** | [af-component-agent](https://github.com/datarobot-community/af-component-agent) | CrewAI, LangGraph, LlamaIndex, or YAML-based NeMo Agent Toolkit |
+| **DataRobot MCP** | [af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp) | FastMCP server with DataRobot predictive tools and third-party integrations |
 
 ## Update model
 
