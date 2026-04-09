@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "af-component-doc-update"
+version = "0.1.0"
+description = "Generate structured README scaffolding for App Framework components from copier-module.yaml"
+requires-python = ">=3.11"
+dependencies = [
+    "jinja2>=3.1",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+]
+
+[project.scripts]
+af-component-doc-update = "af_component_doc_update.main:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["af_component_doc_update"]

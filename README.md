@@ -4,6 +4,15 @@
 Tooling to apply and update App Framework Components.
 
 
+## Installing Skills
+
+Install all skills from this repository into your AI agent using [`ai-agent-skills`](https://github.com/datarobot-community/ai-agent-skills):
+
+```bash
+npx ai-agent-skills install datarobot-community/app-framework
+```
+
+
 * Program that runs copier with the appropriate settings such that
   they can share items and put answers in expected places.
 
@@ -46,7 +55,7 @@ you don't have to worry too much about the destination repo.
 ### Sample usage:
 
 ```
-uv run copier-watch/copier-watch.py --commit-message 'Adjusted backend' --answers-file .datarobot/answers/fastapi-web.yml ~/code/af-component-fastapi-backend ~/code/recipe-talk-to-my-docs
+uv run tools/copier-watch/copier-watch.py --commit-message 'Adjusted backend' --answers-file .datarobot/answers/fastapi-web.yml ~/code/af-component-fastapi-backend ~/code/recipe-talk-to-my-docs
 ```
 
 ### Demo:
