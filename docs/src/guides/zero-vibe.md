@@ -364,4 +364,4 @@ Edit `agent/agent/myagent.py` to:
 Once your recipe is running, set up CI/CD for automated testing and deployment:
 
 - [DataRobot CI/CD docs](https://docs.datarobot.com/en/docs/api/reference/declarative-api.html).
-- [`datarobot-agent-skills` PR #4](https://github.com/datarobot-oss/datarobot-agent-skills/)&mdash;CI/CD skill for GitLab and GitHub.
+- [`datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills/)&mdash;CI/CD skill for GitLab and GitHub.
