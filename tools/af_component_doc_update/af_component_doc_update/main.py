@@ -1,4 +1,4 @@
-import sys
+import re
 from pathlib import Path
 
 import typer
@@ -34,6 +34,15 @@ def generate(
     schema.setdefault("depends_on", {})
     schema.setdefault("collaborates_with", {})
     schema.setdefault("repeatable", False)
+
+    copier_path = repo_path / "copier.yml"
+    answers_file = ""
+    if copier_path.exists():
+        with copier_path.open() as fh:
+            copier_config = yaml.safe_load(fh)
+        raw = copier_config.get("_answers_file", "")
+        answers_file = re.sub(r"\{\{\s*(\w+)\s*\}\}", r"<\1>", raw)
+    schema["answers_file"] = answers_file
 
     env = Environment(
         loader=PackageLoader("af_component_doc_update", "templates"),

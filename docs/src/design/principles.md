@@ -23,8 +23,7 @@ With many templates and many clones, automated/guided updates are essential. Fil
 **7. Monorepos, not monoliths**
 An application template consists of multiple services, custom models, and notebooks. Each top-level folder must stay completely independent and maintain its own dependency definitions. Use separate dependencies for each area. Modern, fast tooling includes `uv`, `pnpm`, and `wasm`.
 
-## The project management triangle
-
-- *Application templates:* Fast and cheap — application authors make them good.
-- *App Framework (ATDK):* Good and cheap — application template authors make them fast.
-- *CLI:* Good and cheap — delivered quickly for application authors.
+**8. The project management triangle**
+- *App Templates:* Fast and Cheap — App authors make them Good.
+- *App Framework:* Good and Cheap — App Template authors make them Fast.
+- *CLI:* Good and Cheap — delivered fast for App authors.

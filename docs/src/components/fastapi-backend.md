@@ -62,6 +62,12 @@ The server is available at `http://localhost:8080`. FastAPI autodocs are at `/do
 ## Update
 
 ```bash
+dr component update .datarobot/answers/fastapi-FASTAPI_APP.yml
+```
+
+Or with copier directly:
+
+```bash
 uvx copier update -a .datarobot/answers/fastapi-FASTAPI_APP.yml -A
 ```
 

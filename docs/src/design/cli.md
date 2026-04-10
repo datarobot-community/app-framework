@@ -16,7 +16,8 @@ The DataRobot CLI (`dr`) is the primary interface for App Framework users. It is
     irm https://cli.datarobot.com/winstall | iex
     ```
 
-**Developer documentation:** [cli.datarobot.com/dev-docs](https://cli.datarobot.com/dev-docs)
+**Primary docs:** [cli.datarobot.com](https://docs.datarobot.com/en/docs/agentic-ai/cli/overview.html)
+**Developer docs:** [cli.datarobot.com/dev-docs](https://cli.datarobot.com/dev-docs)
 
 ## Why it exists
 
@@ -38,4 +39,3 @@ The CLI solves two core problems:
 | `dr task infra:info` | Show deployed resource IDs and resource URLs. |
 | `dr task infra:down` | Tear down deployed infrastructure. |
 
-The CLI reads from `.datarobot/COMPONENT.yml` configuration files to know what environment variables are needed and how to prompt for them.
