@@ -25,5 +25,5 @@ An app template is multiple services, custom models, and notebooks together. Eac
 
 **8. The project management triangle**
 - *App Templates:* Fast and Cheap — App authors make them Good.
-- *App Framework (ATDK):* Good and Cheap — App Template authors make them Fast.
+- *App Framework:* Good and Cheap — App Template authors make them Fast.
 - *CLI:* Good and Cheap — delivered fast for App authors.
