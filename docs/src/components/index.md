@@ -61,3 +61,4 @@ uvx copier update -a .datarobot/answers/*.yml -A
 ## Adding your own
 
 Components live in their own repos — [Search for `af-component` in the `datarobot-community` GitHub org](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories) to see the full catalog.
+Built something others might want? The [#applications](https://datarobot-community.slack.com/archives/C0ARJSKM0LF) Slack channel is the place to share!
