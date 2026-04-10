@@ -1,6 +1,6 @@
-# 0-Vibe: Build your first app
+# 0-Vibe: Build your first application
 
-This guide walks you through building an App Framework recipe from scratch — from empty repo to deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI app, an LLM with a notebook, and a full agentic workflow.
+This guide walks you through building an App Framework recipe from scratch, from an empty repository to a deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI application, an LLM with a notebook, and a full agentic workflow.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ This guide walks you through building an App Framework recipe from scratch — f
 - [DataRobot CLI](https://cli.datarobot.com) installed
 - A DataRobot account and API token
 
-## Creating a new app from scratch
+## Creating a new application from scratch
 
 Every App Framework recipe starts the same way, regardless of what you're building.
 
@@ -50,16 +50,16 @@ Copier prompts for your recipe name, the components you want, and other configur
 
 ## Example 1: Simple FastAPI application
 
-### Notebook overview
+### Overview
 
-A two-component App Framework app covering a wide range of typical functionality: a FastAPI backend served as a DataRobot Custom Application, with a React frontend baked in.
+A two-component App Framework application that covers a wide range of common functionality: a FastAPI backend served as a DataRobot Custom Application, with a React frontend included.
 
-### Notebook components
+### Key components
 
 - [`af-component-fastapi-backend`](https://github.com/datarobot-community/af-component-fastapi-backend)
 - [`af-component-react`](https://github.com/datarobot-community/af-component-react) (optional)
 
-### Notebook implementation
+### Implementation
 
 After bootstrapping with `af-component-base`, add the FastAPI backend:
 
@@ -67,7 +67,7 @@ After bootstrapping with `af-component-base`, add the FastAPI backend:
 uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .
 ```
 
-Accept the defaults. Then make sure the CLI is installed and compose:
+Accept the defaults. Then confirm that the CLI is installed and compose the tasks:
 
 ```bash
 dr task compose .
@@ -82,7 +82,7 @@ dr dotenv setup
 
 ### Develop locally
 
-Start the dev server:
+Start the development server:
 
 ```bash
 dr run dev
@@ -106,7 +106,7 @@ The CLI previews the resources to be created and asks for confirmation:
 
 ![Pulumi deploy preview](../img/zero-vibe-deploy.png)
 
-After deployment, your app is live at the URL in the output. Visit it with `cmd-click` or `ctrl-shift-click` from your terminal:
+After deployment, your application is live at the URL shown in the output. Open it from your terminal with `cmd-click` or `ctrl-shift-click`:
 
 ![Deployed app on DataRobot](../img/zero-vibe-deployed-app.png)
 
@@ -124,15 +124,15 @@ dr auth set-url      # Switch to a different DR environment.
 
 ## Example 2: LLM with notebook
 
-### Agent overview
+### Notebook example overview
 
 For fast iteration on LLM use cases that don't yet need a full agentic workflow, use the LLM component and iterate in a Python notebook — locally or in DataRobot.
 
-### Agent components
+### Notebook example components
 
 - [`af-component-llm`](https://github.com/datarobot-community/af-component-llm)
 
-### Agent implementation
+### Notebook example implementation
 
 Apply the LLM component to your recipe:
 
@@ -158,7 +158,7 @@ dr task deploy
 
 ![Deploy preview showing LLM resources](../img/zero-vibe-deploy-preview.png)
 
-Confirm and deploy. When complete, note the deployment ID — you'll need it for notebook development. You can always retrieve it again with:
+Confirm and deploy. When complete, note the deployment ID because you need it for notebook development. You can retrieve it again at any time with:
 
 ```bash
 dr task infra:info
@@ -247,16 +247,16 @@ Then run `dr task deploy` again. The notebook appears in your use case in the Da
 
 ## Example 3: LLM with agent
 
-### Overview
+### Agent example overview
 
-For use cases that need agents, tools, and multi-step workflows, the agent component provides a full agentic framework — built on top of the LLM component from Example 2.
+For use cases that need agents, tools, and multi-step workflows, the agent component provides a full agentic framework built on top of the LLM component from Example 2.
 
-### Key components
+### Agent example components
 
 - [`af-component-llm`](https://github.com/datarobot-community/af-component-llm)
 - [`af-component-agent`](https://github.com/datarobot-community/af-component-agent)
 
-### Implementation
+### Agent example implementation
 
 #### Step 1 — Apply the base component
 
@@ -264,7 +264,7 @@ For use cases that need agents, tools, and multi-step workflows, the agent compo
 uvx copier copy https://github.com/datarobot/af-component-base .
 ```
 
-Accept defaults.
+Accept the defaults.
 
 #### Step 2 — Apply the LLM component
 
@@ -272,11 +272,11 @@ Accept defaults.
 uvx copier copy https://github.com/datarobot-community/af-component-llm .
 ```
 
-Accept defaults.
+Accept the defaults.
 
 #### Step 3 — Apply the agent component
 
-Using the CLI (easiest):
+Use the CLI:
 
 ```bash
 dr component add agent
@@ -284,7 +284,7 @@ dr component add agent
 
 When prompted, choose your agent framework: **CrewAI**, **LangGraph**, **LlamaIndex**, or the YAML-based NeMo Agent Toolkit.
 
-The component creates:
+The component creates the following structure:
 
 ```text
 agent/
@@ -337,7 +337,7 @@ dr task deploy
 
 ![Agent deploy preview](../img/zero-vibe-agent-deploy.png)
 
-The CLI asks you to name your stack, previews the resources (LLM deployment, agent deployment), and deploys both to DataRobot.
+The CLI asks you to name your stack, previews the resources (LLM deployment and agent deployment), and deploys both to DataRobot.
 
 After deployment, find your agent in the DataRobot workbench under your use case. Interact with it through the agent playground or via API calls to the deployment endpoint:
 
@@ -352,27 +352,10 @@ Edit `agent/agent/myagent.py` to:
 - Add more agents to the crew.
 - Integrate additional MCP tools.
 
----
-
-## Keeping your recipe fresh
-
-The App Framework evolves constantly — components get updates, security patches land, and new features drop. **Diffington** is an agent (built with the App Framework itself) that automatically keeps your recipes up to date.
-
-What Diffington does:
-
-- Monitors your recipe for component updates.
-- Creates PRs when updates are available.
-- Keeps your dependencies fresh and secure.
-- Updates itself.
-
-To enroll your recipe, request it be added to the Diffington watch list in the `#applications` Slack channel and provide your repo URL.
-
-Diffington repo: [datarobot/diffington](https://github.com/datarobot/diffington)
-
 ## Discovering available components
 
-- **GitHub Search:** Search for `af-component` in the `datarobot` and `datarobot-community` orgs.
-- **Ask in Slack:** The `#applications` channel is full of folks who've built components and love to share.
+- **GitHub search:** Search for `af-component` in the `datarobot` and `datarobot-community` GitHub organizations.
+- **Ask in Slack:** The `#applications` channel in DataRobot's public Slack includes contributors who regularly share component examples and guidance.
 
 ## CI/CD setup
 

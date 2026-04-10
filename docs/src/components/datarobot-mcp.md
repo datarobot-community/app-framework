@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp)
 
-Adds a [FastMCP](https://github.com/jlowin/fastmcp) server to your recipe, deployed as a DataRobot Custom Application. The component ships a ready-to-deploy MCP server with a comprehensive set of DataRobot predictive tools (projects, models, deployments, predictions) and optional integrations for Google Drive, Jira, Confluence, and Microsoft Graph via DataRobot OAuth providers.
+Adds a [FastMCP](https://github.com/jlowin/fastmcp) server to your recipe, deployed as a DataRobot Custom Application. The component provides a ready-to-deploy MCP server with a comprehensive set of DataRobot predictive tools (projects, models, deployments, predictions) and optional integrations for Google Drive, Jira, Confluence, and Microsoft Graph via DataRobot OAuth providers.
 
 Like [fastapi-backend](fastapi-backend.md), this component is repeatable — apply it multiple times with different `mcp_app_name` values to run multiple independent MCP backends from a single recipe.
 
@@ -38,7 +38,7 @@ The wizard asks for an `mcp_app_name` (e.g., `mcp`). This scopes all generated f
 ```text
 MCP_APP_NAME/
 ├── MCP_APP_NAME/   # MCP server source (tools, server entrypoint)
-└── dev.md            # Local dev guide and OAuth setup
+└── dev.md            # Local development guide and OAuth setup
 infra/infra/MCP_APP_NAME.py   # Pulumi deployment resources
 .datarobot/answers/drmcp-MCP_APP_NAME.yml
 ```
@@ -50,8 +50,8 @@ infra/infra/MCP_APP_NAME.py   # Pulumi deployment resources
 | Category | Tools |
 |----------|-------|
 | Data management | Upload datasets to AI Catalog, list catalog items. |
-| Deployment info | Get deployment info, generate prediction templates, validate data. |
-| Deployment management | List deployments, get model info, deploy a model. |
+| Deployment information | Get deployment information, generate prediction templates, and validate data. |
+| Deployment management | List deployments, get model information, and deploy a model. |
 | Model management | Get best model, score datasets, list models. |
 | Predictions | Batch predictions (file or AI Catalog), real-time predictions, time series. |
 | Project management | List projects, get project datasets. |

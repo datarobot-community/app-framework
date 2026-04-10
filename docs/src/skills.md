@@ -14,7 +14,7 @@ This registers the following skills in your AI assistant:
 
 | Skill | Description |
 |-------|-------------|
-| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows. |
+| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI applications, LLM integrations, and agentic workflows. |
 | `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema. |
 
 ## Available skills
@@ -25,7 +25,7 @@ Guides your AI assistant through scaffolding, configuring, and deploying App Fra
 
 Trigger it by asking your assistant to:
 
-- Build or deploy an app on DataRobot using the App Framework.
+- Build or deploy an application on DataRobot using the App Framework.
 - Add a component (`dr component add`, `uvx copier copy`).
 - Wire components together or configure an agent.
 
@@ -35,7 +35,7 @@ Generates a structured `README.generated.md` scaffold from a component's `copier
 
 Trigger it by asking your assistant to:
 
-- Update or regenerate the README for a component repo.
+- Update or regenerate the README for a component repository.
 - Generate documentation from `copier-module.yaml`.
 
 #### Running locally before pushing to GitHub

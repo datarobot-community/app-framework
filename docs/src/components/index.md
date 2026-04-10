@@ -1,15 +1,15 @@
 # Components
 
-App Framework components are [copier](https://copier.readthedocs.io/) templates that you layer into your recipe one at a time. Each component adds a top-level folder or file-set, and records your answers in `.datarobot/answers/` so the stack can be updated automatically later.
+App Framework components are [copier](https://copier.readthedocs.io/) templates that you layer into your recipe one at a time. Each component adds a top-level folder or file set and records your answers in `.datarobot/answers/`, so the stack can be updated automatically later.
 
 ## Core components
 
 | Component | Description | Repeatable |
 |-----------|-------------|-----------|
-| [**base**](base.md) | Task runner, Pulumi project, CI/CD scaffolding, and `.datarobot/` config. Required first for every recipe. | No |
+| [**base**](base.md) | Task runner, Pulumi project, CI/CD scaffolding, and `.datarobot/` configuration. Required first for every recipe. | No |
 | [**llm**](llm.md) | LLM Gateway or external model integration via the DataRobot LLM Deployment. | Yes |
 | [**fastapi-backend**](fastapi-backend.md) | FastAPI server deployed as a DataRobot Custom Application. | Yes |
-| [**react**](react.md) | React + Vite frontend wired to a FastAPI backend, with dev proxy and production asset build. | Yes |
+| [**react**](react.md) | React + Vite frontend wired to a FastAPI backend, with a development proxy and a production asset build. | Yes |
 | [**agent**](agent.md) | Agentic workflow scaffold supporting CrewAI, LangGraph, LlamaIndex, and NeMo Agent Toolkit. | Yes |
 | [**datarobot-mcp**](datarobot-mcp.md) | FastMCP server with DataRobot predictive tools and third-party integrations (Google Drive, Jira, Confluence, Microsoft Graph). | Yes |
 
@@ -54,4 +54,4 @@ uvx copier update -a .datarobot/answers/*.yml -A
 
 ## Adding your own
 
-Built something others might want? The `#applications` Slack channel is the place to share. Components live in their own repos — search for `af-component` in the `datarobot-community` GitHub org to see the full catalog.
+If you build a component that others might want to use, share it in the `#applications` Slack channel. Components live in their own repositories: search for `af-component` in the `datarobot-community` GitHub organization to see the full catalog.

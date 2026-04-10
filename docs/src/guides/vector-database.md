@@ -1,12 +1,12 @@
-# Adding a vector database to your agent app
+# Adding a vector database to your agent application
 
 If you already have an agent application running and want to ground it in your own documents, this guide shows one way to do it. You can use a knowledge base, internal documentation, or a collection of PDFs to give the agent retrieval-based context.
 
-This guide walks through adding a vector database (VDB) to your agent app. A folder of documents becomes searchable semantic knowledge that your agent can use for retrieval.
+This guide walks through adding a vector database (VDB) to your agent application. A folder of documents becomes searchable semantic knowledge that your agent can use for retrieval.
 
 ## Prerequisites
 
-- An App Framework recipe with the [Agentic Starter Application](https://github.com/datarobot/recipe-datarobot-agent-application) or a similar setup.
+- An App Framework recipe with the [Agentic Starter Application](https://github.com/datarobot-community/datarobot-agent-application) or a similar setup.
 - The LLM component already applied.
 
 ## The setup

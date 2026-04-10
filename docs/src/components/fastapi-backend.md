@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend)
 
-Adds a FastAPI server to your recipe, deployed as a DataRobot Custom Application. This is the standard API layer for App Framework templates — it pairs with the [react](react.md) component for full-stack apps, or stands alone for pure API or server-side-rendered use cases.
+Adds a FastAPI server to your recipe, deployed as a DataRobot Custom Application. This is the standard API layer for App Framework templates: it pairs with the [react](react.md) component for full-stack applications or stands alone for pure API or server-side-rendered use cases.
 
 The component is repeatable: apply it multiple times with different `fastapi_app` names to include multiple independent FastAPI backends in a single recipe.
 
@@ -84,6 +84,6 @@ Check Custom Application logs in the DataRobot UI. The most common cause is a mi
 
 Run `uv sync` to install dependencies declared in `pyproject.toml`.
 
-### Port conflict on local dev
+### Port conflict during local development
 
 Change the `--port` flag in the `uvicorn` command, or stop any other process already bound to port `8080`.

@@ -2,9 +2,9 @@
 
 If you have an App Framework project with a FastAPI backend and React frontend, you can add custom pages without much overhead. This guide shows how to add Jinja-rendered pages, HTMX interactions, or simple static content.
 
-## The secret sauce: it's all Jinja templates
+## How Jinja templates drive the frontend
 
-That fancy React app you're looking at? It's actually being served as a Jinja template through FastAPI.
+The React frontend is served as a Jinja template through FastAPI.
 
 Here is where that pattern shows up across the foundation templates:
 
@@ -19,7 +19,7 @@ All of these come from the same source in the App Framework component:
 - **Base template:** `af-component-fastapi-backend/template/{{fastapi_app_name}}/templates/index.html`
 - **Base route handler:** `af-component-fastapi-backend/template/{{fastapi_app_name}}/app/__init__.py.jinja`
 
-The key route is a catch-all `serve_root` handler that serves the React app. Any custom routes you add must come **before** that catch-all.
+The key route is a catch-all `serve_root` handler that serves the React application. Any custom routes you add must come **before** that catch-all.
 
 ## Adding your own pages
 
@@ -42,7 +42,7 @@ async def custom_page(request: Request):
 # This route must come BEFORE the catch-all route that serves React.
 ```
 
-Most Foundation Templates organize routes into routers by concern. You can follow the same pattern and group your template renderers into a dedicated router, similar to how the `api` routers are organized. See [`talk-to-my-docs-agents`](https://github.com/datarobot-community/talk-to-my-docs-agents) for a reference implementation:
+Most foundation templates organize routes into routers by concern. You can follow the same pattern and group your template renderers into a dedicated router, similar to the way the `api` routers are organized. See [`talk-to-my-docs-agents`](https://github.com/datarobot-community/talk-to-my-docs-agents) for a reference implementation:
 
 ```python
 from fastapi import APIRouter
@@ -86,7 +86,7 @@ To remove React entirely:
 1. Rename `infra/infra/frontend_web.py` to `infra/infra/frontend_web.py.bak`.
 2. Fix the import in your FastAPI server `infra/infra/` folder.
 
-That leaves you with a pure FastAPI app. From there, you can build any frontend you want, including HTMX, Alpine.js, vanilla JavaScript, or Jinja templates.
+That leaves you with a pure FastAPI application. From there, you can build any frontend you want, including HTMX, Alpine.js, vanilla JavaScript, or Jinja templates.
 
 ## The bottom line
 
