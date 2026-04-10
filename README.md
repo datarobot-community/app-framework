@@ -47,4 +47,4 @@ npx ai-agent-skills install datarobot-community/app-framework
 
 ## Development
 
-See the [Developer Guide](https://datarobot-oss.github.io/app-framework/developer/) for setup instructions, running docs locally, and the `copier-watch` tool for iterating on component templates.
+See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and the `copier-watch` tool for iterating on component templates.
