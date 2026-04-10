@@ -41,7 +41,7 @@ None. This is the root of every App Framework component graph.
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/base.yml -A
+dr component update .datarobot/answers/base.yml
 ```
 
 ## What it adds

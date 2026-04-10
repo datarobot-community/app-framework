@@ -74,7 +74,13 @@ The dev server proxies API requests to the FastAPI backend on its configured por
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/react-REACT_APP.yml -A
+dr component update .datarobot/answers/react-REACT_APP_NAME.yml
+```
+
+Or with copier directly:
+
+```bash
+uvx copier update -a .datarobot/answers/react-REACT_APP_NAME.yml -A
 ```
 
 ## Troubleshooting

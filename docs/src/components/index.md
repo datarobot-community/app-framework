@@ -40,7 +40,13 @@ uvx copier copy datarobot-community/af-component-NAME .
 
 ## Updating a component
 
-Each applied component leaves an answers file in `.datarobot/answers/`. Pass it to `copier update` to pull in changes non-interactively:
+Each applied component leaves an answers file in `.datarobot/answers/`. Pass it to `dr component update` to pull in changes non-interactively:
+
+```bash
+dr component update .datarobot/answers/COMPONENT-NAME.yml
+```
+
+Or with copier directly:
 
 ```bash
 uvx copier update -a .datarobot/answers/COMPONENT-NAME.yml -A

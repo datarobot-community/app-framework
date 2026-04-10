@@ -47,6 +47,7 @@ When prompted for `INFRA_ENABLE_LLM`, choose your integration type:
 | `blueprint_with_llm_gateway.py` | LLM Gateway + Vector Database support. |
 | `blueprint_with_external_llm.py` | External model (OpenAI, Anthropic, etc.) via LLM Gateway. |
 | `deployed_llm.py` | An already-deployed DataRobot LLM Deployment. |
+| `registered_model.py` | An existing registered model with an LLM Blueprint. |
 
 ## Deploy
 
@@ -61,6 +62,12 @@ dr task infra:info
 ```
 
 ## Update
+
+```bash
+dr component update .datarobot/answers/llm-LLM_NAME.yml
+```
+
+Or with copier directly:
 
 ```bash
 uvx copier update -a .datarobot/answers/llm-LLM_NAME.yml -A

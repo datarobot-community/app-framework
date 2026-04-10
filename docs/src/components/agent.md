@@ -11,6 +11,7 @@ Adds an agentic workflow to your recipe. The component scaffolds a single or mul
 - [`dr`](https://cli.datarobot.com) installed
 - The [base](base.md) component already applied
 - The [llm](llm.md) component already applied
+- The [datarobot-mcp](datarobot-mcp.md) component already applied
 
 ## Apply
 
@@ -40,6 +41,7 @@ When prompted, choose your agent framework:
 |-----------|----------|
 | [base](base.md) | Yes |
 | [llm](llm.md) | Yes |
+| [datarobot-mcp](datarobot-mcp.md) | Yes |
 
 ## What it adds
 
@@ -122,7 +124,13 @@ Edit `agent/agent/myagent.py` to:
 ## Update
 
 ```bash
-uvx copier update -a .datarobot/answers/agent-AGENT_APP.yml -A
+dr component update .datarobot/answers/agent-AGENT_APP_NAME.yml
+```
+
+Or with copier directly:
+
+```bash
+uvx copier update -a .datarobot/answers/agent-AGENT_APP_NAME.yml -A
 ```
 
 ## End-to-end test

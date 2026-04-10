@@ -85,6 +85,12 @@ dr task deploy
 ## Update
 
 ```bash
+dr component update .datarobot/answers/drmcp-MCP_APP_NAME.yml
+```
+
+Or with copier directly:
+
+```bash
 uvx copier update -a .datarobot/answers/drmcp-MCP_APP_NAME.yml -A
 ```
 
