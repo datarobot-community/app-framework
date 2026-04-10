@@ -31,7 +31,7 @@ base → datarobot-mcp
 The safest way to get started is to apply a real component with a complete command:
 
 ```bash
-dr component add https://github.com/datarobot-community/af-component-[NAME] .
+dr component add https://github.com/datarobot-community/af-component-<NAME> .
 ```
 
 To apply a different component, replace the repository URL with the component repository you want to add.
@@ -39,7 +39,7 @@ To apply a different component, replace the repository URL with the component re
 You can also use Copier directly:
 
 ```bash
-uvx copier copy https://github.com/datarobot-community/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-<NAME> .
 ```
 
 The CLI is the recommended entry point because it handles authentication, environment setup, and component workflows in one interface.
