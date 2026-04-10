@@ -8,7 +8,7 @@ App templates are code-first recipes for building full-stack DataRobot applicati
 
 ![App Framework Architecture Overview](../img/architecture-overview.png)
 
-The north star is enabling customers to deploy something like an NVIDIA VSS directly on DataRobot, add DataRobot value, make it production-grade, and keep it easily customizable.
+The goal is to let teams take a working AI solution pattern, deploy it on DataRobot, and keep it customizable enough for real application development.
 
 Foundation application templates are the reference implementations built from this framework:
 
@@ -18,11 +18,11 @@ Foundation application templates are the reference implementations built from th
 | [Talk to My Data](https://github.com/datarobot-community/talk-to-my-data-agent) | Data Analyst. |
 | [DataRobot Agent Application](https://github.com/datarobot-community/datarobot-agent-application) | Multi-agent orchestration starter. |
 
-Each foundation application template is a private repository that publishes to a corresponding open-source repository through GitHub release mechanics.
+Each foundation application template starts in a private repository and publishes to a corresponding open-source repository through GitHub release mechanics. In practice, most external developers interact with the open-source repositories and then create their own recipe repository from those examples or from the component system described in these docs.
 
 **So, what is the App Framework?**
 
-It is the software and templates that build application templates and make them easier to customize and extend. The App Framework succeeds when adding new features, creating application templates from scratch, and upgrading existing application templates stays simple.
+It is the software and templates that build application templates and make them easier to customize and extend. The App Framework succeeds when adding new features, creating application templates from scratch, and upgrading existing application templates remains simple.
 
 ## In this section
 

@@ -13,6 +13,17 @@ App templates are code-first recipes that bundle everything needed to build and 
 - **[DataRobot Agentic starter](https://github.com/datarobot-community/datarobot-agent-application)**&mdash;Multi-agent orchestration starter.
 - **[DataRobot MCP](https://github.com/datarobot-community/af-component-datarobot-mcp)**&mdash;FastMCP server with DataRobot predictive tools and third-party integrations.
 
+This documentation explains how the framework is organized, how components fit together, and how to build or extend an application template. If you are new to the project, start here and then continue to the getting-started and design pages.
+
+## Before you begin
+
+Most guides assume that you already have:
+
+- A DataRobot account and API token.
+- The [DataRobot CLI](https://cli.datarobot.com) installed.
+- [`uv`](https://docs.astral.sh/uv/getting-started/installation/) installed.
+- A GitHub repository where you can create or clone an application template.
+
 ## How it works
 
 The framework is built around three ideas:
@@ -32,10 +43,17 @@ The framework is built around three ideas:
 
 **The Declarative API** (via Pulumi) manages your DataRobot resources, including use cases, deployments, playgrounds, and custom applications, as infrastructure-as-code. This makes your stack reproducible across environments.
 
+For readers who are new to the terminology:
+
+- A **recipe** is the repository for one application template or application instance.
+- A **component** is a reusable template that adds one capability, such as a FastAPI backend or React frontend.
+- An **answers file** is the YAML file in `.datarobot/answers/` that stores the choices you made when applying a component.
+
 ## Get started
 
-- [**Design**](design/index.md)&mdash;Understand the architecture, principles, and building blocks.
 - [**0-Vibe: Build your first application**](guides/zero-vibe.md)&mdash;Go from an empty repository to a deployed application in minutes.
+- [**Design**](design/index.md)&mdash;Understand the architecture, repository model, and building blocks.
+- [**Components**](components/index.md)&mdash;Learn what each component adds and the order in which to apply them.
 - [**Adding custom pages**](guides/custom-pages.md)&mdash;Extend FastAPI templates with new routes and templates.
 - [**Adding a vector database**](guides/vector-database.md)&mdash;Ground your agent in real documents.
 - [**Developer guide**](developer.md)&mdash;Run the docs site locally and contribute.

@@ -1,6 +1,6 @@
 # Developer guide
 
-This guide is for developers who want to contribute to the App Framework. It covers the prerequisites and how to run the documentation site locally.
+This guide is for developers who want to work on this repository. It covers how to run the documentation site locally and describes the repository-specific tooling used to maintain component templates and generated README files.
 
 ## Prerequisites
 
@@ -35,7 +35,11 @@ task docs-serve
 
 This command installs dependencies and starts a local server at [http://localhost:8000](http://localhost:8000). The site reloads automatically as you edit files in the `docs/` directory.
 
+If you only need to review or edit the documentation for this repository, this is the only section you need.
+
 ## Copier watch
+
+Use this section only if you are developing or testing an App Framework component template. It is not required for ordinary documentation edits in this repository.
 
 `tools/copier-watch/copier-watch.py` is a development tool for iterating efficiently on [copier](https://copier.readthedocs.io/en/stable/) templates such as `af-component-fastapi-backend`.
 

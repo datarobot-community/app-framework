@@ -2,7 +2,7 @@
 
 ![Studio Component Model](../img/studio-component-model.png)
 
-The App Framework Template Studio is the templating and update management layer. It solves two core problems:
+The App Framework Template Studio is the templating and update-management layer behind the component system described in these docs. It solves two core problems:
 
 1. **Maintenance at scale** — A bug fix to five foundation application templates with 100 applications per template means the fix needs to reach 500 cloned applications. Manual propagation does not scale.
 2. **Template creation speed** — There is value in standing up the latest AI blueprint on DataRobot quickly. You need good building blocks.
@@ -35,4 +35,4 @@ These can be applied multiple times as you build out the template:
 
 The Studio uses a Dependabot-like approach: automated pull requests to all application template repositories that use the component answers, with one pull request per component. Application template authors can selectively or completely disable updates at the component-instance level.
 
-This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates pull requests when updates are available. To set it up, request that your repository be added to the Diffington watch list in the `#applications` channel in DataRobot's public Slack.
+This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates pull requests when updates are available. If you want to use this update workflow, request that your repository be added to the Diffington watch list in the `#applications` channel in DataRobot's public Slack.

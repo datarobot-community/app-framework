@@ -8,6 +8,8 @@ This guide walks you through building an App Framework recipe from scratch, from
 - [DataRobot CLI](https://cli.datarobot.com) installed
 - A DataRobot account and API token
 
+This guide assumes that you are creating a new recipe repository and applying App Framework components into it. A recipe is the repository that contains your application code, infrastructure, and component answers files.
+
 ## Creating a new application from scratch
 
 Every App Framework recipe starts the same way, regardless of what you're building.
@@ -41,10 +43,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Run the base component copier and answer the interactive questions:
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 Copier prompts for your recipe name, the components you want, and other configuration. Answer thoughtfully because those choices shape the structure of your recipe. You now have the foundation in place, and everything from here is customization.
+
+After this step, expect your repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
 
 ---
 
@@ -61,13 +65,15 @@ A two-component App Framework application that covers a wide range of common fun
 
 ### Implementation
 
+This example assumes that you already completed Steps 1 through 4 and that the `base` component is present in your repository.
+
 After bootstrapping with `af-component-base`, add the FastAPI backend:
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .
+uvx copier copy https://github.com/datarobot-community/af-component-fastapi-backend .
 ```
 
-Accept the defaults. Then confirm that the CLI is installed and compose the tasks:
+Accept the defaults. Then compose the task definitions for the generated project:
 
 ```bash
 dr task compose .
@@ -101,6 +107,8 @@ When you're happy locally, deploy:
 ```bash
 dr run deploy
 ```
+
+If your generated project exposes deployment commands through `dr task`, use the project-provided deployment command shown by `dr task --list`. In this guide, the examples use the command produced by the generated Taskfile for each scenario.
 
 The CLI previews the resources to be created and asks for confirmation:
 
@@ -261,7 +269,7 @@ For use cases that need agents, tools, and multi-step workflows, the agent compo
 #### Step 1 — Apply the base component
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 Accept the defaults.

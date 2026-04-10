@@ -2,6 +2,8 @@
 
 App Framework components are [copier](https://copier.readthedocs.io/) templates that you layer into your recipe one at a time. Each component adds a top-level folder or file set and records your answers in `.datarobot/answers/`, so the stack can be updated automatically later.
 
+If you are new to the framework, start with `base`. It creates the shared project structure that all other components depend on.
+
 ## Core components
 
 | Component | Description | Repeatable |
@@ -26,21 +28,25 @@ base → datarobot-mcp
 
 ## Adding a component
 
-Use the CLI:
+The safest way to get started is to apply a real component with a complete command:
 
 ```bash
-dr component add https://github.com/datarobot-community/af-component-NAME .
+dr component add https://github.com/datarobot-community/af-component-[NAME] .
 ```
 
-Using copier directly:
+To apply a different component, replace the repository URL with the component repository you want to add.
+
+You can also use Copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-NAME .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
+
+The CLI is the recommended entry point because it handles authentication, environment setup, and component workflows in one interface.
 
 ## Updating a component
 
-Each applied component leaves an answers file in `.datarobot/answers/`. Pass it to `copier update` to pull in changes non-interactively:
+Each applied component leaves an answers file in `.datarobot/answers/`. Pass that answers file to `copier update` to pull in changes non-interactively:
 
 ```bash
 uvx copier update -a .datarobot/answers/COMPONENT-NAME.yml -A
@@ -54,4 +60,4 @@ uvx copier update -a .datarobot/answers/*.yml -A
 
 ## Adding your own
 
-If you build a component that others might want to use, share it in the `#applications` Slack channel. Components live in their own repositories: search for `af-component` in the `datarobot-community` GitHub organization to see the full catalog.
+If you build a component that others might want to use, share it in the `#applications` Slack channel. Components live in their own repositories. Search for `af-component` in the `datarobot-community` GitHub organization to see the full catalog.
