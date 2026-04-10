@@ -46,7 +46,13 @@ The CLI is the recommended entry point because it handles authentication, enviro
 
 ## Updating a component
 
-Each applied component leaves an answers file in `.datarobot/answers/`. Pass that answers file to `copier update` to pull in changes non-interactively:
+Each applied component leaves an answers file in `.datarobot/answers/`. Pass it to `dr component update` to pull in changes non-interactively:
+
+```bash
+dr component update .datarobot/answers/COMPONENT-NAME.yml
+```
+
+Or with copier directly:
 
 ```bash
 uvx copier update -a .datarobot/answers/COMPONENT-NAME.yml -A
