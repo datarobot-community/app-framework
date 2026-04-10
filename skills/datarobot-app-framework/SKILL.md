@@ -186,4 +186,3 @@ Edit `agent/agent/myagent.py` to:
 - Agent Templates: https://github.com/datarobot-community/datarobot-agent-templates
 - Components: search `af-component` in datarobot / datarobot-community GitHub orgs
 - Community: #applications (Slack)
-- Auto-updates: ask in #applications to add your recipe to Diffington

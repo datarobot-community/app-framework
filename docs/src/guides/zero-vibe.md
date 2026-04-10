@@ -354,29 +354,14 @@ Edit `agent/agent/myagent.py` to:
 
 ---
 
-## Keeping your recipe fresh
-
-The App Framework evolves constantly — components get updates, security patches land, and new features drop. **Diffington** is an agent (built with the App Framework itself) that automatically keeps your recipes up to date.
-
-What Diffington does:
-
-- Monitors your recipe for component updates.
-- Creates PRs when updates are available.
-- Keeps your dependencies fresh and secure.
-- Updates itself.
-
-To enroll your recipe, request it be added to the Diffington watch list in the `#applications` Slack channel and provide your repo URL.
-
-Diffington repo: [datarobot/diffington](https://github.com/datarobot/diffington)
-
 ## Discovering available components
 
-- **GitHub Search:** Search for `af-component` in the `datarobot` and `datarobot-community` orgs.
-- **Ask in Slack:** The `#applications` channel is full of folks who've built components and love to share.
+- **GitHub Search:** Search for `af-component` in the `datarobot-community` org.
+- **Ask in Slack:** The `#applications` channel is a growing group of folks who've built components and love to share!
 
 ## CI/CD setup
 
 Once your recipe is running, set up CI/CD for automated testing and deployment:
 
 - [DataRobot CI/CD docs](https://docs.datarobot.com/en/docs/api/reference/declarative-api.html).
-- [`datarobot-agent-skills` PR #4](https://github.com/datarobot-oss/datarobot-agent-skills/pull/4)&mdash;CI/CD skill for GitLab and GitHub.
+- [`datarobot-agent-skills` PR #4](https://github.com/datarobot-oss/datarobot-agent-skills/)&mdash;CI/CD skill for GitLab and GitHub.

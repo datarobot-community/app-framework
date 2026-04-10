@@ -29,10 +29,13 @@ These can be applied multiple times as you build out the template:
 | **Agent** | [af-component-agent](https://github.com/datarobot-community/af-component-agent) | CrewAI, LangGraph, LlamaIndex, or YAML-based NeMo Agent Toolkit. |
 | **DataRobot MCP** | [af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp) | FastMCP server with DataRobot predictive tools and third-party integrations. |
 
+
+## Technical underpinnings
+
+It's all built on top of [Copier](https://copier.readthedocs.io/). Similar to Yeoman or Cookiecutter, but with Git semantics that make updates after you copy the template baked into the box.
+
 ## Update model
 
 ![Copier Update](../img/studio-copier-update.png)
 
-The Studio uses a Dependabot-like approach: automated pull requests to all App Template repos that use the component answers, with PR-per-component granularity. App Template authors can selectively or completely disable updates at the component-instance level.
-
-This is powered by **Diffington** — an agent built using the App Framework itself — that monitors your recipe for component updates and creates PRs when updates are available. To set it up, request your repo be added to the Diffington watch list in the `#applications` Slack channel.
+The App Framework uses copier and git fork semantics to keep things updated. And coming soon, we'll release our Dependabot-like GitHub app for automated pull requests available to all repos using our core components with PR-per-component granularity, agentic merge conflict resolution, and customizable update configurations.
