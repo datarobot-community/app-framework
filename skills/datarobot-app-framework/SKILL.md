@@ -185,4 +185,4 @@ Edit `agent/agent/myagent.py` to:
 - DataRobot CLI: https://docs.datarobot.com/en/docs/more-info/app-framework/cli.html
 - Agent Templates: https://github.com/datarobot-community/datarobot-agent-templates
 - Components: search `af-component` in datarobot / datarobot-community GitHub orgs
-- Community: #applications (Slack)
+
