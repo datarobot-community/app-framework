@@ -55,7 +55,7 @@ When prompted for `INFRA_ENABLE_LLM`, choose your integration type:
 dr task deploy
 ```
 
-Retrieve deployment info at any time:
+Retrieve deployment information at any time:
 
 ```bash
 dr task infra:info

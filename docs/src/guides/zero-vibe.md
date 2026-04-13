@@ -1,6 +1,6 @@
-# 0-Vibe: Build your first app
+# 0-Vibe: Build your first application
 
-This guide walks you through building an App Framework recipe from scratch — from empty repo to deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI app, an LLM with a notebook, and a full agentic workflow.
+This guide walks you through building an App Framework recipe from scratch, from an empty repository to a deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI application, an LLM with a notebook, and a full agentic workflow.
 
 ## Prerequisites
 
@@ -8,7 +8,9 @@ This guide walks you through building an App Framework recipe from scratch — f
 - [DataRobot CLI](https://cli.datarobot.com) installed
 - A DataRobot account and API token
 
-## Creating a new app from scratch
+This guide assumes that you are creating a new recipe repository and applying App Framework components into it. A recipe is the repository that contains your application code, infrastructure, and component answers files.
+
+## Creating a new application from scratch
 
 Every App Framework recipe starts the same way, regardless of what you're building.
 
@@ -16,7 +18,7 @@ Every App Framework recipe starts the same way, regardless of what you're buildi
 
 1. Head to the [datarobot-oss](https://github.com/datarobot-oss) GitHub org and create a new repository.
 2. Name it with a `recipe-` prefix if you're making a reusable template.
-3. Start from [`oss-template-repo`](https://github.com/datarobot-oss/oss-template-repo) — it has all the good stuff baked in.
+3. Start from [`oss-template-repo`](https://github.com/datarobot-oss/oss-template-repo). It includes the standard project scaffolding.
 
 **Important Git settings:**
 
@@ -41,10 +43,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Run the base component copier and answer the interactive questions:
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
-The copier will ask about your recipe name, which components you want, and other configuration. Answer thoughtfully — these shape the structure of your recipe. You now have the foundation. Everything from here is customization.
+Copier prompts for your recipe name, the components you want, and other configuration. Answer thoughtfully because those choices shape the structure of your recipe. You now have the foundation in place, and everything from here is customization.
+
+After this step, expect your repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
 
 ---
 
@@ -52,7 +56,7 @@ The copier will ask about your recipe name, which components you want, and other
 
 ### Overview
 
-A two-component App Framework app covering a wide range of typical functionality: a FastAPI backend served as a DataRobot Custom Application, with a React frontend baked in.
+A two-component App Framework application that covers a wide range of common functionality: a FastAPI backend served as a DataRobot Custom Application, with a React frontend included.
 
 ### Key components
 
@@ -61,13 +65,15 @@ A two-component App Framework app covering a wide range of typical functionality
 
 ### Implementation
 
+This example assumes that you already completed Steps 1 through 4 and that the `base` component is present in your repository.
+
 After bootstrapping with `af-component-base`, add the FastAPI backend:
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .
+uvx copier copy https://github.com/datarobot-community/af-component-fastapi-backend .
 ```
 
-Accept the defaults. Then make sure the CLI is installed and compose:
+Accept the defaults. Then compose the task definitions for the generated project:
 
 ```bash
 dr task compose .
@@ -82,7 +88,7 @@ dr dotenv setup
 
 ### Develop locally
 
-Start the dev server:
+Start the development server:
 
 ```bash
 dr run dev
@@ -102,15 +108,17 @@ When you're happy locally, deploy:
 dr run deploy
 ```
 
-The CLI previews what will be created and asks for confirmation:
+If your generated project exposes deployment commands through `dr task`, use the project-provided deployment command shown by `dr task --list`. In this guide, the examples use the command produced by the generated Taskfile for each scenario.
+
+The CLI previews the resources to be created and asks for confirmation:
 
 ![Pulumi deploy preview](../img/zero-vibe-deploy.png)
 
-After deployment, your app is live at the URL in the output. Visit it with `cmd-click` or `ctrl-shift-click` from your terminal:
+After deployment, your application is live at the URL shown in the output. Open it from your terminal with `cmd-click` or `ctrl-shift-click`:
 
 ![Deployed app on DataRobot](../img/zero-vibe-deployed-app.png)
 
-With just these steps you get unit tests, linters, deployments, fast local iterations, and everything needed for team-driven development via GitHub Actions.
+With these steps, you get unit tests, linters, deployments, fast local iteration, and everything needed for team-driven development through GitHub Actions.
 
 **Lifecycle commands:**
 
@@ -124,15 +132,15 @@ dr auth set-url      # Switch to a different DR environment.
 
 ## Example 2: LLM with notebook
 
-### Overview
+### Notebook example overview
 
 For fast iteration on LLM use cases that don't yet need a full agentic workflow, use the LLM component and iterate in a Python notebook — locally or in DataRobot.
 
-### Key components
+### Notebook example components
 
 - [`af-component-llm`](https://github.com/datarobot-community/af-component-llm)
 
-### Implementation
+### Notebook example implementation
 
 Apply the LLM component to your recipe:
 
@@ -158,7 +166,7 @@ dr task deploy
 
 ![Deploy preview showing LLM resources](../img/zero-vibe-deploy-preview.png)
 
-Confirm and deploy. When complete, note the deployment ID — you'll need it for notebook development. You can always retrieve it again with:
+Confirm and deploy. When complete, note the deployment ID because you need it for notebook development. You can retrieve it again at any time with:
 
 ```bash
 dr task infra:info
@@ -247,24 +255,24 @@ Then run `dr task deploy` again. The notebook appears in your use case in the Da
 
 ## Example 3: LLM with agent
 
-### Overview
+### Agent example overview
 
-For use cases that need agents, tools, and multi-step workflows, the agent component provides a full agentic framework — built on top of the LLM component from Example 2.
+For use cases that need agents, tools, and multi-step workflows, the agent component provides a full agentic framework built on top of the LLM component from Example 2.
 
-### Key components
+### Agent example components
 
 - [`af-component-llm`](https://github.com/datarobot-community/af-component-llm)
 - [`af-component-agent`](https://github.com/datarobot-community/af-component-agent)
 
-### Implementation
+### Agent example implementation
 
 #### Step 1 — Apply the base component
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
-Accept defaults.
+Accept the defaults.
 
 #### Step 2 — Apply the LLM component
 
@@ -272,11 +280,11 @@ Accept defaults.
 uvx copier copy https://github.com/datarobot-community/af-component-llm .
 ```
 
-Accept defaults.
+Accept the defaults.
 
 #### Step 3 — Apply the agent component
 
-Using the CLI (easiest):
+Use the CLI:
 
 ```bash
 dr component add agent
@@ -284,9 +292,9 @@ dr component add agent
 
 When prompted, choose your agent framework: **CrewAI**, **LangGraph**, **LlamaIndex**, or the YAML-based NeMo Agent Toolkit.
 
-The component creates:
+The component creates the following structure:
 
-```
+```text
 agent/
 ├── agent/myagent.py   # Agent workflow
 ├── cli.py             # Command-line interface
@@ -337,7 +345,7 @@ dr task deploy
 
 ![Agent deploy preview](../img/zero-vibe-agent-deploy.png)
 
-The CLI asks you to name your stack, previews the resources (LLM deployment, agent deployment), and deploys both to DataRobot.
+The CLI asks you to name your stack, previews the resources (LLM deployment and agent deployment), and deploys both to DataRobot.
 
 After deployment, find your agent in the DataRobot workbench under your use case. Interact with it through the agent playground or via API calls to the deployment endpoint:
 
@@ -351,8 +359,6 @@ Edit `agent/agent/myagent.py` to:
 - Modify task descriptions.
 - Add more agents to the crew.
 - Integrate additional MCP tools.
-
----
 
 ## Discovering available components
 

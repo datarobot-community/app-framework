@@ -24,7 +24,7 @@
   </a>
 </p>
 
-Tooling to apply and update App Framework Components.
+Tooling to apply and update App Framework components.
 
 ## Installing skills
 
@@ -47,4 +47,4 @@ npx ai-agent-skills install datarobot-community/app-framework
 
 ## Development
 
-See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and the `copier-watch` tool for iterating on component templates.
+See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.

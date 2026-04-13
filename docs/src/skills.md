@@ -14,7 +14,7 @@ This registers the following skills in your AI assistant:
 
 | Skill | Description |
 |-------|-------------|
-| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows. |
+| `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI applications, LLM integrations, and agentic workflows. |
 | `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema. |
 
 ## Available skills
@@ -24,7 +24,8 @@ This registers the following skills in your AI assistant:
 Guides your AI assistant through scaffolding, configuring, and deploying App Framework recipes using `af-component-*` building blocks. Covers agents (CrewAI, LangGraph, LlamaIndex), FastAPI backends, React frontends, and LLM integrations.
 
 Trigger it by asking your assistant to:
-- Build or deploy an app on DataRobot using the App Framework.
+
+- Build or deploy an application on DataRobot using the App Framework.
 - Add a component (`dr component add`, `uvx copier copy`).
 - Wire components together or configure an agent.
 
@@ -33,19 +34,20 @@ Trigger it by asking your assistant to:
 Generates a structured `README.generated.md` scaffold from a component's `copier-module.yaml`, then intelligently merges it with the existing `README.md` — preserving human-written content and using the template's authoring hints to fill any gaps.
 
 Trigger it by asking your assistant to:
-- Update or regenerate the README for a component repo.
+
+- Update or regenerate the README for a component repository.
 - Generate documentation from `copier-module.yaml`.
 
-#### Running locally (before pushing to GitHub)
+#### Running locally before pushing to GitHub
 
 ```bash
-# Step 1 — generate the scaffold (from the app-framework-studio root).
+# Step 1. Generate the scaffold from the app-framework-studio root.
 cd ~/code/app-framework-studio
-uv run --project tools/af_component_doc_update af-component-doc-update ~/code/<your-component>
+uv run --project tools/af_component_doc_update af-component-doc-update ~/code/YOUR_COMPONENT_DIR
 
-# Step 2 — invoke the skill in Copilot chat.
+# Step 2. Invoke the skill in Copilot Chat.
 ```
 
-```
-#skills/datarobot-app-framework-doc-update/SKILL.md Update the README for ~/code/<your-component>. For Step 1, use the local variant: cd ~/code/app-framework-studio && uv run --project tools/af_component_doc_update af-component-doc-update ~/code/<your-component>
+```text
+#skills/datarobot-app-framework-doc-update/SKILL.md Update the README for ~/code/YOUR_COMPONENT_DIR. For Step 1, use the local variant: cd ~/code/app-framework-studio && uv run --project tools/af_component_doc_update af-component-doc-update ~/code/YOUR_COMPONENT_DIR
 ```

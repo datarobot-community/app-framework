@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend)
 
-Adds a FastAPI server to your recipe, deployed as a DataRobot Custom Application. This is the standard API layer for App Framework templates — it pairs with the [react](react.md) component for full-stack apps, or stands alone for pure API or server-side-rendered use cases.
+Adds a FastAPI server to your recipe, deployed as a DataRobot Custom Application. This is the standard API layer for App Framework templates: it pairs with the [react](react.md) component for full-stack applications or stands alone for pure API or server-side-rendered use cases.
 
 The component is repeatable: apply it multiple times with different `fastapi_app` names to include multiple independent FastAPI backends in a single recipe.
 
@@ -26,7 +26,7 @@ Or with copier directly:
 uvx copier copy datarobot-community/af-component-fastapi-backend .
 ```
 
-The wizard asks for a `fastapi_app` name — use a short lowercase identifier (e.g. `api` or `web`). This name is used to namespace all generated files and the answers file.
+The wizard asks for a `fastapi_app` name. Use a short, lowercase identifier (e.g., `api` or `web`). This name namespaces all generated files and the answers file.
 
 ## Component dependencies
 
@@ -77,19 +77,19 @@ Because this component is repeatable, run the apply command again with a differe
 
 ```bash
 uvx copier copy datarobot-community/af-component-fastapi-backend .
-# → enter a different fastapi_app name when prompted
+# Enter a different `fastapi_app` name when prompted.
 ```
 
 ## Troubleshooting
 
-**Application fails to start on DataRobot**
+### Application fails to start on DataRobot
 
 Check Custom Application logs in the DataRobot UI. The most common cause is a missing environment variable — confirm all required runtime parameters are set in the deployment configuration.
 
-**`uv run` reports a missing package**
+### `uv run` reports a missing package
 
 Run `uv sync` to install dependencies declared in `pyproject.toml`.
 
-**Port conflict on local dev**
+### Port conflict during local development
 
 Change the `--port` flag in the `uvicorn` command, or stop any other process already bound to port `8080`.
