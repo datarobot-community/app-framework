@@ -66,6 +66,7 @@ nav:
     - Component Model: design/component-model.md
     - CLI: design/cli.md
     - Declarative API: design/declarative-api.md
+    - Documentation: design/documentation.md
   - Components:
     - components/index.md
     - Base: components/base.md
