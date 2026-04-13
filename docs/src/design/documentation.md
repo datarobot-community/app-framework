@@ -40,7 +40,7 @@ template/
 
 ### Naming convention
 
-**Single-file documentation:**
+**Single-file documentation**:
 - Format: `docs/<component-name>.md`
 - Example: `docs/react.md`, `docs/llm.md`
 
