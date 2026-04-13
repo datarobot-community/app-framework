@@ -45,8 +45,11 @@ template/
 - Example: `docs/react.md`, `docs/llm.md`
 
 **Multifile documentation:**
-- Format: `docs/<component-name>/README.md` (plus additional files)
-- Example: `docs/agent/README.md`, `docs/agent/crewai.md`
+
+Must have a README.md in the folder, and may or may not contain additional files.
+
+- Format: `docs/<component-name>/README.md` (plus any additional files added to the folder)
+- Example: `docs/custom-model/README.md`, `docs/custom-model/deployment.md`
 
 This convention prevents collisions similar to the existing `infra/infra` and `infra/configurations` folder structure.
 
@@ -58,7 +61,7 @@ All component documentation must be:
    - Purpose and use cases.
    - Installation and setup.
    - Configuration options.
-   - Usage examples including common use cases and extensions.
+   - Usage examples including, common integrations with other components, features, and platform amenities.
    - Troubleshooting.
    - Best practices.
 
