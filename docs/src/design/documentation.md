@@ -27,14 +27,12 @@ Each component must create documentation files within the template's `docs` fold
 ```
 template/
 ├── docs/
-│   ├── base.md                    # Single-file component docs
-│   ├── custom-model/              # Multi-file component docs
+│   ├── react.md                    # Single-file component docs
+│   ├── agent/              # Multi-file component docs
 │   │   ├── README.md
 │   │   ├── deployment.md
 │   │   └── troubleshooting.md
-│   ├── streamlit-frontend.md
-│   ├── react-frontend/
-│   │   └── README.md
+│   ├── llm.md
 │   └── Taskfile.yml               # Documentation compilation tasks
 ├── .skills/                       # Component skills (see below)
 └── ...
@@ -44,11 +42,11 @@ template/
 
 **Single-file documentation:**
 - Format: `docs/<component-name>.md`
-- Example: `docs/base.md`, `docs/streamlit-frontend.md`
+- Example: `docs/react.md`, `docs/llm.md`
 
 **Multi-file documentation:**
 - Format: `docs/<component-name>/README.md` (plus additional files)
-- Example: `docs/custom-model/README.md`, `docs/custom-model/deployment.md`
+- Example: `docs/agent/README.md`, `docs/agent/crewai.md`
 
 This convention prevents collisions similar to the existing `infra/infra` and `infra/configurations` folder structure.
 
