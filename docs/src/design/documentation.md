@@ -10,7 +10,7 @@ This specification defines how documentation and agent skills should be organize
 - **Offline-first**&mdash;Components must be usable without internet connectivity.
 - **Self-contained**&mdash;Templates and apps should include all necessary documentation.
 - **LLM-friendly**&mdash;Documentation must be structured for both human readers and AI agents.
-- **Consistency**&mdash;Standardized location and format across all components.
+- **Consistency**&mdash;Location and format should be standardized across all components.
 
 ### Skills distribution
 - **Component-specific knowledge**&mdash;The unique capabilities of each component should be discoverable by AI agents.
@@ -22,13 +22,13 @@ This specification defines how documentation and agent skills should be organize
 
 ### File organization
 
-Each component must create documentation files within the template's `docs` folder following this convention:
+Each component must create documentation files within the template's `docs` folder, following this convention:
 
 ```
 template/
 ├── docs/
 │   ├── react.md                    # Single-file component docs
-│   ├── agent/              # Multi-file component docs
+│   ├── agent/              # Multifile component docs
 │   │   ├── README.md
 │   │   ├── deployment.md
 │   │   └── troubleshooting.md
@@ -44,7 +44,7 @@ template/
 - Format: `docs/<component-name>.md`
 - Example: `docs/react.md`, `docs/llm.md`
 
-**Multi-file documentation:**
+**Multifile documentation:**
 - Format: `docs/<component-name>/README.md` (plus additional files)
 - Example: `docs/agent/README.md`, `docs/agent/crewai.md`
 
@@ -62,17 +62,17 @@ All component documentation must be:
    - Troubleshooting.
    - Best practices.
 
-2. **LLM-friendly**&mdash;Include:
+2. **LLM-friendly**&mdash;To be LLM-consumable, include:
    - Clear section headers.
    - Code examples with context.
    - Explicit prerequisites.
    - Common patterns and anti-patterns.
    - Links to related components.
 
-3. **Maintainable:**
+3. **Maintainable&mdash;To ensure accuracy, be sure the component documentation is:**
    - Version-controlled alongside component code.
    - Updated with component changes.
-   - Reviewed as part of PR process.
+   - Reviewed as part of a PR process.
 
 ## Documentation compilation
 
@@ -117,7 +117,7 @@ Skills must follow this naming pattern:
 - `datarobot-app-framework-streamlit-debugging`
 - `datarobot-app-framework-react-testing`
 
-**Special case - Base component:**
+**Special case&mdash;Base component:**
 When the skill is in the base component and applies generally, omit the component name:
 - `datarobot-app-framework-cicd` (not `datarobot-app-framework-base-cicd`)
 - `datarobot-app-framework-configuration`
@@ -131,24 +131,24 @@ Skills that are general to all app components must:
    - [`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) (for global discovery).
 
 2. **Stay synchronized:**
-   - Changes to general skills must be propagated to both repositories.
+   - Changes to general skills must be propagated to both the component and agent skills repositories.
 
-   **Note:** Consider investigating automation such as git submodules or GitHub Actions to synchronize.
+   **Note:** Consider investigating automation such as git submodules or GitHub Actions to ensure synchronization.
 
-3. **Follow contribution guidelines:**
-   - Skills in the global repo must pass evaluation tests.
-   - Must include comprehensive examples.
-   - Must document token costs and context requirements.
+3. **To contribute to the global skills repository, skills additions must:**
+   - Pass evaluation tests.
+   - Include comprehensive examples.
+   - Document token costs and context requirements.
 
 ### Skill quality requirements
 
 All skills must:
 
 1. **Be human-authored**&mdash;LLM-generated skills are prohibited (see [research](https://arxiv.org/abs/2602.11988)).
-2. **Include comprehensive descriptions**&mdash;Answer "when should I use this?" not just "what does this do?".
-3. **Provide working examples**&mdash;Real code that executes successfully.
-4. **Document dependencies**&mdash;External tools, environment variables, prerequisites.
-5. **Specify context costs**&mdash;Estimated token usage and context window requirements.
+2. **Include comprehensive descriptions**&mdash;Prompt "when should I use this?" not just "what does this do?".
+3. **Provide working examples**&mdash;Use real code that executes successfully.
+4. **Document dependencies**&mdash;Describe external tools, environment variables, and prerequisites.
+5. **Specify context costs**&mdash;Provide estimated token usage and context window requirements.
 
 ## Implementation guidelines
 
@@ -165,7 +165,7 @@ When creating a new component:
 
 ## See also
 
-- [Components](../components/index.md)&mdash;available App Framework components.
-- [Skills](../skills.md)&mdash;overview of the skill system and available skills.
-- [Component model](./component-model.md)&mdash;how App Framework components are structured and updated.
-- [Design principles](./principles.md)&mdash;guiding principles behind App Framework design.
+- [Components](../components/index.md)&mdash;Available App Framework components.
+- [Skills](../skills.md)&mdash;Overview of the skill system and available skills.
+- [Component model](./component-model.md)&mdash;Description of how App Framework components are structured and updated.
+- [Design principles](./principles.md)&mdash;Guiding principles behind App Framework design.
