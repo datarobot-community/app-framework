@@ -28,7 +28,7 @@ The wizard prompts for:
 
 | Question | Notes |
 |----------|-------|
-| Template name | Human-readable display name (e.g. `My Sales Assistant`). |
+| Template name | Human-readable display name (e.g., `My Sales Assistant`). |
 | Template code name | Auto-derived slug; override if needed. |
 | Template description | Shown in the App Framework gallery. |
 | Copyright year | Defaults to current year. |
@@ -50,11 +50,11 @@ dr component update .datarobot/answers/base.yml
 - `Pulumi.yaml` + `infra/`&mdash;base Pulumi project that other components plug into.
 - `.datarobot/answers/base.yml`&mdash;recorded answers reused by all subsequent components.
 - `.github/`&mdash;CI/CD workflows for updates, tests, and deployment.
-- `LICENSE`, `CONTRIBUTING.md`, `.github/CODEOWNERS`
+- `LICENSE`, `CONTRIBUTING.md`, `.github/CODEOWNERS`.
 
 ## Troubleshooting
 
-**Copier asks questions I already answered**
+### Copier asks questions I already answered
 
 `.datarobot/answers/base.yml` may be missing or out of date. Use `-A` to skip interactive prompts:
 
@@ -62,6 +62,6 @@ dr component update .datarobot/answers/base.yml
 uvx copier update -a .datarobot/answers/base.yml -A
 ```
 
-**Template conflicts after `copier update`**
+### Template conflicts after `copier update`
 
 Copier shows a diff for any file with local modifications. Review each conflict, keep your changes where appropriate, and commit the result.

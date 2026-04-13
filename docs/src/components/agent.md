@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-agent](https://github.com/datarobot-community/af-component-agent)
 
-Adds an agentic workflow to your recipe. The component scaffolds a single or multi-agent system using your choice of framework: **CrewAI**, **LangGraph**, **LlamaIndex**, or **NeMo Agent Toolkit** (NAT). It includes a local dev server, a CLI for testing, a test suite, and Pulumi infrastructure for deployment to DataRobot.
+Adds an agentic workflow to your recipe. The component scaffolds a single-agent or multi-agent system using your choice of framework: **CrewAI**, **LangGraph**, **LlamaIndex**, or **NeMo Agent Toolkit** (NAT). It includes a local development server, a command-line interface for testing, a test suite, and Pulumi infrastructure for deployment to DataRobot.
 
 ## Prerequisites
 
@@ -45,10 +45,10 @@ When prompted, choose your agent framework:
 
 ## What it adds
 
-```
+```text
 agent/
 ├── agent/myagent.py   # Agent workflow — edit this to customize behavior
-├── cli.py             # CLI for local testing
+├── cli.py             # Command-line interface for local testing
 ├── dev.py             # Local development server
 ├── tests/             # Test suite
 └── public/            # UI assets
@@ -135,7 +135,7 @@ uvx copier update -a .datarobot/answers/agent-AGENT_APP_NAME.yml -A
 
 ## End-to-end test
 
-The component includes a full lifecycle E2E test (render → build → deploy → test → destroy):
+The component includes a full lifecycle end-to-end test (render → build → deploy → test → destroy):
 
 ```bash
 task test-e2e

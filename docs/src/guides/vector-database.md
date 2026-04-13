@@ -1,13 +1,13 @@
-# Adding a vector database to your agent app
+# Adding a vector database to your agent application
 
-You've got an agent application running and it's doing its thing — but you want to ground it in your own documents. Maybe you've got a knowledge base, some internal docs, or a collection of PDFs that your agent should actually know about instead of making things up.
+If you already have an agent application running and want to ground it in your own documents, this guide shows one way to do it. You can use a knowledge base, internal documentation, or a collection of PDFs to give the agent retrieval-based context.
 
-This guide walks through adding a Vector Database (VDB) to your agent app. A folder of documents becomes searchable, semantic knowledge your agent can use for retrieval.
+This guide walks through adding a vector database (VDB) to your agent application. A folder of documents becomes searchable semantic knowledge that your agent can use for retrieval.
 
 ## Prerequisites
 
-- An App Framework recipe with the [Agentic Starter Application](https://github.com/datarobot/recipe-datarobot-agent-application) or similar setup
-- The LLM component applied
+- An App Framework recipe with the [Agentic Starter Application](https://github.com/datarobot-community/datarobot-agent-application) or a similar setup.
+- The LLM component already applied.
 
 ## The setup
 
@@ -21,9 +21,9 @@ This switches to an LLM Blueprint that supports VDB retrieval alongside the LLM 
 
 ## Your knowledge base
 
-Create a `knowledgebase/` folder at the root of your project and add your documents — PDFs, text files, markdown, whatever you've got:
+Create a `knowledgebase/` folder at the root of your project and add your documents, such as PDFs, text files, or Markdown files:
 
-```
+```text
 your-project/
 ├── knowledgebase/
 │   ├── important-doc.pdf
@@ -33,7 +33,7 @@ your-project/
 └── ...
 ```
 
-This folder is version-controlled alongside your code. When you update your documents, just redeploy.
+This folder is version-controlled alongside your code. When you update your documents, redeploy.
 
 ## The VDB infrastructure
 
@@ -117,7 +117,7 @@ This code:
 3. Builds a vector database with configurable chunking (512 token chunks, 10% overlap by default).
 4. Uses `intfloat/e5-large-v2` as the embedding model.
 
-All chunking parameters are tunable via environment variables in your `.env` — no code changes required.
+All chunking parameters are configurable through environment variables in your `.env`, so no code changes are required.
 
 ## Wire it up
 
@@ -143,7 +143,7 @@ llm_blueprint = datarobot.LlmBlueprint(
 )
 ```
 
-That's it. Your agent is now grounded in your documents.
+Your agent is now grounded in your documents.
 
 ## Deploy and test
 
@@ -151,18 +151,18 @@ That's it. Your agent is now grounded in your documents.
 task deploy
 ```
 
-Once deployed, your agent pulls relevant context from the knowledgebase instead of hallucinating. Ask it questions about your docs.
+Once deployed, your agent pulls relevant context from the knowledge base instead of hallucinating. Ask it questions about your documents to validate the retrieval flow.
 
 ## Why this approach works
 
 - **Version-controlled**&mdash;your knowledge base lives in git alongside your code.
 - **Tunable without code changes**&mdash;chunking parameters are env vars.
-- **Automatically rebuilt**&mdash;updating your docs is just adding files and redeploying.
+- **Automatically rebuilt**&mdash;updating your docs means adding files and redeploying.
 - **Infrastructure-as-code**&mdash;the whole stack is reproducible.
 
 ## This works everywhere
 
-This same approach works for any App Template — Talk to My Docs, Talk to My Data, any of them. The pattern is identical: create `vdb.py`, wire it into `llm.py`, redeploy.
+This same approach works for any App template, including Talk to My Docs and Talk to My Data. The pattern stays the same: create `vdb.py`, wire it into `llm.py`, and redeploy.
 
 ## Pro tips
 

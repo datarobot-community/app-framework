@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-datarobot-mcp](https://github.com/datarobot-community/af-component-datarobot-mcp)
 
-Adds a [FastMCP](https://github.com/jlowin/fastmcp) server to your recipe, deployed as a DataRobot Custom Application. The component ships a ready-to-deploy MCP server with a comprehensive set of DataRobot predictive tools (projects, models, deployments, predictions) and optional integrations for Google Drive, Jira, Confluence, and Microsoft Graph via DataRobot OAuth providers.
+Adds a [FastMCP](https://github.com/jlowin/fastmcp) server to your recipe, deployed as a DataRobot Custom Application. The component provides a ready-to-deploy MCP server with a comprehensive set of DataRobot predictive tools (projects, models, deployments, predictions) and optional integrations for Google Drive, Jira, Confluence, and Microsoft Graph via DataRobot OAuth providers.
 
 Like [fastapi-backend](fastapi-backend.md), this component is repeatable — apply it multiple times with different `mcp_app_name` values to run multiple independent MCP backends from a single recipe.
 
@@ -25,7 +25,7 @@ Or with copier directly:
 uvx copier copy datarobot-community/af-component-datarobot-mcp .
 ```
 
-The wizard asks for an `mcp_app_name` (e.g. `mcp`). This scopes all generated files and the answers file, allowing multiple instances in the same project.
+The wizard asks for an `mcp_app_name` (e.g., `mcp`). This scopes all generated files and the answers file, allowing multiple instances in the same project.
 
 ## Component dependencies
 
@@ -35,10 +35,10 @@ The wizard asks for an `mcp_app_name` (e.g. `mcp`). This scopes all generated fi
 
 ## What it adds
 
-```
+```text
 MCP_APP_NAME/
 ├── MCP_APP_NAME/   # MCP server source (tools, server entrypoint)
-└── dev.md            # Local dev guide and OAuth setup
+└── dev.md            # Local development guide and OAuth setup
 infra/infra/MCP_APP_NAME.py   # Pulumi deployment resources
 .datarobot/answers/drmcp-MCP_APP_NAME.yml
 ```
@@ -50,8 +50,8 @@ infra/infra/MCP_APP_NAME.py   # Pulumi deployment resources
 | Category | Tools |
 |----------|-------|
 | Data management | Upload datasets to AI Catalog, list catalog items. |
-| Deployment info | Get deployment info, generate prediction templates, validate data. |
-| Deployment management | List deployments, get model info, deploy a model. |
+| Deployment information | Get deployment information, generate prediction templates, and validate data. |
+| Deployment management | List deployments, get model information, and deploy a model. |
 | Model management | Get best model, score datasets, list models. |
 | Predictions | Batch predictions (file or AI Catalog), real-time predictions, time series. |
 | Project management | List projects, get project datasets. |
@@ -102,10 +102,10 @@ uvx copier update -a .datarobot/answers/drmcp-*.yml -A
 
 ## Troubleshooting
 
-**Integration tools return auth errors**
+### Integration tools return auth errors
 
-OAuth providers must be configured in DataRobot before integration tools will work. See the generated `dev.md` inside the template directory.
+OAuth providers must be configured in DataRobot before integration tools work. See the generated `dev.md` inside the template directory.
 
-**Multiple instances conflict**
+### Multiple instances conflict
 
-Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories will collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-NAME.yml`.
+Each instance must use a unique `mcp_app_name`. If two instances share a name, their answers files and generated directories collide. Check `.datarobot/answers/` — each instance should have its own `drmcp-NAME.yml`.
