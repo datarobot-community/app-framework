@@ -362,8 +362,8 @@ Edit `agent/agent/myagent.py` to:
 
 ## Discovering available components
 
-- **GitHub search:** Search for `af-component` in the `datarobot` and `datarobot-community` GitHub organizations.
-- **Ask in Slack:** The `#applications` channel in DataRobot's public Slack includes contributors who regularly share component examples and guidance.
+- **GitHub Search:** [Search for `af-component` in the `datarobot-community` GitHub org](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories).
+- **Ask in Slack:** The [#applications](https://datarobot-community.slack.com/archives/C0ARJSKM0LF) channel is a growing group of folks who've built components and love to share!
 
 ## CI/CD setup
 

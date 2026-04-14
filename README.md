@@ -1,8 +1,30 @@
-# App Framework Studio
+<p align="center">
+  <a href="https://github.com/datarobot-community/app-framework">
+    <img src="https://af.datarobot.com/img/datarobot_logo.avif" width="600px" alt="DataRobot Logo"/>
+  </a>
+</p>
+<p align="center">
+    <span style="font-size: 1.5em; font-weight: bold; display: block;">App Framework Studio</span>
+</p>
+
+<p align="center">
+  <a href="https://datarobot.com">Homepage</a>
+  ·
+  <a href="https://af.datarobot.com">Documentation</a>
+  ·
+  <a href="https://docs.datarobot.com/en/docs/get-started/troubleshooting/general-help.html">Support</a>
+</p>
+
+<p align="center">
+  <a href="https://af.datarobot.com">
+    <img src="https://img.shields.io/badge/af.datarobot.com-a?label=Docs&labelColor=30373D&color=5B8FF9" alt="Documentation">
+  </a>
+  <a href="https://join.slack.com/t/datarobot-community/shared_invite/zt-3uzfp8k50-SUdMqeux25ok9_5wr4okrg">
+    <img src="https://img.shields.io/badge/%23applications-a?label=Slack&labelColor=30373D&color=81FBA6" alt="Slack #applications">
+  </a>
+</p>
 
 Tooling to apply and update App Framework components.
-
-**Documentation:** [af.datarobot.com](https://af.datarobot.com)
 
 ## Installing skills
 
@@ -25,4 +47,4 @@ npx ai-agent-skills install datarobot-community/app-framework
 
 ## Development
 
-See the [Developer guide](https://datarobot-oss.github.io/app-framework/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.
+See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.

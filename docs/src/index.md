@@ -4,6 +4,8 @@ The App Framework is the software and tooling that makes building, updating, and
 
 ![App Framework Architecture](img/architecture-overview.png)
 
+[![Slack #applications](https://img.shields.io/badge/%23applications-a?label=Slack&labelColor=30373D&color=81FBA6)](https://join.slack.com/t/datarobot-community/shared_invite/zt-3uzfp8k50-SUdMqeux25ok9_5wr4okrg)
+
 ## What it is
 
 App templates are code-first recipes that bundle everything needed to build and run a full-stack DataRobot application: infrastructure-as-code, a local development loop, CI/CD, and deployment to DataRobot Custom Applications, all from a single repository. Foundation templates already exist for:
