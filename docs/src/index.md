@@ -1,10 +1,10 @@
 # DataRobot App Framework
 
+[![Slack #applications](https://img.shields.io/badge/%23applications-a?label=Slack&labelColor=30373D&color=81FBA6)](https://join.slack.com/t/datarobot-community/shared_invite/zt-3uzfp8k50-SUdMqeux25ok9_5wr4okrg)
+
 The App Framework is the software and tooling that makes building, updating, and shipping DataRobot applications fast. It gives developers and data scientists a code-first starting point, similar to Helm charts or full-stack starters, but built specifically for DataRobot.
 
 ![App Framework Architecture](img/architecture-overview.png)
-
-[![Slack #applications](https://img.shields.io/badge/%23applications-a?label=Slack&labelColor=30373D&color=81FBA6)](https://join.slack.com/t/datarobot-community/shared_invite/zt-3uzfp8k50-SUdMqeux25ok9_5wr4okrg)
 
 ## What it is
 
