@@ -53,6 +53,8 @@ Must have a README.md in the folder, and may or may not contain additional files
 
 This convention prevents collisions similar to the existing `infra/infra` and `infra/configurations` folder structure.
 
+Additionally, it encourages deduplication of repeatable components. Specifically, if you have four agent components with different names, they simply overwrite the docs with the latest version or the most recently updated version. If you need specific instance differences in documentation, use the multifile pattern and use paths like `docs/agent/{{ agent_app_name }}.md` or `docs/agent/{{ agent_template_framework }}.md`.
+
 ### Documentation requirements
 
 All component documentation must be:
