@@ -20,7 +20,7 @@
     <img src="https://img.shields.io/badge/af.datarobot.com-a?label=Docs&labelColor=30373D&color=5B8FF9" alt="Documentation">
   </a>
   <a href="https://join.slack.com/t/datarobot-community/shared_invite/zt-3uzfp8k50-SUdMqeux25ok9_5wr4okrg">
-    <img src="https://img.shields.io/badge/%23applications-a?label=Slack&labelColor=30373D&color=81FBA6" alt="Slack #applications">
+    <img src="https://img.shields.io/badge/%23skills-a?label=Slack&labelColor=30373D&color=81FBA6" alt="Slack #skills">
   </a>
 </p>
 
