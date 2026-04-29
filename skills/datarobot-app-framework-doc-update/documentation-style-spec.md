@@ -5,6 +5,7 @@ This document defines the style standards for all documentation in the DataRobot
 ## Quick Reference
 
 ### Headings
+
 - ✅ Use sentence case: "Getting started", "Quick start guide"
 - ❌ Avoid title case: "Getting Started", "Quick Start Guide"
 - Exception: Proper nouns remain capitalized (DataRobot, OAuth, PostgreSQL)
