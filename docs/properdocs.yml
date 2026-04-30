@@ -47,6 +47,11 @@ markdown_extensions:
   - attr_list
   - md_in_html
 
+extra:
+  analytics:
+    provider: google
+    property: G-1VQF3XBL43
+
 extra_css:
   - stylesheets/extra.css
 
