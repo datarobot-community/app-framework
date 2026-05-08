@@ -64,6 +64,8 @@ To update all components at once:
 uvx copier update -a .datarobot/answers/*.yml -A
 ```
 
+If you need to change an answer you gave during initial setup or recover from a wrong choice, see [Working with Copier](../guides/working-with-copier.md).
+
 ## Adding your own
 
 Components live in their own repos — [Search for `af-component` in the `datarobot-community` GitHub org](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories) to see the full catalog.
