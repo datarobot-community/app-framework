@@ -21,11 +21,11 @@ These files contain the choices you made during the wizard plus internal metadat
 
 !!! warning
 
-    Do not edit answers files by hand. Copier's update algorithm relies on the answers file accurately reflecting the state that produced the current project files. Manual edits break that assumption and lead to unpredictable merge behavior. See [why manual edits are unsupported](https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually) in the Copier documentation.
+    Do not edit answers files by hand. The Copier update algorithm relies on the answers file accurately reflecting the state that produced the current project files. Manual edits break that assumption and lead to unpredictable merge behavior. See [why manual edits are unsupported](https://copier.readthedocs.io/en/stable/updating/#never-change-the-answers-file-manually) in the Copier documentation.
 
 ## Changing answers after initial apply
 
-If you gave a wrong answer or want to change a choice after applying a component, there are two supported approaches. Both use the [DataRobot CLI `component update`](https://cli.datarobot.com/dev-docs/commands/component-managed-updates/) or Copier's `update` command directly.
+If you gave a wrong answer or want to change a choice after applying a component, there are two supported approaches. Both use the [DataRobot CLI `component update`](https://cli.datarobot.com/dev-docs/commands/component-managed-updates/) or the Copier `update` command directly.
 
 ### Re-answer interactively
 
@@ -42,13 +42,13 @@ Replace `COMPONENT.yml` with the actual answers file, for example `agent-myagent
 Use the `--data` flag to override one answer while keeping all others. The `--defaults` flag accepts the previous answers for every question you don't override:
 
 ```bash
-uvx copier update -a .datarobot/answers/COMPONENT.yml --defaults --data key=value .
+uvx copier update -a .datarobot/answers/COMPONENT.yml --defaults --data KEY=VALUE .
 ```
 
 To change answers without also upgrading to a newer template version, pin the current version with `--vcs-ref=:current:`:
 
 ```bash
-uvx copier update -a .datarobot/answers/COMPONENT.yml --defaults --data key=value --vcs-ref=:current: .
+uvx copier update -a .datarobot/answers/COMPONENT.yml --defaults --data KEY=VALUE --vcs-ref=:current: .
 ```
 
 See the [Copier update documentation](https://copier.readthedocs.io/en/stable/updating/) for the full list of flags, including `--data-file` for passing multiple overrides from a YAML file.
@@ -65,7 +65,7 @@ Re-run the update interactively and pick the correct framework when prompted:
 uvx copier update -a .datarobot/answers/agent-myagent.yml .
 ```
 
-Copier applies a three-way merge: it regenerates the old template output, diffs it against your current project, applies the new template, and re-applies your project-specific changes. Review the result with `git diff` and commit.
+Copier applies a three-way merge: it regenerates the old template output, diffs it against your current project, applies the new template, and re-applies your project-specific changes. Review the result with `git diff` and commit the result.
 
 ### Option 2: Override with `--data`
 

@@ -46,6 +46,7 @@ markdown_extensions:
   - tables
   - attr_list
   - md_in_html
+  - def_list
 
 extra:
   analytics:
@@ -84,8 +85,10 @@ nav:
     - guides/zero-vibe.md
     - guides/custom-pages.md
     - guides/vector-database.md
+    - Working with Copier: guides/working-with-copier.md
   - Developer Guide: developer.md
   - Skills: skills.md
+  - Glossary: glossary.md
 
 # Exclude patterns to avoid processing non-documentation files
 exclude_docs: |
