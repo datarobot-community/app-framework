@@ -64,7 +64,7 @@ To update all components at once:
 uvx copier update -a .datarobot/answers/*.yml -A
 ```
 
-Need to change an answer you gave during initial setup, or recover from a wrong choice? See [Working with Copier](../guides/working-with-copier.md).
+If you need to change an answer you gave during initial setup or recover from a wrong choice, see [Working with Copier](../guides/working-with-copier.md).
 
 ## Adding your own
 

@@ -53,7 +53,7 @@ Key terms and concepts used throughout the App Framework documentation.
 : The hidden configuration directory created by `af-component-base` at the root of every recipe. It stores DataRobot CLI configuration, the `.env` template, and all [answer files](#answer-file) under `.datarobot/answers/`. The CLI reads this directory for authentication, environment setup, and component update operations.
 
 **Declarative API**
-: DataRobot's infrastructure-as-code offering — [Terraform](https://github.com/datarobot-community/terraform-provider-datarobot) and [Pulumi](https://github.com/datarobot-community/pulumi-datarobot) providers that let you define DataRobot platform resources (use cases, LLM deployments, vector databases, custom applications) as code. The App Framework uses the Pulumi Python provider and [`datarobot-pulumi-utils`](#datarobot-pulumi-utils) to manage all infrastructure. See the [Declarative API documentation](https://docs.datarobot.com/en/docs/api/code-first-tools/declarative-api.html).
+: DataRobot's infrastructure-as-code offering — [Terraform](https://github.com/datarobot-community/terraform-provider-datarobot) and [Pulumi](https://github.com/datarobot-community/pulumi-datarobot) providers that let you define DataRobot platform resources (Use Cases, LLM deployments, vector databases, applications) as code. The App Framework uses the Pulumi Python provider and [`datarobot-pulumi-utils`](#datarobot-pulumi-utils) to manage all infrastructure. See the [Declarative API documentation](https://docs.datarobot.com/en/docs/api/code-first-tools/declarative-api.html).
 
 ---
 
@@ -118,4 +118,4 @@ Key terms and concepts used throughout the App Framework documentation.
 ## U
 
 **Use case**
-: A DataRobot platform resource that acts as the organizational container for all resources belonging to a project — deployments, playgrounds, vector databases, registered models, and custom applications. The `af-component-base` Pulumi configuration creates a use case as the root resource, and all other components attach their resources to it. See the [Use Cases documentation](https://docs.datarobot.com/en/docs/workbench/nxt-workbench/usecases/index.html).
+: A DataRobot platform resource that acts as the organizational container for all resources belonging to a project — deployments, playgrounds, vector databases, registered models, and custom applications. The `af-component-base` Pulumi configuration creates a Use Case as the root resource, and all other components attach their resources to it. See the [Use Cases documentation](https://docs.datarobot.com/en/docs/workbench/nxt-workbench/usecases/index.html).
