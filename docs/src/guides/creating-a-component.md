@@ -2,41 +2,41 @@
 
 This guide walks you through creating a custom App Framework component from the [scaffold template](https://github.com/datarobot-community/scaffold-af-component). It covers the basics common to all components and then shows patterns for three component types: a Python application, an agentic workflow, and a TypeScript frontend.
 
-## What is a component?
+## What is a component
 
 At its core, a component is a [Copier](https://copier.readthedocs.io/) template with a small set of required files:
 
 | File | Purpose |
 |------|---------|
-| `copier.yml` | Defines the questions Copier asks and template configuration |
-| `copier-module.yaml` | Declares the component's name, description, and dependencies |
-| `template/docs/{{name}}.md.jinja` | User-facing documentation for the component |
-| `template/infra/infra/{{name}}.py.jinja` | Pulumi infrastructure code that provisions DataRobot resources |
+| `copier.yml` | Defines the questions Copier asks and template configuration. |
+| `copier-module.yaml` | Declares the component name, description, and dependencies. |
+| `template/docs/{{name}}.md.jinja` | User-facing documentation for the component. |
+| `template/infra/infra/{{name}}.py.jinja` | Pulumi infrastructure code that provisions DataRobot resources. |
 
-The infrastructure file is technically optional — components deeper in the dependency graph (like the React frontend, which delegates resource creation to the FastAPI component it depends on) may not need one. But most components provision at least one DataRobot resource.
+The infrastructure file is technically optional&mdash;components deeper in the dependency graph (like the React frontend, which delegates resource creation to the FastAPI component it depends on) may not need one. But most components provision at least one DataRobot resource.
 
-Everything beyond these files — application code directories, Taskfiles, CLI configs, skills — is added based on what your component actually does.
+Everything beyond these files&mdash;application code directories, Taskfiles, CLI configs, skills&mdash;is added based on what your component actually does.
 
 ## Prerequisites
 
-- A GitHub account
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed
-- Familiarity with [Copier](https://copier.readthedocs.io/) templates and [Jinja2](https://jinja.palletsprojects.com/) syntax
+- A GitHub account.
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
+- Familiarity with [Copier](https://copier.readthedocs.io/) templates and [Jinja2](https://jinja.palletsprojects.com/) syntax.
 
 ## Step 1: Create your repository
 
 1. Go to [scaffold-af-component](https://github.com/datarobot-community/scaffold-af-component) and click **Use this template** → **Create a new repository**.
-2. Name it `af-component-<your-component>` (e.g. `af-component-dashboard`).
+2. Name it `af-component-YOUR_COMPONENT` (e.g. `af-component-dashboard`).
 3. Clone it locally:
 
 ```bash
-git clone git@github.com:YOUR-ORG/af-component-your-component.git
-cd af-component-your-component
+git clone git@github.com:YOUR_ORG/af-component-YOUR_COMPONENT.git
+cd af-component-YOUR_COMPONENT
 ```
 
 ## Step 2: Define your component identity
 
-Edit `copier-module.yaml` to declare your component's name, description, and dependencies:
+Edit `copier-module.yaml` to declare the component name, description, and dependencies:
 
 ```yaml
 module: af-component-your-component
@@ -47,7 +47,7 @@ depends_on:
     url: https://github.com/datarobot-community/af-component-base
 ```
 
-All components must depend on `base`. Add additional entries if your component requires others — for example, the [agent component](https://github.com/datarobot-community/af-component-agent) declares dependencies on `llm` and `mcp`:
+All components must depend on `base`. Add additional entries if your component requires others&mdash;for example, the [agent component](https://github.com/datarobot-community/af-component-agent) declares dependencies on `llm` and `mcp`:
 
 ```yaml
 depends_on:
@@ -90,7 +90,7 @@ Add component-specific questions as needed. See the [Copier question docs](https
 
 ## Step 4: Build the template directory
 
-The `template/` directory contains everything that gets copied into a user's project. The scaffold starts with:
+The `template/` directory contains everything that gets copied into the user project. The scaffold starts with:
 
 ```
 template/
@@ -111,7 +111,7 @@ If your component deploys a runnable application, add a `{{component_app_name}}/
 
 ## Example: Python Custom Application (FastAPI)
 
-The [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) deploys a [FastAPI](https://fastapi.tiangolo.com/) server as a DataRobot Custom Application. Key patterns to replicate:
+The [af-component-fastapi-backend](https://github.com/datarobot-community/af-component-fastapi-backend) deploys a [FastAPI](https://fastapi.tiangolo.com/) server as a DataRobot Custom Application.
 
 ### Questions (`copier.yml`)
 
@@ -136,13 +136,13 @@ template/
 │   │   ├── __init__.py.jinja
 │   │   ├── main.py
 │   │   └── config.py
-│   ├── build-app.sh                  # Build script for Custom App packaging
-│   ├── start-app.sh                  # Entrypoint for the Custom App runtime
-│   ├── metadata.yaml.jinja.jinja     # Runtime parameter definitions
-│   ├── pyproject.toml.jinja          # Python dependencies (managed by uv)
-│   └── Taskfile.yaml.jinja           # Dev tasks: install, dev, lint, test
-├── .datarobot/cli/{{fastapi_app_name}}.yaml  # CLI config (secrets, env vars)
-└── infra/infra/{{fastapi_app_name_file}}.py.jinja  # Pulumi resources
+    ├── build-app.sh                  # Build script for Custom App packaging.
+    ├── start-app.sh                  # Entrypoint for the Custom App runtime.
+│   ├── metadata.yaml.jinja.jinja     # Runtime parameter definitions.
+│   ├── pyproject.toml.jinja          # Python dependencies (managed by uv).
+│   └── Taskfile.yaml.jinja           # Dev tasks: install, dev, lint, test.
+├── .datarobot/cli/{{fastapi_app_name}}.yaml  # CLI config (secrets, env vars).
+└── infra/infra/{{fastapi_app_name_file}}.py.jinja  # Pulumi resources.
 ```
 
 ### Infrastructure (`infra/infra/`)
@@ -198,13 +198,13 @@ tasks:
 
 ---
 
-## Example: Agentic Workflow
+## Example: agentic workflow
 
-The [af-component-agent](https://github.com/datarobot-community/af-component-agent) deploys an AI agent as a DataRobot Custom Model deployment. Key differences from a Custom Application component:
+The [af-component-agent](https://github.com/datarobot-community/af-component-agent) deploys an AI agent as a DataRobot Custom Model Deployment.
 
 ### Additional dependencies
 
-The agent component depends on `llm` and `mcp` components, so its `copier-module.yaml` declares those in `depends_on`. Its `copier.yml` loads their answers:
+The agent component depends on `llm` and `mcp` components, so its `copier-module.yaml` declares those in `depends_on`. The `copier.yml` loads their answers:
 
 ```yaml
 _external_data:
@@ -231,7 +231,7 @@ agent_template_framework:
 
 ### Infrastructure pattern
 
-Instead of a `CustomApplication`, the agent creates a `CustomModelDeployment` — a model endpoint rather than a web app:
+Instead of a `CustomApplication`, the agent creates a `CustomModelDeployment`&mdash;a model endpoint rather than a web app:
 
 ```python
 from datarobot_pulumi_utils.pulumi.custom_model_deployment import CustomModelDeployment
@@ -249,17 +249,17 @@ agent_deployment = CustomModelDeployment(
 ```
 template/
 ├── {{agent_app_name}}/
-│   ├── code/                    # Agent implementation code
+│   ├── code/                    # Agent implementation code.
 │   ├── pyproject.toml.jinja
 │   └── Taskfile.yml.jinja
 ├── .datarobot/cli/{{agent_app_name}}.yaml.jinja
-├── .skills/                     # AI coding assistant skills
+├── .skills/                     # AI coding assistant skills.
 └── infra/infra/{{agent_app_name_file}}.py.jinja
 ```
 
 ---
 
-## Example: TypeScript Frontend (React)
+## Example: TypeScript frontend (React)
 
 The [af-component-react](https://github.com/datarobot-community/af-component-react) adds a [React](https://react.dev/) + [Vite](https://vite.dev/) frontend that pairs with a FastAPI backend. It depends on `fastapi-backend`:
 
@@ -274,7 +274,7 @@ depends_on:
 
 ### Cross-component references
 
-It loads the FastAPI answers to reference the backend's configuration:
+It loads the FastAPI answers to reference the backend configuration:
 
 ```yaml
 # copier.yml
@@ -290,7 +290,7 @@ _external_data:
 
 ### Infrastructure pattern
 
-The React component doesn't create its own DataRobot resource — it builds the frontend and the FastAPI component serves the output. Its Pulumi module runs `npm install && npm run build` via a `pulumi_command.local.Command`:
+The React component doesn't create its own DataRobot resource&mdash;it builds the frontend and the FastAPI component serves the output. The Pulumi module runs `npm install && npm run build` via a `pulumi_command.local.Command`:
 
 ```python
 import pulumi_command as command
@@ -307,18 +307,18 @@ build_react_app = command.local.Command(
 ```
 template/
 ├── {{react_app_name}}/
-│   ├── src/                     # React source code
-│   ├── public/                  # Static assets
+│   ├── src/                     # React source code.
+│   ├── public/                  # Static assets.
 │   ├── package.json.jinja
 │   ├── vite.config.ts.jinja
 │   ├── tsconfig.json
-│   └── Taskfile.yaml            # npm-based tasks (no .jinja needed)
+│   └── Taskfile.yaml            # npm-based tasks (no .jinja needed).
 └── infra/infra/{{ react_app_name }}.py.jinja
 ```
 
 ### Taskfile (npm-based)
 
-TypeScript components use `npm` instead of `uv`:
+TypeScript components use `npm` instead of `uv`.
 
 ```yaml
 tasks:
@@ -345,10 +345,10 @@ Create documentation files in `template/docs/`. Every component must include doc
 The scaffold provides two test modes:
 
 ```bash
-# Quick render — no dependency resolution
+# Quick render — no dependency resolution.
 task copy
 
-# Full validation — resolves dependencies like CI does
+# Full validation — resolves dependencies like CI does.
 task validate
 ```
 
@@ -356,19 +356,19 @@ The included [GitHub Actions workflow](https://github.com/datarobot-oss/copier-t
 
 ## Step 7: Publish
 
-1. Push to GitHub as `af-component-<your-component>`.
+1. Push to GitHub as `af-component-YOUR_COMPONENT`.
 2. Tag releases with [semantic versioning](https://semver.org/).
 3. Users apply it with:
 
 ```bash
-dr component add https://github.com/YOUR-ORG/af-component-your-component .
+dr component add https://github.com/YOUR_ORG/af-component-YOUR_COMPONENT .
 ```
 
 ## Further reading
 
-- [Component Model](../design/component-model.md) — how components are structured and composed
-- [Components overview](../components/index.md) — existing components
-- [Working with Copier](working-with-copier.md) — tips for Copier-based workflows
-- [Copier documentation](https://copier.readthedocs.io/) — template engine reference
-- [Pulumi DataRobot provider](https://www.pulumi.com/registry/packages/datarobot/) — infrastructure resources
-- [DataRobot documentation](https://docs.datarobot.com/) — platform docs
+- [Component Model](../design/component-model.md)&mdash;how components are structured and composed.
+- [Components overview](../components/index.md)&mdash;existing components.
+- [Working with Copier](working-with-copier.md)&mdash;tips for Copier-based workflows.
+- [Copier documentation](https://copier.readthedocs.io/)&mdash;template engine reference.
+- [Pulumi DataRobot provider](https://www.pulumi.com/registry/packages/datarobot/)&mdash;infrastructure resources.
+- [DataRobot documentation](https://docs.datarobot.com/)&mdash;platform docs.
