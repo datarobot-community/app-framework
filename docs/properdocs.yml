@@ -85,6 +85,7 @@ nav:
     - guides/zero-vibe.md
     - guides/custom-pages.md
     - guides/vector-database.md
+    - Create a component: guides/creating-a-component.md
     - Working with Copier: guides/working-with-copier.md
   - Developer Guide: developer.md
   - Skills: skills.md
