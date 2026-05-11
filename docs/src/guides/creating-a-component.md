@@ -200,7 +200,7 @@ tasks:
 
 ## Example: agentic workflow
 
-The [af-component-agent](https://github.com/datarobot-community/af-component-agent) deploys an AI agent as a DataRobot Custom Model Deployment.
+The [af-component-agent](https://github.com/datarobot-community/af-component-agent) deploys an AI agent as a DataRobot custom model deployment.
 
 ### Additional dependencies
 
