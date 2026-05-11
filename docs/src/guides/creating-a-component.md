@@ -1,4 +1,4 @@
-# Creating a new component
+# Create a new component
 
 This guide walks you through creating a custom App Framework component from the [scaffold template](https://github.com/datarobot-community/scaffold-af-component). It covers the basics common to all components and then shows patterns for three component types: a Python application, an agentic workflow, and a TypeScript frontend.
 
