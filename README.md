@@ -4,7 +4,7 @@
   </a>
 </p>
 <p align="center">
-    <span style="font-size: 1.5em; font-weight: bold; display: block;">App Framework Studio</span>
+    <h2 align="center">App Framework Studio</h2>
 </p>
 
 <p align="center">
