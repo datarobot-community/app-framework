@@ -4,7 +4,7 @@ App Framework Studio ships a set of AI agent skills that can be installed into a
 
 ## Installing skills
 
-Install all skills from this repository using [`npx ai-agent-skills`](https://github.com/ai-agent-skills/cli):
+Install all skills from this repository using [`npx ai-agent-skills`](https://github.com/skillcreatorai/Ai-Agent-Skills):
 
 ```bash
 npx ai-agent-skills install datarobot-community/app-framework
