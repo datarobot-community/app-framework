@@ -28,7 +28,7 @@ Tooling to apply and update App Framework components.
 
 ## Installing skills
 
-Install all skills from this repository into your AI agent using [`ai-agent-skills`](https://github.com/datarobot-community/ai-agent-skills):
+Install all skills from this repository into your AI agent using [`ai-agent-skills`](https://github.com/skillcreatorai/Ai-Agent-Skills):
 
 ```bash
 npx ai-agent-skills install datarobot-community/app-framework
