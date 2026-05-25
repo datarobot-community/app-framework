@@ -2,7 +2,7 @@
 
 **Repository:** [github.com/datarobot-community/af-component-react](https://github.com/datarobot-community/af-component-react)
 
-Adds a React + Vite frontend to your recipe, wired to an existing FastAPI backend. The component includes a React scaffold, a Vite build pipeline, and the Pulumi infrastructure needed to embed the compiled frontend into a DataRobot `ApplicationSource`.
+Adds a React + Vite frontend to your recipe, wired to an existing FastAPI backend. The component includes a React scaffold, a Vite build pipeline, the [dr-ui](https://dr-ui.datarobot.com/en/docs/) component registry, and the Pulumi infrastructure needed to embed the compiled frontend into a DataRobot `ApplicationSource`.
 
 Like [fastapi-backend](fastapi-backend.md), this component is repeatable — apply it multiple times with different `react_app` names to add multiple independent frontends to one recipe.
 
@@ -70,6 +70,12 @@ npm run dev
 ```
 
 The development server proxies API requests to the FastAPI backend on its configured port. See the generated `vite.config.ts` for proxy settings.
+
+## UI components (dr-ui)
+
+The React scaffold ships with [dr-ui](https://dr-ui.datarobot.com/en/docs/) preconfigured — DataRobot's internal [shadcn](https://ui.shadcn.com/) component registry. It includes design [tokens](https://dr-ui.datarobot.com/en/docs/foundation/tokens/), [typography classes](https://dr-ui.datarobot.com/en/docs/foundation/typography/), UI primitives, and higher-level components such as Chat and Grid. Everything is built on shadcn-compatible tokens, so you can theme and customize any component while still inheriting the DataRobot design system by default.
+
+See the [dr-ui documentation](https://dr-ui.datarobot.com/en/docs/) for the component catalog and instructions for adding components to your project.
 
 ## Update
 
