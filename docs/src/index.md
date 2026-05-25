@@ -58,5 +58,6 @@ For readers who are new to the terminology:
 - [**Components**](components/index.md)&mdash;Learn what each component adds and the order in which to apply them.
 - [**Adding custom pages**](guides/custom-pages.md)&mdash;Extend FastAPI templates with new routes and templates.
 - [**Adding a vector database**](guides/vector-database.md)&mdash;Ground your agent in real documents.
+- [**Using dr-ui**](guides/using-dr-ui.md)&mdash;Install shared React components from the dr-ui registry.
 - [**Developer guide**](developer.md)&mdash;Run the docs site locally and contribute.
 - [**Skills**](skills.md)&mdash;AI agent skills for your coding assistant.
