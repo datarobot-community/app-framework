@@ -62,6 +62,10 @@ dr component update .datarobot/answers/base.yml
 uvx copier update -a .datarobot/answers/base.yml -A
 ```
 
+### `dr component add` is not found
+
+Install or update the DataRobot CLI. See [cli.datarobot.com](https://cli.datarobot.com) for installation instructions.
+
 ### Template conflicts after `copier update`
 
 Copier shows a diff for any file with local modifications. Review each conflict, keep your changes where appropriate, and commit the result.

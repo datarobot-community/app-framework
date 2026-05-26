@@ -79,3 +79,21 @@ uvx copier update -a .datarobot/answers/llm-LLM_NAME.yml -A
 - `infra/configurations/llm/`&mdash;LLM configuration blueprints.
 - `.datarobot/answers/llm-NAME.yml`&mdash;recorded answers.
 - `.datarobot/cli/llm.yml`&mdash;CLI configuration for `dr dotenv setup`.
+
+## Troubleshooting
+
+### "Model not found in LLM Gateway catalog"
+
+Check that the model ID is set to a valid value (for example `datarobot/azure/gpt-4o-mini-2024-07-18`) and that the model is active in the LLM Gateway.
+
+### "Feature flags required but not enabled"
+
+Some configuration strategies require DataRobot platform feature flags (`MLOPS`, `TEXT_GENERATION`, and others). Contact DataRobot support to have the required flags enabled on your account.
+
+### "Credential validation failed" for external providers
+
+Verify that the environment variables for your chosen provider are set correctly. The required variable names differ per provider and are listed in the generated library module.
+
+### Copier update conflicts
+
+If `uvx copier update` reports conflicts, review the diff carefully. Re-run the update with `-A` to skip all conflict prompts and accept the latest template version.
