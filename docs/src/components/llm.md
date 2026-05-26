@@ -84,7 +84,7 @@ uvx copier update -a .datarobot/answers/llm-LLM_NAME.yml -A
 
 ### "Model not found in LLM Gateway catalog"
 
-Check that the model ID is set to a valid value (for example `datarobot/azure/gpt-4o-mini-2024-07-18`) and that the model is active in the LLM Gateway.
+Check that `LLM_NAME_DEFAULT_MODEL` is set to a valid model ID (for example `datarobot/azure/gpt-5-mini-2025-08-07`) and that the model is active. Call `verify_llm_gateway_model_availability()` from the library module to list available models.
 
 ### "Feature flags required but not enabled"
 
