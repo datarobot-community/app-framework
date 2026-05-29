@@ -19,18 +19,6 @@ Use this skill when the user:
 - Wants to wire components together (FastAPI ↔ Agent, LLM ↔ Agent, etc.)
 - Wants to add tools, auth, or chat history to a DataRobot app
 
-## Not This Skill
-
-If the user is asking about any of the following, use [`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) instead:
-- Training or evaluating ML models (AutoML, tabular data)
-- Managing model deployments for predictions
-- Feature engineering or feature importance
-- Model monitoring, data drift, or model health
-- Batch or real-time predictions on tabular data
-- SHAP values or model explainability
-
-> **Note on overlapping vocabulary:** The words "agent," "deployment," and "DataRobot" appear in both skill packs but mean different things. In this skill, "agent" means an LLM-based agentic app (CrewAI/LangGraph/LlamaIndex) and "deployment" means a CustomApplication. If the user is talking about ML models or tabular data, route to the OSS pack.
-
 ## Pick Your Scenario
 
 | What you want to build | Scenario |
