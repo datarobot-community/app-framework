@@ -72,6 +72,7 @@ nav:
     - Component Model: design/component-model.md
     - CLI: design/cli.md
     - Declarative API: design/declarative-api.md
+    - UI Library: design/ui-library.md
     - Documentation: design/documentation.md
   - Components:
     - components/index.md
@@ -85,6 +86,7 @@ nav:
     - guides/zero-vibe.md
     - guides/custom-pages.md
     - guides/vector-database.md
+    - Using dr-ui: guides/using-dr-ui.md
     - Create a component: guides/creating-a-component.md
     - Working with Copier: guides/working-with-copier.md
   - Developer Guide: developer.md
