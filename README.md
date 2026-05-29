@@ -24,6 +24,17 @@
 
 Tooling to apply and update App Framework components.
 
+## Which skill pack?
+
+DataRobot publishes two skill packs for coding assistants. They share words like "agent," "deployment," and "DataRobot," but target different workflows — install the pack that matches your task (you can install both).
+
+| You want to… | Skill pack | Install |
+|--------------|------------|---------|
+| Build or deploy **App Framework** recipes (Studio): `af-component-*`, `dr component add`, `uvx copier copy`, LLM Gateway, CrewAI/LangGraph/LlamaIndex agents, Custom Applications (`dr task deploy`) | **This repository** (App Framework Studio) | `npx ai-agent-skills install datarobot-community/app-framework` |
+| **Tabular ML** on the DataRobot platform: AutoML training, model deployments for predictions, batch scoring, feature engineering, drift monitoring, SHAP / explainability | [datarobot-agent-skills](https://github.com/datarobot-oss/datarobot-agent-skills) (OSS ML pack) | `npx ai-agent-skills install datarobot-oss/datarobot-agent-skills` |
+
+> In this pack, **agent** means an LLM agentic app in a recipe; **deployment** means a Custom Application. In the OSS pack, **deployment** usually means an ML model deployment for predictions.
+
 ## Installing skills
 
 Install all skills from this repository into your AI agent using [`ai-agent-skills`](https://github.com/skillcreatorai/Ai-Agent-Skills):
