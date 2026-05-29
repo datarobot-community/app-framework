@@ -30,3 +30,4 @@ It is the software and templates that build application templates and make them 
 - [**Component model**](component-model.md)&mdash;How templates are structured, applied, and updated.
 - [**CLI**](cli.md)&mdash;The `dr` command and what it handles.
 - [**Declarative API**](declarative-api.md)&mdash;Infrastructure-as-code for DataRobot resources.
+- [**UI library**](ui-library.md)&mdash;The shared dr-ui component registry for React frontends.

@@ -29,6 +29,12 @@ uvx copier copy datarobot-community/af-component-react .
 
 The wizard asks for a `react_app` name (e.g., `frontend`). This name namespaces all generated files and the answers file.
 
+## UI components (dr-ui)
+
+The React scaffold ships with [dr-ui](https://dr-ui.datarobot.com/en/docs/) preconfigured — DataRobot's internal [shadcn](https://ui.shadcn.com/) component registry. It includes design tokens, typography classes, UI primitives, and higher-level components such as Chat and Grid. Everything is built on shadcn-compatible tokens, so you can theme and customize any component while still inheriting the DataRobot design system by default.
+
+See the [dr-ui documentation](https://dr-ui.datarobot.com/en/docs/) for the component catalog and instructions for adding components to your project.
+
 ## Component dependencies
 
 | Component | Required |
