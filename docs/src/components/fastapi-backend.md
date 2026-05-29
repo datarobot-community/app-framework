@@ -82,10 +82,6 @@ uvx copier copy datarobot-community/af-component-fastapi-backend .
 
 ## Troubleshooting
 
-### `uvx copier copy` fails with a merge conflict
-
-Ensure `af-component-base` is applied first. This component expects base scaffolding to be present before it runs.
-
 ### Application fails to start on DataRobot
 
 Check Custom Application logs in the DataRobot UI. The most common cause is a missing environment variable — confirm all required runtime parameters are set in the deployment configuration.

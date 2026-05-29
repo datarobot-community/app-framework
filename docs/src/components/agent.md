@@ -4,8 +4,6 @@
 
 Adds an agentic workflow to your recipe. The component scaffolds a single-agent or multi-agent system using your choice of framework: **CrewAI**, **LangGraph**, **LlamaIndex**, or **NeMo Agent Toolkit** (NAT). It includes a local development server, a command-line interface for testing, a test suite, and Pulumi infrastructure for deployment to DataRobot.
 
-This component is repeatable — apply it multiple times with different agent names to run multiple independent agentic workflows from a single recipe.
-
 ## Prerequisites
 
 - Python 3.11+
@@ -148,21 +146,3 @@ By default it tests all frameworks. To run a subset:
 ```bash
 E2E_AGENT_FRAMEWORKS=base,crewai task test-e2e
 ```
-
-## Troubleshooting
-
-### `uvx` or `dr` command not found
-
-Ensure both tools are installed and on your `PATH`. Run `uv --version` and `dr --version` to confirm.
-
-### Authentication errors at startup
-
-Verify that `DATAROBOT_ENDPOINT` and `DATAROBOT_API_TOKEN` are set correctly and that the token has the required permissions.
-
-### Framework import errors
-
-Some frameworks have optional heavy dependencies. Run `task test-AGENT_FRAMEWORK` to isolate the failing framework and check its dependency group in `pyproject.toml`.
-
-### E2E test failures
-
-Confirm that your DataRobot account has access to the deployment target and that the Pulumi local backend is writable.

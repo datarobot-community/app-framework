@@ -3,7 +3,9 @@
     <img src="https://af.datarobot.com/img/datarobot_logo.avif" width="600px" alt="DataRobot Logo"/>
   </a>
 </p>
-<h2 align="center">App Framework Studio</h2>
+<p align="center">
+    <span style="font-size: 1.5em; font-weight: bold; display: block;">App Framework Studio</span>
+</p>
 
 <p align="center">
   <a href="https://datarobot.com">Homepage</a>
