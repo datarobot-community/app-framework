@@ -34,7 +34,7 @@ template/
 │   │   └── troubleshooting.md
 │   ├── llm.md
 │   └── Taskfile.yml               # Documentation compilation tasks
-├── .skills/                       # Component skills (see below)
+├── .agent/skills/                 # Component skills (see below)
 └── ...
 ```
 
@@ -89,27 +89,28 @@ See [Skills](../skills.md) for an overview of the skill system and how to use sk
 
 ### File organization
 
-Each component bundles its skills in a `.skills` folder within the template:
+Each component bundles its skills in a `.agent/skills` folder within the template:
 
 ```
 template/
-├── .skills/
-│   ├── datarobot-app-framework-cicd/
-│   │   ├── SKILL.md
-│   │   ├── scripts/
-│   │   └── examples/
-│   ├── datarobot-app-framework-react-testing/
-│   │   └── SKILL.md
-│   └── datarobot-app-framework-fastapi-backend-debugging/
-│       └── SKILL.md
+├── .agent/
+│   └── skills/
+│       ├── datarobot-app-framework-cicd/
+│       │   ├── SKILL.md
+│       │   ├── scripts/
+│       │   └── examples/
+│       ├── datarobot-app-framework-react-testing/
+│       │   └── SKILL.md
+│       └── datarobot-app-framework-fastapi-backend-debugging/
+│           └── SKILL.md
 ├── .claude/
-│   └── skills/                    # Symlinks to .skills/*
-├── .agents/
-│   └── skills/                    # Symlinks to .skills/*
+│   └── skills/                    # Symlinks to ../.agent/skills/*
 └── docs/
 ```
 
-The [base component](../components/base.md) provides the symlinks to `.claude/skills` and `.agents/skills` directly, so **do not** do that in your component.
+`.agent/skills/` is the canonical, agent-agnostic location for component skills.
+The [base component](../components/base.md) provides the `.claude/skills` symlinks
+to `.agent/skills/` directly, so **do not** do that in your component.
 
 ### Naming convention
 
@@ -132,7 +133,7 @@ When the skill is in the base component and applies generally, omit the componen
 Skills that are general to all app components must:
 
 1. **Exist in both locations:**
-   - `af-component-base/.skills/` (for template distribution).
+   - `af-component-base/.agent/skills/` (for template distribution).
    - [`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) (for global discovery).
 
 2. **Stay synchronized:**
