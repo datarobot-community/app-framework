@@ -253,7 +253,7 @@ template/
 │   ├── pyproject.toml.jinja
 │   └── Taskfile.yml.jinja
 ├── .datarobot/cli/{{agent_app_name}}.yaml.jinja
-├── .skills/                     # AI coding assistant skills.
+├── .agents/skills/              # AI coding assistant skills.
 └── infra/infra/{{agent_app_name_file}}.py.jinja
 ```
 
