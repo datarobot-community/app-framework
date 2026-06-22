@@ -95,6 +95,7 @@ nav:
 
 # Exclude patterns to avoid processing non-documentation files
 exclude_docs: |
+  !.well-known
   site/
   .venv/
   pyproject.toml

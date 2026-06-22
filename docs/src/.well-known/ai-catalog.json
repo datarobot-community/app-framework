@@ -1,0 +1,13 @@
+{
+  "specVersion": "1.0",
+  "host": { "displayName": "DataRobot App Framework" },
+  "entries": [
+    {
+      "identifier": "urn:ai:github.com:datarobot-community:app-framework",
+      "displayName": "app-framework",
+      "type": "application/ai-skill",
+      "url": "https://github.com/datarobot-community/app-framework",
+      "description": "Tooling and AI skills to build, apply, and update DataRobot App Framework components and recipes."
+    }
+  ]
+}
