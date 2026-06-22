@@ -63,6 +63,12 @@ class CopierSourceWatcher(FileSystemEventHandler):
             or "/.#" in event.src_path
             or "/#" in event.src_path
             or ".git" in event.src_path
+            or "/.rendered/" in event.src_path
+            or event.src_path.endswith("/.rendered")
+            or "/.venv/" in event.src_path
+            or event.src_path.endswith("/.venv")
+            or "/node_modules/" in event.src_path
+            or event.src_path.endswith("/node_modules")
         ):
             return
 
@@ -103,14 +109,22 @@ class CopierSourceWatcher(FileSystemEventHandler):
     def _commit_source_changes(self) -> bool:
         """Commit changes in the source repository. Returns True if changes were committed."""
 
-        # Check if there are any changes to commit
-        if not self.source_repo.is_dirty(untracked_files=True):
+        logger.info("Checking for changes in source repository...")
+        # Add all changes except excluded directories
+        self.source_repo.git.add(
+            "--all",
+            ":/",
+            ":(exclude).rendered",
+            ":(exclude).venv",
+            ":(exclude)node_modules",
+        )
+
+        # Check if there are any staged changes to commit
+        if not self.source_repo.is_dirty():
             logger.info("No changes detected in source repository. Skipping commit.")
             return False
 
         logger.info("Committing changes in source repository...")
-        # Add all changes
-        self.source_repo.git.add(".")
 
         if self.is_first_commit:
             # First commit with provided message
@@ -123,6 +137,40 @@ class CopierSourceWatcher(FileSystemEventHandler):
             logger.info("Amended previous commit with new changes")
         return True
 
+    def _check_remote_branch_exists(self, branch_name: str) -> str:
+        """
+        Check if the branch exists on the remote.
+        Raises an informative error if it doesn't exist.
+        """
+        try:
+            # Fetch latest remote refs
+            logger.info("Fetching remote refs...")
+            self.source_repo.remotes.origin.fetch()
+
+            # Check if the branch exists on the remote
+            remote_refs = [ref.name for ref in self.source_repo.remotes.origin.refs]
+            remote_branch = f"origin/{branch_name}"
+
+            if remote_branch in remote_refs:
+                logger.info(f"Branch '{branch_name}' exists on remote")
+                return branch_name
+
+            # Branch doesn't exist remotely - provide helpful error message
+            remote_url = self.source_repo.remotes.origin.url
+            raise RuntimeError(
+                f"\n\nBranch '{branch_name}' does not exist on remote.\n\n"
+                f"To fix this, create the remote branch (it doesn't need any commits):\n"
+                f"  cd {self.source_dir}\n"
+                f"  git push origin {branch_name}\n\n"
+                f"Or create an empty remote branch:\n"
+                f"  git push origin HEAD:refs/heads/{branch_name}\n\n"
+                f"Remote: {remote_url}"
+            )
+
+        except git.exc.GitCommandError as e:
+            logger.error(f"Failed to fetch from remote: {e}")
+            raise
+
     def _update_destination_repo(self, source_rev: str):
         logger.info("Updating destination repository...")
 
@@ -131,13 +179,16 @@ class CopierSourceWatcher(FileSystemEventHandler):
         self.dest_repo.git.clean("-df")
         logger.info("Destination repo reset to clean state")
 
+        # Verify the remote branch exists (fails with helpful message if not)
+        revision_to_use = self._check_remote_branch_exists(source_rev)
+
         # Run copier update
         cmd = [
             "uvx",
             "copier",
             "update",
             "-r",
-            source_rev,
+            revision_to_use,
             "-a",
             str(self.answers_file),
             "-A",
@@ -148,7 +199,9 @@ class CopierSourceWatcher(FileSystemEventHandler):
         if remote_url.startswith("git@"):
             # Convert SSH URL to HTTPS
             remote_url = remote_url.replace(":", "/").replace("git@", "https://")
-        remote_url = remote_url.removesuffix(".git")  # We add it later, don't have double .git.git
+        remote_url = remote_url.removesuffix(
+            ".git"
+        )  # We add it later, don't have double .git.git
 
         env = {
             **os.environ,
@@ -177,8 +230,7 @@ class CopierSourceWatcher(FileSystemEventHandler):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        description="""
+    parser = argparse.ArgumentParser(description="""
             Watch a copier source directory and apply changes to a destination repo.
 
             Run with `uv run copier-watch.py` to ensure the correct environment is used.
@@ -186,8 +238,7 @@ def parse_args():
             WARNING: This script monkeys with git repositories and can cause data loss.
             Use with caution and ensure you have backups of your repositories.
             Essentially it runs git reset and git clean on the destination repo.
-        """
-    )
+        """)
     parser.add_argument(
         "source_dir", type=Path, help="Source directory (copier template)"
     )
