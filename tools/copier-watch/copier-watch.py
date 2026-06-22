@@ -53,6 +53,8 @@ class CopierSourceWatcher(FileSystemEventHandler):
         logger.info(f"Using answers file: {self.answers_file}")
 
     def on_any_event(self, event):
+        event_path_parts = Path(event.src_path).parts
+
         # Skip temporary files and .git directory changes
         if (
             event.src_path.endswith(".swp")
@@ -62,7 +64,9 @@ class CopierSourceWatcher(FileSystemEventHandler):
             or event.src_path.endswith("~")
             or "/.#" in event.src_path
             or "/#" in event.src_path
-            or ".git" in event.src_path
+            or ".git" in event_path_parts
+            or ".venv" in event_path_parts
+            or "node_modules" in event_path_parts
         ):
             return
 
@@ -126,6 +130,8 @@ class CopierSourceWatcher(FileSystemEventHandler):
     def _update_destination_repo(self, source_rev: str):
         logger.info("Updating destination repository...")
 
+        self._ensure_remote_source_branch(source_rev)
+
         # Clean the destination repo
         self.dest_repo.git.reset("--hard", "HEAD")
         self.dest_repo.git.clean("-df")
@@ -148,7 +154,9 @@ class CopierSourceWatcher(FileSystemEventHandler):
         if remote_url.startswith("git@"):
             # Convert SSH URL to HTTPS
             remote_url = remote_url.replace(":", "/").replace("git@", "https://")
-        remote_url = remote_url.removesuffix(".git")  # We add it later, don't have double .git.git
+        remote_url = remote_url.removesuffix(
+            ".git"
+        )  # We add it later, don't have double .git.git
 
         env = {
             **os.environ,
@@ -174,6 +182,24 @@ class CopierSourceWatcher(FileSystemEventHandler):
             logger.error(f"STDOUT: {e.stdout}")
             logger.error(f"STDERR: {e.stderr}")
             raise
+
+    def _ensure_remote_source_branch(self, source_rev: str):
+        remote_name = "origin"
+
+        try:
+            self.source_repo.git.ls_remote(
+                "--exit-code", "--heads", remote_name, source_rev
+            )
+            return
+        except git.exc.GitCommandError as error:
+            if error.status != 2:
+                raise
+
+        logger.info(
+            f"Remote branch '{source_rev}' does not exist on {remote_name}. Creating it without additional commits."
+        )
+        self.source_repo.git.push(remote_name, f"{source_rev}:{source_rev}")
+        logger.info(f"Created remote branch '{source_rev}' on {remote_name}")
 
 
 def parse_args():
