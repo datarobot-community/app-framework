@@ -1,8 +1,8 @@
 # Components
 
-App Framework components are [copier](https://copier.readthedocs.io/) templates that you layer into your recipe one at a time. Each component adds a top-level folder or file set and records your answers in `.datarobot/answers/`, so the stack can be updated automatically later.
+App Framework components are [copier](https://copier.readthedocs.io/) templates layered into a recipe one at a time. Each component adds a top-level folder or file set and records answers in `.datarobot/answers/`, so the stack can be updated automatically later.
 
-If you are new to the framework, start with `base`. It creates the shared project structure that all other components depend on.
+For new readers, start with `base`. It creates the shared project structure that all other components depend on.
 
 ## Core components
 
@@ -34,9 +34,9 @@ The safest way to get started is to apply a real component with a complete comma
 dr component add https://github.com/datarobot-community/af-component-<NAME> .
 ```
 
-To apply a different component, replace the repository URL with the component repository you want to add.
+To apply a different component, replace the repository URL with the target component repository.
 
-You can also use Copier directly:
+Alternatively, apply components with Copier directly:
 
 ```bash
 uvx copier copy https://github.com/datarobot-community/af-component-<NAME> .
@@ -64,7 +64,7 @@ To update all components at once:
 uvx copier update -a .datarobot/answers/*.yml -A
 ```
 
-## Adding your own
+## Adding custom components
 
 Components live in their own repos — [Search for `af-component` in the `datarobot-community` GitHub org](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories) to see the full catalog.
-Built something others might want? The [#applications](https://datarobot-community.slack.com/archives/C0ARJSKM0LF) Slack channel is the place to share!
+Built something others might want? The [#applications](https://datarobot-community.slack.com/archives/C0ARJSKM0LF) Slack channel is the place to share.

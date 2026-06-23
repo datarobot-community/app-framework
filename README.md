@@ -28,13 +28,15 @@ Tooling to apply and update App Framework components.
 
 ## Installing skills
 
-Install all skills from this repository into your AI agent using [`ai-agent-skills`](https://github.com/datarobot-community/ai-agent-skills):
+Install all skills from this repository into an AI agent using [`ai-agent-skills`](https://github.com/datarobot-community/ai-agent-skills):
 
 ```bash
 npx ai-agent-skills install datarobot-community/app-framework
 ```
 
 ## Components
+
+The following App Framework components are maintained in separate repositories under the [`datarobot-community`](https://github.com/datarobot-community) GitHub organization:
 
 | Component | Description |
 |-----------|-------------|
@@ -48,3 +50,7 @@ npx ai-agent-skills install datarobot-community/app-framework
 ## Development
 
 See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.
+
+## Documentation style
+
+Component README files follow the [Documentation Style Specification](skills/datarobot-app-framework-doc-update/documentation-style-spec.md). Use the [`datarobot-app-framework-doc-update`](skills/datarobot-app-framework-doc-update/SKILL.md) skill and the `af-component-doc-update` tool to scaffold and merge README content from `copier-module.yaml`.

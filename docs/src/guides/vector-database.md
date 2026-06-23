@@ -1,8 +1,8 @@
-# Adding a vector database to your agent application
+# Adding a vector database to an agent application
 
-If you already have an agent application running and want to ground it in your own documents, this guide shows one way to do it. You can use a knowledge base, internal documentation, or a collection of PDFs to give the agent retrieval-based context.
+For agent applications that need grounding in proprietary documents, this guide shows one approach. Use a knowledge base, internal documentation, or a collection of PDFs to give the agent retrieval-based context.
 
-This guide walks through adding a vector database (VDB) to your agent application. A folder of documents becomes searchable semantic knowledge that your agent can use for retrieval.
+This guide walks through adding a vector database (VDB) to an agent application. A folder of documents becomes searchable semantic knowledge the agent uses for retrieval.
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@ This guide walks through adding a vector database (VDB) to your agent applicatio
 
 ## The setup
 
-First, tell your infrastructure to use the LLM configuration that supports vector databases. In your `.env`:
+First, configure the infrastructure to use the LLM configuration that supports vector databases. In `.env`:
 
 ```bash
 INFRA_ENABLE_LLM="blueprint_with_llm_gateway.py"
@@ -19,9 +19,9 @@ INFRA_ENABLE_LLM="blueprint_with_llm_gateway.py"
 
 This switches to an LLM Blueprint that supports VDB retrieval alongside the LLM Gateway.
 
-## Your knowledge base
+## Knowledge base
 
-Create a `knowledgebase/` folder at the root of your project and add your documents, such as PDFs, text files, or Markdown files:
+Create a `knowledgebase/` folder at the project root and add documents, such as PDFs, text files, or Markdown files:
 
 ```text
 your-project/
@@ -33,7 +33,7 @@ your-project/
 └── ...
 ```
 
-This folder is version-controlled alongside your code. When you update your documents, redeploy.
+This folder is version-controlled alongside the application code. When documents change, redeploy.
 
 ## The VDB infrastructure
 
@@ -112,12 +112,12 @@ export("AGENTIC_STARTER_VECTOR_DATABASE_ID", vector_database.id)
 
 This code:
 
-1. Zips up your `knowledgebase/` folder.
+1. Zips up the `knowledgebase/` folder.
 2. Creates a DataRobot dataset from that zip.
 3. Builds a vector database with configurable chunking (512 token chunks, 10% overlap by default).
 4. Uses `intfloat/e5-large-v2` as the embedding model.
 
-All chunking parameters are configurable through environment variables in your `.env`, so no code changes are required.
+All chunking parameters are configurable through environment variables in `.env`, so no code changes are required.
 
 ## Wire it up
 
@@ -127,7 +127,7 @@ Open `infra/infra/llm.py` and add the import at the top:
 from .vdb import vector_database
 ```
 
-Then find where you create your `llm_blueprint` and add the `vector_database_id` parameter:
+Then locate where the `llm_blueprint` is created and add the `vector_database_id` parameter:
 
 ```python
 llm_blueprint = datarobot.LlmBlueprint(
@@ -143,7 +143,7 @@ llm_blueprint = datarobot.LlmBlueprint(
 )
 ```
 
-Your agent is now grounded in your documents.
+The agent is now grounded in the knowledge base documents.
 
 ## Deploy and test
 
@@ -151,14 +151,14 @@ Your agent is now grounded in your documents.
 task deploy
 ```
 
-Once deployed, your agent pulls relevant context from the knowledge base instead of hallucinating. Ask it questions about your documents to validate the retrieval flow.
+Once deployed, the agent pulls relevant context from the knowledge base instead of hallucinating. Ask questions about the documents to validate the retrieval flow.
 
 ## Why this approach works
 
-- **Version-controlled**&mdash;your knowledge base lives in git alongside your code.
-- **Tunable without code changes**&mdash;chunking parameters are env vars.
-- **Automatically rebuilt**&mdash;updating your docs means adding files and redeploying.
-- **Infrastructure-as-code**&mdash;the whole stack is reproducible.
+- **Version-controlled** — The knowledge base lives in git alongside the application code.
+- **Tunable without code changes** — Chunking parameters are env vars.
+- **Automatically rebuilt** — Updating documents means adding files and redeploying.
+- **Infrastructure-as-code** — The whole stack is reproducible.
 
 ## This works everywhere
 
@@ -168,13 +168,13 @@ This same approach works for any App template, including Talk to My Docs and Tal
 
 **Chunk sizes:**
 
-- Smaller chunks (256–512 tokens)&mdash;better for precise, targeted retrieval.
-- Larger chunks (1024+ tokens)&mdash;better when more context per retrieval hit is important.
+- Smaller chunks (256–512 tokens) — better for precise, targeted retrieval.
+- Larger chunks (1024+ tokens) — better when more context per retrieval hit is important.
 
 **Embedding models:**
 
-The default `intfloat/e5-large-v2` is solid for general use, but domain-specific embedding models may work better for specialized content (legal, medical, technical). Set `VDB_EMBEDDING_MODEL` in your `.env` to experiment without touching code.
+The default `intfloat/e5-large-v2` is solid for general use, but domain-specific embedding models may work better for specialized content (legal, medical, technical). Set `VDB_EMBEDDING_MODEL` in `.env` to experiment without touching code.
 
 **Multiple knowledge bases:**
 
-Fork this pattern and create multiple `vdb.py` files — one per knowledge base. You can implement smart routing between VDBs in your agent logic to serve different document sets for different query types.
+Fork this pattern and create multiple `vdb.py` files — one per knowledge base. Implement smart routing between VDBs in agent logic to serve different document sets for different query types.

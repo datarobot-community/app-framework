@@ -1,6 +1,6 @@
 # 0-Vibe: Build your first application
 
-This guide walks you through building an App Framework recipe from scratch, from an empty repository to a deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI application, an LLM with a notebook, and a full agentic workflow.
+This guide walks through building an App Framework recipe from scratch, from an empty repository to a deployed DataRobot application. It covers three progressively richer examples: a simple FastAPI application, an LLM with a notebook, and a full agentic workflow.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ This guide walks you through building an App Framework recipe from scratch, from
 - [DataRobot CLI](https://cli.datarobot.com) installed
 - A DataRobot account and API token
 
-This guide assumes that you are creating a new recipe repository and applying App Framework components into it. A recipe is the repository that contains your application code, infrastructure, and component answers files.
+This guide assumes creation of a recipe repository with App Framework components applied into it. A recipe is the repository that contains application code, infrastructure, and component answers files.
 
 ## Creating a new application from scratch
 
@@ -46,9 +46,9 @@ Run the base component copier and answer the interactive questions:
 uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
-Copier prompts for your recipe name, the components you want, and other configuration. Answer thoughtfully because those choices shape the structure of your recipe. You now have the foundation in place, and everything from here is customization.
+Copier prompts for the recipe name, the components to include, and other configuration. Answer thoughtfully because those choices shape the structure of the recipe. The foundation is now in place; everything from here is customization.
 
-After this step, expect your repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
+After this step, expect the repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
 
 ---
 
@@ -65,7 +65,7 @@ A two-component App Framework application that covers a wide range of common fun
 
 ### Implementation
 
-This example assumes that you already completed Steps 1 through 4 and that the `base` component is present in your repository.
+This example assumes completion of Steps 1 through 4 and that the `base` component is present in the repository.
 
 After bootstrapping with `af-component-base`, add the FastAPI backend:
 
@@ -118,7 +118,7 @@ After deployment, your application is live at the URL shown in the output. Open 
 
 ![Deployed app on DataRobot](../img/zero-vibe-deployed-app.png)
 
-With these steps, you get unit tests, linters, deployments, fast local iteration, and everything needed for team-driven development through GitHub Actions.
+With these steps, the recipe includes unit tests, linters, deployments, fast local iteration, and everything needed for team-driven development through GitHub Actions.
 
 **Lifecycle commands:**
 
@@ -166,13 +166,13 @@ dr task deploy
 
 ![Deploy preview showing LLM resources](../img/zero-vibe-deploy-preview.png)
 
-Confirm and deploy. When complete, note the deployment ID because you need it for notebook development. You can retrieve it again at any time with:
+Confirm and deploy. When complete, note the deployment ID for notebook development. Retrieve it again at any time with:
 
 ```bash
 dr task infra:info
 ```
 
-You can test your LLM in the DataRobot workbench under your use case → LLM Playground.
+Test the LLM in the DataRobot workbench under the use case → LLM Playground.
 
 ### Notebook development
 
@@ -370,4 +370,4 @@ Edit `agent/agent/myagent.py` to:
 Once your recipe is running, set up CI/CD for automated testing and deployment:
 
 - [DataRobot CI/CD docs](https://docs.datarobot.com/en/docs/api/reference/declarative-api.html).
-- [`datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills/)&mdash;CI/CD skill for GitLab and GitHub.
+- [`datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills/) — CI/CD skill for GitLab and GitHub.

@@ -1,12 +1,12 @@
 # Adding custom pages to App Framework FastAPI servers
 
-If you have an App Framework project with a FastAPI backend and React frontend, you can add custom pages without much overhead. This guide shows how to add Jinja-rendered pages, HTMX interactions, or simple static content.
+App Framework projects with a FastAPI backend and React frontend support custom pages with minimal overhead. This guide covers Jinja-rendered pages, HTMX interactions, and simple static content.
 
 ## How Jinja templates drive the frontend
 
 The React frontend is served as a Jinja template through FastAPI.
 
-Here is where that pattern shows up across the foundation templates:
+The following table shows where that pattern appears across the foundation templates:
 
 | Template | Template file | Route handler |
 |----------|--------------|---------------|
@@ -19,13 +19,13 @@ All of these come from the same source in the App Framework component:
 - **Base template:** `af-component-fastapi-backend/template/{{fastapi_app_name}}/templates/index.html`
 - **Base route handler:** `af-component-fastapi-backend/template/{{fastapi_app_name}}/app/__init__.py.jinja`
 
-The key route is a catch-all `serve_root` handler that serves the React application. Any custom routes you add must come **before** that catch-all.
+The key route is a catch-all `serve_root` handler that serves the React application. Add any custom routes **before** that catch-all.
 
-## Adding your own pages
+## Adding custom pages
 
-### Option 1: Add a new template route
+### Option 1: Add a template route
 
-Create a new Jinja template in your `templates/` directory and add a route to serve it, **above** the catch-all:
+Create a Jinja template in the `templates/` directory and add a route to serve it **above** the catch-all:
 
 ```python
 from fastapi import APIRouter, Request
@@ -42,7 +42,7 @@ async def custom_page(request: Request):
 # This route must come BEFORE the catch-all route that serves React.
 ```
 
-Most foundation templates organize routes into routers by concern. You can follow the same pattern and group your template renderers into a dedicated router, similar to the way the `api` routers are organized. See [`talk-to-my-docs-agents`](https://github.com/datarobot-community/talk-to-my-docs-agents) for a reference implementation:
+Most foundation templates organize routes into routers by concern. Follow the same pattern and group template renderers into a dedicated router, similar to the `api` routers. See [`talk-to-my-docs-agents`](https://github.com/datarobot-community/talk-to-my-docs-agents) for a reference implementation:
 
 ```python
 from fastapi import APIRouter
@@ -58,7 +58,7 @@ router.include_router(auth_router)
 
 ### Option 2: HTMX
 
-If you want HTMX interactivity, create your template with HTMX attributes and add the corresponding API endpoints:
+For HTMX interactivity, create a template with HTMX attributes and add the corresponding API endpoints:
 
 ```python
 @router.get("/htmx-content")
@@ -66,7 +66,7 @@ async def htmx_content():
     return HTMLResponse("<div>Fresh content loaded via HTMX!</div>")
 ```
 
-Your Jinja template can then trigger this endpoint:
+The Jinja template can then trigger this endpoint:
 
 ```html
 <button hx-get="/htmx-content" hx-target="#result">Load content</button>
@@ -75,25 +75,25 @@ Your Jinja template can then trigger this endpoint:
 
 ### Option 3: Static content
 
-The FastAPI server already serves static content from `app/static/` by default. Add your CSS, JavaScript, images, or other files there, and they are available at `/static/YOUR_FILE.ext`. No additional configuration is needed.
+The FastAPI server serves static content from `app/static/` by default. Add CSS, JavaScript, images, or other files there; they are available at `/static/YOUR_FILE.ext`. No additional configuration is required.
 
 ## Going full FastAPI
 
-You might not need React at all. If you want faster builds, a smaller footprint, or a fully server-side-rendered application, you can remove it cleanly.
+React is optional. For faster builds, a smaller footprint, or a fully server-side-rendered application, remove it cleanly.
 
 To remove React entirely:
 
 1. Rename `infra/infra/frontend_web.py` to `infra/infra/frontend_web.py.bak`.
-2. Fix the import in your FastAPI server `infra/infra/` folder.
+2. Fix the import in the FastAPI server `infra/infra/` folder.
 
-That leaves you with a pure FastAPI application. From there, you can build any frontend you want, including HTMX, Alpine.js, vanilla JavaScript, or Jinja templates.
+The result is a pure FastAPI application. From there, build any frontend, including HTMX, Alpine.js, vanilla JavaScript, or Jinja templates.
 
-## The bottom line
+## Summary
 
-App templates give you a full FastAPI application with all the power and flexibility that comes with it. The React frontend is one option. You can extend it, replace it, or remove it entirely. You still have Jinja templates, static file serving, and the full FastAPI ecosystem available.
+App templates provide a full FastAPI application with the power and flexibility of the FastAPI ecosystem. The React frontend is one option — extend it, replace it, or remove it entirely. Jinja templates, static file serving, and the full FastAPI ecosystem remain available.
 
-Build the admin panel, HTMX-powered dashboard, or custom page set that your application needs. The framework is designed to support those choices, not constrain them.
+Build the admin panel, HTMX-powered dashboard, or custom page set the application requires. The framework supports those choices rather than constraining them.
 
 ## Starting from scratch
 
-If you want to build something completely custom from the ground up, see the [0-Vibe guide](zero-vibe.md).
+To build something completely custom from the ground up, see the [0-Vibe guide](zero-vibe.md).

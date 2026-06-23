@@ -75,7 +75,7 @@ uvx copier update -a .datarobot/answers/llm-LLM_NAME.yml -A
 
 ## What it adds
 
-- `infra/infra/llm.py`&mdash;Pulumi resources for the LLM deployment and playground.
-- `infra/configurations/llm/`&mdash;LLM configuration blueprints.
-- `.datarobot/answers/llm-NAME.yml`&mdash;recorded answers.
-- `.datarobot/cli/llm.yml`&mdash;CLI configuration for `dr dotenv setup`.
+- `infra/infra/llm.py` — Pulumi resources for the LLM deployment and playground.
+- `infra/configurations/llm/` — LLM configuration blueprints.
+- `.datarobot/answers/llm-NAME.yml` — recorded answers.
+- `.datarobot/cli/llm.yml` — CLI configuration for `dr dotenv setup`.
