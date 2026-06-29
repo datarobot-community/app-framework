@@ -27,7 +27,7 @@ Style standards for App Framework component READMEs and other GitHub Markdown do
 - ✅ Use *you* or *your* only when removing them would be awkward, confusing, or overly complicated
 - ✅ Use present tense: "The CLI provides", "This command generates"
 - ❌ Avoid future tense unless emphasizing something that will happen later
-- ✅ Use active voice: "The wizard guides through setup."
+- ✅ Use active voice: "The wizard guides the setup process."
 - ❌ Avoid passive voice when active is clearer
 
 ### Words to avoid
