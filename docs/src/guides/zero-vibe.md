@@ -48,7 +48,11 @@ uvx copier copy https://github.com/datarobot-community/af-component-base .
 
 Copier prompts for the recipe name, the components to include, and other configuration. Answer thoughtfully because those choices shape the structure of the recipe. The foundation is now in place; everything from here is customization.
 
-After this step, expect the repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
+!!! tip
+
+    Gave a wrong answer? You can change your answers after the fact without starting over. See [Working with Copier](working-with-copier.md) for how to re-run prompts, override a single answer, or recover from a mistake.
+
+After this step, expect your repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
 
 ---
 

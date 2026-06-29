@@ -46,6 +46,12 @@ markdown_extensions:
   - tables
   - attr_list
   - md_in_html
+  - def_list
+
+extra:
+  analytics:
+    provider: google
+    property: G-1VQF3XBL43
 
 extra_css:
   - stylesheets/extra.css
@@ -66,6 +72,7 @@ nav:
     - Component Model: design/component-model.md
     - CLI: design/cli.md
     - Declarative API: design/declarative-api.md
+    - UI Library: design/ui-library.md
     - Documentation: design/documentation.md
   - Components:
     - components/index.md
@@ -79,11 +86,16 @@ nav:
     - guides/zero-vibe.md
     - guides/custom-pages.md
     - guides/vector-database.md
+    - Using dr-ui: guides/using-dr-ui.md
+    - Create a component: guides/creating-a-component.md
+    - Working with Copier: guides/working-with-copier.md
   - Developer Guide: developer.md
   - Skills: skills.md
+  - Glossary: glossary.md
 
 # Exclude patterns to avoid processing non-documentation files
 exclude_docs: |
+  !.well-known
   site/
   .venv/
   pyproject.toml

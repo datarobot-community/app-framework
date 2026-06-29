@@ -102,6 +102,14 @@ uvx copier update -a .datarobot/answers/drmcp-*.yml -A
 
 ## Troubleshooting
 
+### `dr` command not found
+
+Ensure the DataRobot CLI is installed and on your `PATH`. See the [CLI docs](https://cli.datarobot.com) for installation instructions.
+
+### Copier prompts fail or produce unexpected output
+
+Confirm you are running `uv` 0.4+ and that `copier` resolves via `uvx`. Run `uvx copier --version` to verify.
+
 ### Integration tools return auth errors
 
 OAuth providers must be configured in DataRobot before integration tools work. See the generated `dev.md` inside the template directory.

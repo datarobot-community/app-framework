@@ -34,7 +34,7 @@ template/
 │   │   └── troubleshooting.md
 │   ├── llm.md
 │   └── Taskfile.yml               # Documentation compilation tasks
-├── .skills/                       # Component skills (see below)
+├── .agents/skills/                # Component skills (see below)
 └── ...
 ```
 
@@ -89,27 +89,27 @@ See [Skills](../skills.md) for an overview of the skill system and how to use sk
 
 ### File organization
 
-Each component bundles its skills in a `.skills` folder within the template:
+Each component bundles its skills in a `.agents/skills` folder within the template:
 
 ```
 template/
-├── .skills/
-│   ├── datarobot-app-framework-cicd/
-│   │   ├── SKILL.md
-│   │   ├── scripts/
-│   │   └── examples/
-│   ├── datarobot-app-framework-react-testing/
-│   │   └── SKILL.md
-│   └── datarobot-app-framework-fastapi-backend-debugging/
-│       └── SKILL.md
-├── .claude/
-│   └── skills/                    # Symlinks to .skills/*
 ├── .agents/
-│   └── skills/                    # Symlinks to .skills/*
+│   └── skills/
+│       ├── datarobot-app-framework-cicd/
+│       │   ├── SKILL.md
+│       │   ├── scripts/
+│       │   └── examples/
+│       ├── datarobot-app-framework-react-testing/
+│       │   └── SKILL.md
+│       └── datarobot-app-framework-fastapi-backend-debugging/
+│           └── SKILL.md
+├── .claude/
+│   └── skills/                    # Symlinks to ../.agents/skills/*
 └── docs/
 ```
 
-The [base component](../components/base.md) provides the symlinks to `.claude/skills` and `.agents/skills` directly, so **do not** add those symlinks in individual components.
+`.agents/skills/` is the canonical, agent-agnostic location for component skills.
+The [base component](../components/base.md) provides the `.claude/skills` symlinks to `.agents/skills/` directly, so **do not** add those symlinks in individual components.
 
 ### Naming convention
 
@@ -132,7 +132,7 @@ When the skill is in the base component and applies generally, omit the componen
 Skills that are general to all app components must:
 
 1. **Exist in both locations:**
-   - `af-component-base/.skills/` (for template distribution).
+   - `af-component-base/.agents/skills/` (for template distribution).
    - [`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) (for global discovery).
 
 2. **Stay synchronized:**
@@ -185,10 +185,10 @@ When creating a new component:
 
 1. Create `docs/<component-name>.md` or `docs/<component-name>/README.md`.
 2. Write comprehensive documentation covering all requirements.
-3. Create `.skills/<skill-name>/` for each component-specific capability.
+3. Create `.agents/skills/<skill-name>/` for each component-specific capability.
 4. Ensure skill names follow the naming convention.
 5. Add documentation compilation tasks to `docs/Taskfile.yml`.
-6. Test that symlinks work correctly in `.claude/skills/` and `.agents/skills/`.
+6. Test that the base-provided symlinks resolve `.claude/skills/` to `.agents/skills/`.
 
 ## See also
 

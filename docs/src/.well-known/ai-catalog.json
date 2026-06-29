@@ -1,0 +1,20 @@
+{
+  "specVersion": "1.0",
+  "host": { "displayName": "DataRobot App Framework" },
+  "entries": [
+    {
+      "identifier": "urn:ai:github.com:datarobot-community:app-framework:datarobot-app-framework",
+      "displayName": "datarobot-app-framework",
+      "type": "application/ai-skill",
+      "url": "https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework/SKILL.md",
+      "description": "Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows (CrewAI, LangGraph, LlamaIndex)."
+    },
+    {
+      "identifier": "urn:ai:github.com:datarobot-community:app-framework:datarobot-app-framework-doc-update",
+      "displayName": "datarobot-app-framework-doc-update",
+      "type": "application/ai-skill",
+      "url": "https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/SKILL.md",
+      "description": "Generate and intelligently merge README documentation for a DataRobot App Framework component using its copier-module.yaml schema."
+    }
+  ]
+}
