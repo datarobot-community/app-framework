@@ -18,7 +18,7 @@ push manually, and don't gate it behind a copier prompt. Base's infra already de
 ```python
 import pulumi, pulumi_command as command
 build = command.local.Command(f"{NAME} Build Image",
-    create="./build-image.sh",               # works because the source script is +x (see below)
+    create="./build-image.sh",
     dir=str(app_dir), environment={"IMAGE_URI": IMAGE_URI},
     triggers=[source_hash(app_dir), IMAGE_URI])   # rebuild only when source/uri changes
 artifact = datarobot.Artifact(..., opts=pulumi.ResourceOptions(depends_on=[build]))
@@ -27,11 +27,9 @@ Requires local Docker logged in to the registry. (`pulumi_docker.Image` also wor
 base's infra `pyproject.toml`, which a component can't edit — `pulumi-command` is already present.)
 CI that pushes separately can delete this Command + the Artifact's `depends_on`.
 
-- **Copier preserves the executable bit — so make your template scripts executable.** `chmod +x`
-  the source `*.sh`/`*.sh.jinja` and `git update-index --chmod=+x` them (commit mode `100755`); the
-  rendered files are then `+x` and `create="./build-image.sh"` / `CMD ["./start.sh"]` just work. The
-  bit is honored on a **fresh** render (`dr component add`); a no-op re-render over an existing,
-  identical 644 file keeps the old mode, so don't rely on re-render to fix permissions.
+- **Make the shell scripts executable in git.** `chmod +x` the source `*.sh`/`*.sh.jinja` and
+  `git update-index --chmod=+x` them (commit mode `100755`); Copier preserves the bit on render, so
+  `create="./build-image.sh"` and `CMD ["./start.sh"]` work.
 
 ## 2. HTTP endpoints (wire protocols — implement in any language)
 
@@ -46,6 +44,22 @@ Many frameworks ship a server for this; otherwise it is ~40 lines around the age
 Some frameworks provide a native AG-UI server; the TypeScript ecosystem (CopilotKit) has first-class support.
 
 A single agent instance can back both endpoints.
+
+**Serving an HTML UI / browser client: use RELATIVE URLs.** The workload is reached at a URL
+*prefix* (`{endpoint}/endpoints/workloads/<id>/`) and the container never learns its own external
+URL — and you can't inject it as a runtime parameter either, because Pulumi only knows the endpoint
+*after* the workload is created (dependency cycle). So a page served at the app root that does
+`fetch("/ag-ui")` hits the **domain** root, not the prefix, and breaks. Resolve API paths relative to
+the current page (the app root), robust to a missing trailing slash:
+```js
+function appUrl(path) {                       // call as appUrl("ag-ui"), appUrl("v1/chat/completions")
+  const here = new URL(window.location.href);
+  if (!here.pathname.endsWith("/")) here.pathname += "/";
+  return new URL(path, here).href;
+}
+```
+Same rule for any asset/link: relative (`ag-ui`, `assets/x.js`), never absolute (`/ag-ui`). Server-side
+routing is unaffected — DataRobot strips the prefix, so the container still sees `/ag-ui` etc.
 
 ## 3. Pulumi: Artifact + Workload (Python `pulumi_datarobot`)
 
@@ -156,10 +170,43 @@ autoscaling=datarobot.WorkloadRuntimeContainerGroupAutoscalingArgs(enabled=True,
 
 ## 4. LLM access (from af-component-llm)
 
-That component deploys/configures the LLM and **exports env vars prefixed by its upper-cased
-app name** (default `LLM`): `LLM_DEPLOYMENT_ID`, `LLM_DEFAULT_MODEL`, `USE_DATAROBOT_LLM_GATEWAY`.
-Resolve the prefix in a template from its answers: `"{{ _external_data.llm.llm_app_name | upper }}"`.
-Read those in infra and re-inject under canonical names for the app.
+**Import the LLM config from the llm component's infra module — don't reconstruct it from
+prefixed env vars.** Every af-component-llm configuration (gateway, deployed, blueprint, …)
+renders an `infra/infra/<llm_app_name>.py` that exports the SAME two symbols: `default_model`
+(the litellm model id) and `custom_model_runtime_parameters` (a list of runtime-param args with
+`.key`/`.value`, including the deployment id and `USE_DATAROBOT_LLM_GATEWAY`). So a Python infra
+just imports them — robust across all llm configs, no string-prefix guessing:
+
+```python
+from .{{ _external_data.llm.llm_app_name }} import custom_model_runtime_parameters as llm_custom_model_runtime_parameters
+from .{{ _external_data.llm.llm_app_name }} import default_model
+
+def _llm_component_config_value(key):           # read one runtime param by key
+    for p in llm_custom_model_runtime_parameters:
+        if isinstance(p.key, str) and p.key == key:
+            return None if isinstance(p.value, str) and not p.value else p.value
+    return None
+
+llm_deployment_id = _llm_component_config_value(
+    "{{ _external_data.llm.llm_app_name | upper }}_DEPLOYMENT_ID") or ""
+```
+
+Two separate `from .<name> import …` lines (don't pre-combine into one parenthesized import):
+ruff's isort leaves them split because `combine-as-imports` is off by default, and `default_model`
+is imported unaliased — matching the `af-component-agent` reference.
+
+**This requires `_external_data.llm` in `copier.yml`** — without it `{{ _external_data.llm.llm_app_name }}`
+renders empty and you get a broken `from . import …`:
+```yaml
+_external_data:
+  base: "{{ base_answers_file }}"
+  llm: "{{ llm_answers_file }}"
+```
+`{{ _external_data.llm.llm_app_name }}` resolves to the active llm module (base symlinks the chosen
+config to `infra/infra/<name>.py`); importing it also orders llm resources before yours. The module
+only exists once the llm dependency is rendered — fine in a real project (base+llm are required deps)
+and under `task validate`; a standalone `copier copy` without deps renders the empty `from .` form.
+(Re-injecting via prefixed `os.environ.get(f"{PREFIX}_DEPLOYMENT_ID")` is brittle — avoid it.)
 
 OpenAI-compatible base URLs (api key = `DATAROBOT_API_TOKEN`):
 - **Gateway**: `{DATAROBOT_ENDPOINT}/genai/llmgw` — client appends `/chat/completions`. Model = a
