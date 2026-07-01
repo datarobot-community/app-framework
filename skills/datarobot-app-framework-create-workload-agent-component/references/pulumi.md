@@ -19,6 +19,38 @@ Requires local Docker logged in to the registry. (`pulumi_docker.Image` also wor
 base's infra `pyproject.toml`, which a component can't edit — `pulumi-command` is already present.)
 CI that pushes separately can delete this Command + the Artifact's `depends_on`.
 
+### Pin `image_uri` to the digest just pushed (avoid a stale-tag pull)
+
+A mutable `:tag` isn't enough — the registry or the Workload API's own pull path can still resolve
+the tag to a previously-cached image instead of the one just pushed, so the workload silently keeps
+running old code. Fix: resolve the digest the tag *now* points to (right after the push) and pin
+`image_uri` to `repo:tag@sha256:...`, so the pull is content-addressed and can never be stale.
+`docker images --digests` only reads the **local** image store — empty here, since a
+`docker buildx build --push` (no `--load`) never populates it. Query the registry instead:
+```python
+image_digest = command.local.Command(f"{NAME} Image Digest",
+    create='docker buildx imagetools inspect "$IMAGE_URI" --format "{{.Manifest.Digest}}"',
+    environment={"IMAGE_URI": IMAGE_URI},
+    triggers=[build.stdout])          # re-run only when the build actually reran
+
+image_repo, _, image_tag = IMAGE_URI.rpartition(":")
+pinned_image_uri = image_digest.stdout.apply(
+    lambda d: image_repo + ":" + image_tag + "@" + d.strip())
+# then: image_uri=pinned_image_uri
+```
+Note the *inverted* dependency direction vs. the credential/entity-id workaround in gotcha 4 below:
+there, an unknown Output had to be resolved to a concrete string outside Pulumi's graph before the
+Artifact was even declared. Here `pinned_image_uri` stays a genuine Pulumi `Output[str]` (unknown at
+`preview`) and is passed straight into `image_uri=` — verified working with a real `pulumi preview`.
+Unlike `environmentVars` (gotcha 4), the Artifact provider does **not** reject an unknown top-level
+`image_uri`, so no eager REST-style resolution is needed here.
+
+If templating this inside a Jinja `.jinja` infra file, wrap the Go-template braces in
+`{% raw %}{{.Manifest.Digest}}{% endraw %}` (a bare `{{.Manifest.Digest}}` gets parsed as a Jinja
+expression and breaks rendering), and build `pinned_image_uri` with `+` string concatenation rather
+than an f-string — an f-string's `{name}` sitting directly against a Jinja `{{ name }}` substitution
+is easy to get wrong (stray/mismatched braces once rendered).
+
 ## Artifact + Workload
 
 `Artifact` = immutable *what runs*; `Workload` = *runtime* (replicas/resources).

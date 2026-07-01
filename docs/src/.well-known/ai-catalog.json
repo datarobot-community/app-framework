@@ -17,10 +17,10 @@
       "description": "Generate and intelligently merge README documentation for a DataRobot App Framework component using its copier-module.yaml schema."
     },
     {
-      "identifier": "urn:ai:github.com:datarobot-community:app-framework:datarobot-app-framework-create-agent-framework-component",
-      "displayName": "datarobot-app-framework-create-agent-framework-component",
+      "identifier": "urn:ai:github.com:datarobot-community:app-framework:datarobot-app-framework-create-workload-agent-component",
+      "displayName": "datarobot-app-framework-create-workload-agent-component",
       "type": "application/ai-skill",
-      "url": "https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-create-agent-framework-component/SKILL.md",
+      "url": "https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-create-workload-agent-component/SKILL.md",
       "description": "Create a DataRobot App Framework (af-component-*) component that hosts an agent — built in ANY language/framework — as a container on the DataRobot Workload API, exposing OpenAI-compatible chat completions and/or AG-UI over HTTP, wired to af-component-llm and instrumented with OpenTelemetry."
     }
   ]
