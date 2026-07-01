@@ -47,6 +47,11 @@ Only the agent's internal code changes per framework; the rest is a fixed contra
 ## Non-negotiable gotchas (silent failure; detail in the references)
 
 - **linux/amd64** image (else `exec format error`); **port ≥ 1024**; image must be **publicly pullable**.
+- **Port default**: don't use `8080`/`3000`/`5000`/`8000` — pick something in **8100–8200** so `task
+  dev`/`docker compose up` doesn't collide with whatever else is already running on a dev machine.
+  Single source of truth via `$PORT`: Dockerfile `EXPOSE`, docker-compose host+container mapping, the
+  app's `DefaultPort` fallback, and the infra `PORT` Tunable must all trace to the one value/env var,
+  not four independently hardcoded literals. → `workload-contract.md`
 - **Pulumi**: Workload uses `artifact.artifact_id` (not `.id`); don't set the runtime group `name` (read-only);
   memory in **bytes**; drop empty-string env vars; `environmentVars` must be **known at plan time** —
   resolve credential + entity ids to concrete strings via REST, never as Pulumi Outputs. → `pulumi.md`

@@ -6,7 +6,16 @@ satisfy; the Pulumi infra (always Python) is in `pulumi.md`.
 ## Container
 
 - Image MUST have a **linux/amd64** manifest. Build: `docker buildx build --platform linux/amd64 -t <ref> --push .`
-- Listen on an HTTP port **≥ 1024** (the Workload injects `PORT`; bind it).
+- Listen on an HTTP port **≥ 1024** (the Workload injects `PORT`; bind it). Don't default to `8080`
+  (or `3000`, `5000`, `8000`) for the app's own `DefaultPort`/local-dev fallback — those are exactly
+  the ports other local services/proxies/dev tools already commonly claim, causing "address already
+  in use" the moment a dev runs `task dev`/`docker compose up` alongside anything else. Pick something
+  in **8100–8200** instead. Whatever you pick, it must be a single overridable value, not a literal
+  copy-pasted into every file that mentions it — the Dockerfile's `EXPOSE` (documentation only, not
+  enforced), `docker-compose.yml`'s host+container port mapping, the app's own `DefaultPort` fallback,
+  and the infra `PORT` Tunable **all read from the one $PORT env var / one chosen literal**, so
+  changing it later, or a developer overriding it locally, is a one-variable change, not a grep-and-
+  replace across four files.
 - `GET /health` returns 200 quickly — used by readiness/liveness probes.
 - Image must live in a registry DataRobot can pull (public, or one the org pre-configured). The
   Workload API does not yet take image-pull credentials at create time.
