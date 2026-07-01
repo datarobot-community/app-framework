@@ -34,11 +34,29 @@ image_digest = command.local.Command(f"{NAME} Image Digest",
     triggers=[build.stdout])          # re-run only when the build actually reran
 
 image_repo, _, image_tag = IMAGE_URI.rpartition(":")
-pinned_image_uri = image_digest.stdout.apply(
-    lambda d: image_repo + ":" + image_tag + "@" + d.strip())
+
+def _pin_digest(digest):
+    # digest is None when this Command didn't actually run — e.g. a
+    # `--target`-scoped/dev-mode deploy that legitimately excludes it.
+    # Fall back to the plain tag instead of crashing on `.strip()`.
+    if not digest or not digest.strip():
+        return IMAGE_URI
+    return image_repo + ":" + image_tag + "@" + digest.strip()
+
+pinned_image_uri = image_digest.stdout.apply(_pin_digest)
 # then: image_uri=pinned_image_uri
 ```
-Note the *inverted* dependency direction vs. the credential/entity-id workaround in gotcha 4 below:
+**Must tolerate `--target`-scoped deploys.** Any DataRobot dev workflow that runs a targeted
+`pulumi up` (e.g. a `deploy-dev` task that only targets certain resources) still executes this
+entire Python program to build the resource graph — it just skips *applying* untargeted resources.
+An untargeted `command.local.Command` never runs its `create` script, so its `.stdout` Output
+resolves to `None`, and any `.apply()` reading it (here, or anywhere else in the file) must handle
+that instead of assuming the command always ran. The unguarded version above crashes with
+`AttributeError: 'NoneType' object has no attribute 'strip'` the moment a dev workflow doesn't
+target the image build — not a preview/up-specific bug, a "does this program work under partial,
+targeted deploys" bug. Audit every `.apply()` on a `Command`'s `.stdout`/`.stderr` for this.
+
+Note the *inverted* dependency direction vs. the self-provisioned-credential case in gotcha 4 below:
 there, an unknown Output had to be resolved to a concrete string outside Pulumi's graph before the
 Artifact was even declared. Here `pinned_image_uri` stays a genuine Pulumi `Output[str]` (unknown at
 `preview`) and is passed straight into `image_uri=` — verified working with a real `pulumi preview`.
@@ -64,13 +82,17 @@ artifact = datarobot.Artifact(
         datarobot.ArtifactSpecContainerGroupArgs(containers=[
             datarobot.ArtifactSpecContainerGroupContainerArgs(
                 name="main", image_uri=IMAGE_URI, primary=True, port=PORT,
+                # Unlike Custom Applications/Models, the Workload API does NOT auto-inject
+                # DATAROBOT_API_TOKEN/DATAROBOT_ENDPOINT — declare them explicitly. See gotcha 4.
                 environment_vars=[
                     datarobot.ArtifactSpecContainerGroupContainerEnvironmentVarArgs(
-                        name="DATAROBOT_API_TOKEN", source="dr-credential",
-                        dr_credential_id=cred_id, key="apiToken"),
+                        name="DATAROBOT_API_TOKEN", source="string", value=token),
                     datarobot.ArtifactSpecContainerGroupContainerEnvironmentVarArgs(
                         name="DATAROBOT_ENDPOINT", source="string", value=endpoint),
-                    # ...more source="string" vars; OMIT any whose value == "" (see gotchas)...
+                    datarobot.ArtifactSpecContainerGroupContainerEnvironmentVarArgs(
+                        name="LLM_DEFAULT_MODEL", source="string", value=default_model),
+                    # ...more source="string" vars (LLM wiring, app-specific config); OMIT any whose
+                    # value == "" (see gotcha 3)...
                 ],
                 readiness_probe=datarobot.ArtifactSpecContainerGroupContainerReadinessProbeArgs(
                     path="/health", port=PORT, initial_delay_seconds=10, period_seconds=10),
@@ -112,29 +134,51 @@ autoscaling=datarobot.WorkloadRuntimeContainerGroupAutoscalingArgs(enabled=True,
    (The container *inside* it still needs `name=` matching the artifact's container.)
 3. **Drop empty-string env vars.** A `source="string"` var with `value=""` → `422 … Field required`.
    Build the string vars in a dict and emit only non-empty ones; let app defaults cover the rest.
-4. **`environmentVars` must be fully KNOWN at plan time — resolve ids eagerly, don't pass Outputs.**
-   The Artifact provider validates each env var during `preview` and tolerates neither unknown *leaf*
-   values (a freshly-created credential's `.id`, a use-case-derived entity id → `Missing
-   dr_credential_id` / `Missing value`) nor a wholly-unknown list wrapped in `Output.all(...).apply(...)`
-   (→ `Value Conversion Error`). So a normal single-pass `pulumi up` fails. **Fix: resolve values to
-   concrete strings via the DataRobot REST API at plan time** (token + endpoint are known env vars),
-   instead of creating Pulumi resources with unknown ids:
-   ```python
-   import datarobot as dr
-   client = dr.Client(token=token, endpoint=endpoint)
-   # idempotent upsert → concrete credential id (no plaintext token in Pulumi state)
-   creds = client.get("credentials/").json().get("data", [])
-   cred_id = next((c["credentialId"] for c in creds
-                   if c["name"] == NAME and c["credentialType"] == "api_token"), None) \
-             or client.post("credentials/", data={"name": NAME, "credentialType": "api_token",
-                                                   "apiToken": token}).json()["credentialId"]
-   # entity id: prefer DATAROBOT_DEFAULT_USE_CASE; else look up the project Use Case by name; else ""
-   ```
-   Then `dr_credential_id=cred_id` and `DATAROBOT_ENTITY_ID=f"experiment_container-{uc_id}"` are plain
-   strings → single-pass `task deploy` works. Trade-offs: the eager credential lives outside Pulumi's
-   graph (name it per-stack, idempotent; `pulumi destroy` won't remove it), and on a first deploy the
-   Use Case may not exist yet so entity id is omitted (tracing attaches once it does, or immediately if
-   `DATAROBOT_DEFAULT_USE_CASE` is set). REST writes during `preview` are the deliberate cost of single-pass.
+4. **`environmentVars` must be fully KNOWN at plan time — never pass a Pulumi Output.** The Artifact
+   provider validates each env var during `preview` and rejects unknown *leaf* values with `Missing
+   value`/`Missing dr_credential_id`, or a wholly-unknown list wrapped in `Output.all(...).apply(...)`
+   with `Value Conversion Error`. Ways this actually happens, and how DATAROBOT_API_TOKEN/ENDPOINT are
+   the exception:
+   - **DATAROBOT_API_TOKEN / DATAROBOT_ENDPOINT are NOT auto-injected — unlike Custom
+     Applications/Models, the Workload API does not put these into the container unless you ask.**
+     (An earlier version of this guidance said the platform injects them automatically; that was
+     wrong.) The DataRobot REST API itself supports a `source="api-key"` env var that has the
+     platform inject a live token with no `value` needed — but `pulumi_datarobot`'s
+     `ArtifactSpecContainerGroupContainerEnvironmentVarArgs` doesn't expose that source type yet (its
+     `source` field only documents `"string"`/`"dr-credential"`; passing `"api-key"` anyway either
+     fails client-side validation or is silently unsupported depending on provider version — don't
+     rely on it). So both vars are passed through as plain `source="string"` values, read from
+     infra's own deploy-time environment — the same live token/endpoint `dr dotenv setup` already
+     populated there:
+     ```python
+     token = os.environ["DATAROBOT_API_TOKEN"]
+     endpoint = os.environ.get("DATAROBOT_ENDPOINT", "").rstrip("/")
+     # ...then source="string", value=token / value=endpoint in environment_vars.
+     ```
+     This also means the REST-eager-credential-resolution pattern (`dr.Client(...)` + upserting an
+     `api_token` credential to get a concrete id for `source="dr-credential"`) is unnecessary for
+     this var — don't add that complexity back for `DATAROBOT_API_TOKEN`. Revisit
+     `source="api-key"` once `pulumi_datarobot` actually supports it; until then this plain
+     pass-through is the correct pattern, not a workaround to later remove.
+   - **`OTEL_ENTITY_ID`: still don't try to supply this.** The platform injects it
+     (`experiment_container-<use_case_id>`) once a Use Case is attached to the stack — empty before
+     that, and the app should skip OTel export gracefully rather than send with a blank entity id, not
+     error. This one is unaffected by the DATAROBOT_API_TOKEN/ENDPOINT correction above.
+   - **A genuinely new Pulumi-managed resource's id, e.g. `LLM_DEPLOYMENT_ID` sourced from
+     af-component-llm's `custom_model_runtime_parameters`.** Several `llm` configurations (anything
+     that provisions its own Blueprint/Deployment, e.g. `blueprint_with_llm_gateway`) set that
+     parameter's value to `some_deployment.id` — a `datarobot.Deployment` created in the *same*
+     `pulumi up`, so its `.id` is an unresolved Output at this point in your program, not a string.
+     Passing it straight into `environment_vars` hits exactly this "Missing value" error. Fix: when
+     reading such a value, require `isinstance(value, str)` before using it, and treat anything else
+     (an Output) as unavailable — filter it out of `environment_vars` like any other empty value (see
+     gotcha 3), rather than trying to resolve it. For configs like this, falling back to the LLM
+     Gateway when the deployment id isn't a known string is *correct* behavior, not a workaround: those
+     configs still set `USE_DATAROBOT_LLM_GATEWAY=1`, meaning DataRobot's governance for the
+     Blueprint/Deployment happens behind the Gateway, not by the app calling the deployment directly.
+     (A credential *you* provision, with no platform `source` equivalent, is the one case where eager
+     REST resolution at plan time — upsert via `dr.Client`, get a concrete id, use
+     `source="dr-credential"` — is still the right pattern.)
 5. **Destroy order.** Creating an Artifact auto-locks it (`status=locked`, `version=1`); `pulumi
    destroy` fails `409 … still used by workloads` if a workload (even a failed one) references it —
    delete the workload first (`DELETE /workloads/{id}/`).

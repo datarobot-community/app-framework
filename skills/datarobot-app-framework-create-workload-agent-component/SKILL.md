@@ -54,10 +54,27 @@ Only the agent's internal code changes per framework; the rest is a fixed contra
   not four independently hardcoded literals. → `workload-contract.md`
 - **Pulumi**: Workload uses `artifact.artifact_id` (not `.id`); don't set the runtime group `name` (read-only);
   memory in **bytes**; drop empty-string env vars; `environmentVars` must be **known at plan time** —
-  resolve credential + entity ids to concrete strings via REST, never as Pulumi Outputs. → `pulumi.md`
-- **Secrets** injected by reference (`source:"dr-credential"`), never plaintext.
-- **OTel** metrics need **DELTA** temporality + the two `X-DataRobot-*` headers.
-- **UI** uses relative URLs — the workload is served behind a URL prefix it can't know.
+  never pass a Pulumi Output (e.g. a just-created Deployment's `.id` from af-component-llm's
+  `custom_model_runtime_parameters`); treat it as unavailable instead. → `pulumi.md`
+- **Support `--target`-scoped/dev-mode deploys**: any `.apply()` reading a `command.local.Command`'s
+  `.stdout` (e.g. the image-digest pin) must handle `None` — an untargeted Command never runs its
+  script, so its output is never populated. Don't assume every resource in the program actually ran
+  just because the program executed. → `pulumi.md`
+- **`DATAROBOT_API_TOKEN`/`DATAROBOT_ENDPOINT` are NOT auto-injected by the Workload API** (unlike
+  Custom Applications/Models) — infra must declare them. The REST API supports a `source="api-key"`
+  value for the token, but `pulumi_datarobot` doesn't expose that source type yet, so pass through
+  both as plain `source="string"` values read from infra's own deploy-time env
+  (`os.environ["DATAROBOT_API_TOKEN"]` / `os.environ.get("DATAROBOT_ENDPOINT")`). →
+  `pulumi.md`, `observability.md`
+- **Never set `OTEL_ENTITY_ID` in infra** — the platform injects it once a Use Case is attached to
+  the stack; the app just reads it from env and skips OTel export gracefully while it's empty.
+- **Secrets you provision yourself** (a credential with no platform `source` equivalent, e.g. a
+  third-party API key) are injected by reference (`source:"dr-credential"`), never plaintext.
+- **OTel**: metrics need **DELTA** temporality + the two `x-datarobot-*` headers; wire a *logs*
+  pipeline too (not just traces) and set `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`, or
+  exporters can be "correctly configured" and still show empty/no content. → `observability.md`
+- **UI** uses relative URLs (including any browser test page the component itself ships, e.g. a `GET
+  /` chat page) — the workload is served behind a URL prefix it can't know.
 - **LLM model env var**: give the container the SAME name af-component-llm exports
   (`<LLM_APP_NAME>_DEFAULT_MODEL`), don't invent a new one — otherwise `task dev`/local runs (which
   skip Pulumi) never get it set. Strip only the leading `datarobot/` prefix, in the app not in infra,
