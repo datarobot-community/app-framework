@@ -159,8 +159,9 @@ All skills must:
 
 Component README files and GitHub Markdown documentation must follow the DataRobot documentation style standards. The authoritative references are:
 
-- [`documentation-style-spec.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md) — concise spec for App Framework READMEs and GitHub Markdown.
-- [`datarobot-style-guide-github.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/datarobot-style-guide-github.md) — full DataRobot style guide for GitHub Markdown.
+- [`documentation-style-spec.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md) — entry point for App Framework READMEs: quick reference, checklist, and links to topic files.
+- [`references/`](https://github.com/datarobot-community/app-framework/tree/main/skills/datarobot-app-framework-doc-update/references) — one topic file per style guide section (voice, grammar, GitHub Markdown, and so on).
+- [`datarobot-style-guide-github.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/datarobot-style-guide-github.md) — index of the full DataRobot style guide for GitHub Markdown.
 
 Use the [`datarobot-app-framework-doc-update`](https://github.com/datarobot-community/app-framework/tree/main/skills/datarobot-app-framework-doc-update) skill and the `af-component-doc-update` tool to scaffold and merge component README files from `copier-module.yaml`.
 
