@@ -24,7 +24,7 @@ dr component add https://github.com/datarobot-community/af-component-react .
 Or with copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-react .
+uvx copier copy https://github.com/datarobot-community/af-component-react .
 ```
 
 The wizard asks for a `react_app` name (e.g., `frontend`). This name namespaces all generated files and the answers file.
