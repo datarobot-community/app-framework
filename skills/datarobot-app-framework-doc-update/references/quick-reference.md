@@ -1,6 +1,6 @@
 # Quick reference
 
-Section index for common authoring contexts. Follow the linked section for full rules.
+Section index for common authoring contexts. For per-file "when to read" guidance, see [README.md](./README.md).
 
 | Context | Primary sections |
 | --- | --- |

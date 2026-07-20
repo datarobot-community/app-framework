@@ -1,12 +1,12 @@
 # DataRobot style guide (GitHub Markdown)
 
-Writing standards for product UI copy, API descriptions, error messages, and technical documentation. This version uses **GitHub Flavored Markdown (GFM)** only — no MkDocs Material, Jinja, or datarobot-docs build features.
+Writing standards for product UI copy, API descriptions, error messages, and technical documentation. This version uses GitHub Flavored Markdown (GFM) only — no MkDocs Material, Jinja, or datarobot-docs build features.
 
-**External references**: [DataRobot design system](https://design-system.drdev.io/), [Google Developer Documentation Style Guide](https://developers.google.com/style).
+External references: [DataRobot design system](https://design-system.drdev.io/), [Google Developer Documentation Style Guide](https://developers.google.com/style).
 
 ## How this guide is organized
 
-The style guide is split into topic files under [`references/`](./references/) so agents and authors can load only the sections they need. The App Framework doc-update skill uses [`documentation-style-spec.md`](./documentation-style-spec.md) as its entry point — that file contains the quick reference and README checklist, with links to the reference files below.
+The style guide is split into topic files under [`references/`](./references/) so agents and authors can load only the sections they need. The App Framework doc-update skill uses [`documentation-style-spec.md`](./documentation-style-spec.md) as its entry point — that file contains the quick reference and README checklist. Use the [reference dictionary](./references/README.md) to decide which topic files to load and when.
 
 ## Reference index
 

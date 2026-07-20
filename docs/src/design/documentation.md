@@ -160,6 +160,7 @@ All skills must:
 Component README files and GitHub Markdown documentation must follow the DataRobot documentation style standards. The authoritative references are:
 
 - [`documentation-style-spec.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md) — entry point for App Framework READMEs: quick reference, checklist, and links to topic files.
+- [`references/README.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/references/README.md) — dictionary of every topic file with "when to read" guidance.
 - [`references/`](https://github.com/datarobot-community/app-framework/tree/main/skills/datarobot-app-framework-doc-update/references) — one topic file per style guide section (voice, grammar, GitHub Markdown, and so on).
 - [`datarobot-style-guide-github.md`](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/datarobot-style-guide-github.md) — index of the full DataRobot style guide for GitHub Markdown.
 

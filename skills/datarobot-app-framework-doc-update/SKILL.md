@@ -71,10 +71,10 @@ Produce a single merged README using these rules:
 
 ### Step 4 — Write merged README
 
-* Write the merged content to `<repo_path>/README.md`.
-* The merged content must be grammatically correct, well-structured, have followed the instructions in the template prompts, and comprehensive — it must be a high-quality README using the style guide in `./documentation-style-spec.md`.
-* Read the topic references linked from the spec when applying detailed rules (especially `references/technical-documentation.md`, `references/grammar-and-punctuation.md`, `references/words-to-avoid.md`, `references/github-markdown-authoring.md`, `references/code-in-text.md`, and `references/timeless-documentation.md`). Do not load the entire `references/` folder unless a section requires it.
-* Every heading section must have a sentence/paragraph of intro text.
+- Write the merged content to `<repo_path>/README.md`.
+- The merged content must be grammatically correct, well-structured, have followed the instructions in the template prompts, and comprehensive — it must be a high-quality README using the style guide in `./documentation-style-spec.md`.
+- Use [`./references/README.md`](./references/README.md) to decide which topic files to load. Read the default set (six files) for every merge; load additional files only when the README section you are writing matches that file's "When to read" criteria.
+- Every heading section must have a sentence/paragraph of intro text.
 
 ### Step 5 — Clean up
 

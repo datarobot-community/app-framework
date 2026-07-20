@@ -2,22 +2,13 @@
 
 Style standards for App Framework component READMEs and other GitHub Markdown documentation. Follow these rules when creating or updating documentation to ensure consistency with the DataRobot corporate style guide.
 
-**External references**: [DataRobot design system](https://design-system.drdev.io/), [Google Developer Documentation Style Guide](https://developers.google.com/style).
+External references: [DataRobot design system](https://design-system.drdev.io/), [Google Developer Documentation Style Guide](https://developers.google.com/style).
 
 ## How to use this spec
 
-This file is the **entry point** for the doc-update skill. It contains the quick-reference rules and README checklist agents need most often. For full rules, read the topic files in [`references/`](./references/).
+This file is the entry point for the doc-update skill. It contains the quick-reference rules and README checklist agents need most often. For full rules, read the topic files in [`references/`](./references/).
 
-**When updating a component README**, read these reference files in addition to this spec:
-
-| Reference | Why |
-|-----------|-----|
-| [technical-documentation.md](./references/technical-documentation.md) | Headings, lists, procedures, links, tables, code blocks |
-| [grammar-and-punctuation.md](./references/grammar-and-punctuation.md) | Voice, tense, person (*we* / *you*), contractions, sentence case |
-| [words-to-avoid.md](./references/words-to-avoid.md) | Banned words and tone constraints |
-| [github-markdown-authoring.md](./references/github-markdown-authoring.md) | GFM callouts, fences, collapsible sections |
-| [code-in-text.md](./references/code-in-text.md) | Inline code, placeholders, command examples |
-| [timeless-documentation.md](./references/timeless-documentation.md) | Avoid time-anchor words in reference docs |
+Which reference files to load: See the [reference dictionary](./references/README.md) — it lists every topic file, what it covers, and when to read it. For every README merge, load the six-file default set from that dictionary; load additional files only when the section you are writing matches their "When to read" criteria.
 
 For the complete style guide index, see [datarobot-style-guide-github.md](./datarobot-style-guide-github.md).
 
@@ -47,25 +38,25 @@ For the complete style guide index, see [datarobot-style-guide-github.md](./data
 
 ### Words to avoid
 
-- ❌ **Please** — drop; adds no information
-- ❌ **We / our** — rephrase with *DataRobot* or a neutral subject
-- ❌ **Currently, now, new, latest, soon** — see [timeless-documentation.md](./references/timeless-documentation.md)
-- ❌ **Should** — state definite behavior instead
-- ❌ **Simply, It's easy, quickly** — filler that adds no value
+- ❌ Please — drop; adds no information
+- ❌ We / our — rephrase with *DataRobot* or a neutral subject
+- ❌ Currently, now, new, latest, soon — see [timeless-documentation.md](./references/timeless-documentation.md)
+- ❌ Should — state definite behavior instead
+- ❌ Simply, It's easy, quickly — filler that adds no value
 - ❌ Exclamation points, emojis, and internet slang
 
 ### Lists
 
 Two valid description-list styles:
 
-**Run-in style (preferred for glossary-style lists)**:
+Run-in style (preferred for glossary-style lists):
 
 ```markdown
 - **Authentication**. Manage DataRobot credentials.
 - **Templates**. Clone and configure applications.
 ```
 
-**Em dash style (valid for CLI-style docs)**:
+Em dash style (valid for CLI-style docs):
 
 ```markdown
 - **Authentication** — manage DataRobot credentials.
@@ -83,9 +74,9 @@ General list rules:
 
 ### Contractions
 
-- ✅ Allowed in technical documentation: negation contractions (*isn't*, *don't*, *won't*, *can't*)
-- ❌ Avoid noun+verb possessive contractions: *browser's* → *browser is*; *template's* → *the template configuration*
-- ❌ Do not use *we're* or other first-person contractions (never use *we*)
+- ✅ Allowed in technical documentation: negation contractions (isn't, don't, won't, can't)
+- ❌ Avoid noun+verb possessive contractions: browser's → browser is; template's → the template configuration
+- ❌ Do not use we're or other first-person contractions (never use we)
 - ✅ Prefer positive phrasing over negative contractions when both work
 
 ### Placeholders
@@ -110,8 +101,8 @@ Explain placeholders on first use.
 - ✅ Conversational and direct without being frivolous
 - ✅ Use imperative mood for instructions
 - ✅ Write for a global, technically proficient audience
-- ❌ Avoid idioms, slang, culturally specific humor, and directional language (*above*, *below*)
-- ❌ Do not attribute human qualities to software (*The service sees…* → *The service detects…*)
+- ❌ Avoid idioms, slang, culturally specific humor, and directional language (above, below)
+- ❌ Do not attribute human qualities to software (The service sees… → The service detects…)
 
 ### GitHub Markdown callouts
 
@@ -129,7 +120,7 @@ Capitalize the callout type, use a colon, and end with a period.
 
 ## Reference index
 
-Each file in [`references/`](./references/) covers one topic from the full DataRobot style guide.
+Each file in [`references/`](./references/) covers one topic from the full DataRobot style guide. For when to read each file, see the [reference dictionary](./references/README.md).
 
 | Reference | Summary |
 |-----------|---------|
@@ -161,20 +152,20 @@ When updating component documentation, verify these elements:
 
 - [ ] Sentence-case headings with intro text under every section
 - [ ] No `[[INSERT … HERE]]` placeholders or HTML comment instructions in final output
-- [ ] Imperative or neutral voice — no *we* / *our*; minimal *you* / *your*
+- [ ] Imperative or neutral voice — no we / our; minimal you / your
 - [ ] Present tense, active voice
 - [ ] Lists use consistent punctuation and parallel structure
 - [ ] Placeholders use `UPPERCASE_WITH_UNDERSCORES` in procedural text
 - [ ] Code blocks have language tags; single-line commands omit `$` when ambiguous
 - [ ] Links use descriptive text and `.md` extensions for repo-relative paths
 - [ ] Callouts use blockquote syntax, not MkDocs admonitions
-- [ ] Timeless language (no *currently*, *new*, *latest*)
+- [ ] Timeless language (no currently, new, latest)
 - [ ] Component dependencies section matches `copier-module.yaml` (auto-generated; do not override)
 
 ## Verification process
 
 1. Check all headings use sentence case and have intro text
-2. Verify voice: no *we* / *our*; imperatives preferred over *you can* / *you must*
+2. Verify voice: no we / our; imperatives preferred over you can / you must
 3. Confirm present tense and active voice
 4. Verify lists use correct punctuation and parallel structure
 5. Check placeholders use the correct format for context
@@ -187,6 +178,7 @@ When updating component documentation, verify these elements:
 
 | Date | Change |
 |------|--------|
+| 2026-07-20 | Added [reference dictionary](./references/README.md) with per-file "when to read" guidance for README merges. |
 | 2026-07-17 | Split authoritative guide into [`references/`](./references/) topic files; this spec is now a slim entry point with quick reference and README checklist. |
 | 2026-06-23 | Aligned with DataRobot GitHub style guide: voice/person rules, contractions, GitHub Markdown callouts, timeless docs, accessibility, placeholder formats, and link conventions. |
 | 2025-10-24 | Initial specification created based on DataRobot corporate style guide review. |
