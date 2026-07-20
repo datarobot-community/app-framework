@@ -23,7 +23,7 @@ dr component add https://github.com/datarobot-community/af-component-fastapi-bac
 Or with copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-fastapi-backend .
+uvx copier copy https://github.com/datarobot-community/af-component-fastapi-backend .
 ```
 
 The wizard asks for a `fastapi_app` name. Use a short, lowercase identifier (e.g., `api` or `web`). This name namespaces all generated files and the answers file.
@@ -76,7 +76,7 @@ uvx copier update -a .datarobot/answers/fastapi-FASTAPI_APP.yml -A
 Because this component is repeatable, run the apply command again with a different `fastapi_app` name:
 
 ```bash
-uvx copier copy datarobot-community/af-component-fastapi-backend .
+uvx copier copy https://github.com/datarobot-community/af-component-fastapi-backend .
 # Enter a different `fastapi_app` name when prompted.
 ```
 

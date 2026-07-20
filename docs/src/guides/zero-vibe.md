@@ -149,7 +149,7 @@ For fast iteration on LLM use cases that don't yet need a full agentic workflow,
 Apply the LLM component to your recipe:
 
 ```bash
-uvx copier copy git@github.com:datarobot-community/af-component-llm .
+uvx copier copy https://github.com/datarobot-community/af-component-llm .
 ```
 
 Accept the defaults, then set up your environment:

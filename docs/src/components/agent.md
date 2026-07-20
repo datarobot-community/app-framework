@@ -24,7 +24,7 @@ dr component add https://github.com/datarobot-community/af-component-agent .
 Or with copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-agent .
+uvx copier copy https://github.com/datarobot-community/af-component-agent .
 ```
 
 When prompted, choose your agent framework:

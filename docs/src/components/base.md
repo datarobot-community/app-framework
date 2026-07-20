@@ -21,7 +21,7 @@ dr component add https://github.com/datarobot-community/af-component-base .
 Or with copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 The wizard prompts for:

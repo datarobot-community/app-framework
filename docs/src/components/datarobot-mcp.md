@@ -22,7 +22,7 @@ dr component add https://github.com/datarobot-community/af-component-datarobot-m
 Or with copier directly:
 
 ```bash
-uvx copier copy datarobot-community/af-component-datarobot-mcp .
+uvx copier copy https://github.com/datarobot-community/af-component-datarobot-mcp .
 ```
 
 The wizard asks for an `mcp_app_name` (e.g., `mcp`). This scopes all generated files and the answers file, allowing multiple instances in the same project.
