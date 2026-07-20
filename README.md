@@ -45,6 +45,8 @@ npx ai-agent-skills install datarobot-community/app-framework
 
 ## Components
 
+The following App Framework components are maintained in separate repositories under the [`datarobot-community`](https://github.com/datarobot-community) GitHub organization:
+
 | Component | Description |
 |-----------|-------------|
 | [`af-component-base`](https://github.com/datarobot-community/af-component-base) | Task runner, Pulumi project, CI/CD, `.datarobot/` config. |
@@ -57,3 +59,7 @@ npx ai-agent-skills install datarobot-community/app-framework
 ## Development
 
 See the [Developer Guide](https://af.datarobot.com/developer/) for setup instructions, running docs locally, and using `copier-watch` to iterate on component templates.
+
+## Documentation style
+
+Component README files follow the [Documentation Style Specification](skills/datarobot-app-framework-doc-update/documentation-style-spec.md). Use the [`datarobot-app-framework-doc-update`](skills/datarobot-app-framework-doc-update/SKILL.md) skill and the `af-component-doc-update` tool to scaffold and merge README content from `copier-module.yaml`.

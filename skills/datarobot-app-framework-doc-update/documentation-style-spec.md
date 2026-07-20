@@ -1,431 +1,184 @@
 # Documentation Style Specification
 
-This document defines the style standards for all documentation in the DataRobot CLI project. Follow these rules when creating or updating documentation to ensure consistency with the DataRobot corporate style guide.
+Style standards for App Framework component READMEs and other GitHub Markdown documentation. Follow these rules when creating or updating documentation to ensure consistency with the DataRobot corporate style guide.
 
-## Quick Reference
+External references: [DataRobot design system](https://design-system.drdev.io/), [Google Developer Documentation Style Guide](https://developers.google.com/style).
+
+## How to use this spec
+
+This file is the entry point for the doc-update skill. It contains the quick-reference rules and README checklist agents need most often. For full rules, read the topic files in [`references/`](./references/).
+
+Which reference files to load: See the [reference dictionary](./references/README.md) — it lists every topic file, what it covers, and when to read it. For every README merge, load the six-file default set from that dictionary; load additional files only when the section you are writing matches their "When to read" criteria.
+
+For the complete style guide index, see [datarobot-style-guide-github.md](./datarobot-style-guide-github.md).
+
+## Quick reference
 
 ### Headings
+
 - ✅ Use sentence case: "Getting started", "Quick start guide"
 - ❌ Avoid title case: "Getting Started", "Quick Start Guide"
+- ✅ Use imperative verbs for procedural topics: "Install the CLI", "Configure authentication"
+- ❌ Avoid gerunds in procedural headings: "Installing the CLI", "Configuring authentication"
+- ❌ Do not end headings with periods
 - Exception: Proper nouns remain capitalized (DataRobot, OAuth, PostgreSQL)
+- One level-1 heading per document; do not skip heading levels
+
+### Voice and tense
+
+- ✅ Prefer imperative instructions: "Enable authentication before deploying.", "Run this command."
+- ✅ Use neutral, factual phrasing: "The CLI provides authentication management."
+- ❌ Never use first-person plural: "We provide", "Our CLI", "We're building"
+- ❌ Minimize second person: avoid "You can…", "You must…", "You should…" when imperative or neutral phrasing works
+- ✅ Use *you* or *your* only when removing them would be awkward, confusing, or overly complicated
+- ✅ Use present tense: "The CLI provides", "This command generates"
+- ❌ Avoid future tense unless emphasizing something that will happen later
+- ✅ Use active voice: "The wizard guides the setup process."
+- ❌ Avoid passive voice when active is clearer
+
+### Words to avoid
+
+- ❌ Please — drop; adds no information
+- ❌ We / our — rephrase with *DataRobot* or a neutral subject
+- ❌ Currently, now, new, latest, soon — see [timeless-documentation.md](./references/timeless-documentation.md)
+- ❌ Should — state definite behavior instead
+- ❌ Simply, It's easy, quickly — filler that adds no value
+- ❌ Exclamation points, emojis, and internet slang
 
 ### Lists
-- ✅ Use em dashes (`&mdash;`) for descriptions: `- **Item**&mdash;description.`
-- ❌ Avoid hyphens or colons: `- **Item** - description` or `- **Item**: description`
-- ✅ Add periods to list items (unless single words or code-only)
-- ❌ Don't omit periods in complete sentences
 
-### Voice and Tense
-- ✅ Use second person: "You can configure", "Use this command"
-- ❌ Avoid first person plural: "We provide", "Our CLI"
-- ✅ Use present tense: "The CLI provides", "This command generates"
-- ❌ Avoid future tense: "The CLI will provide", "This command will generate"
-- ✅ Use active voice: "The wizard guides you"
-- ❌ Avoid passive voice: "You will be guided by the wizard"
+Two valid description-list styles:
+
+Run-in style (preferred for glossary-style lists):
+
+```markdown
+- **Authentication**. Manage DataRobot credentials.
+- **Templates**. Clone and configure applications.
+```
+
+Em dash style (valid for CLI-style docs):
+
+```markdown
+- **Authentication** — manage DataRobot credentials.
+- **Templates** — clone and configure applications.
+```
+
+General list rules:
+
+- ✅ Start items with a capital letter
+- ✅ Add periods to complete sentences and items with verbs
+- ❌ Omit periods for single words, code-only items, or link/title-only items
+- ✅ Keep items parallel in structure within a list
+- ✅ Use numbered lists for ordered steps; bulleted lists for unordered items
+- ✅ Use the Oxford comma in lists of three or more items
 
 ### Contractions
-- ✅ Allowed: "it's", "you're", "we're", "they're" (pronoun + verb)
-- ❌ Avoid: "browser's", "template's", "system's" (noun + verb)
+
+- ✅ Allowed in technical documentation: negation contractions (isn't, don't, won't, can't)
+- ❌ Avoid noun+verb possessive contractions: browser's → browser is; template's → the template configuration
+- ❌ Do not use we're or other first-person contractions (never use we)
+- ✅ Prefer positive phrasing over negative contractions when both work
 
 ### Placeholders
-- ✅ Use UPPERCASE_WITH_UNDERSCORES: `TEMPLATE_NAME`, `DATABASE_URL`
-- ❌ Avoid lowercase with hyphens: `<template-name>`, `<database-url>`
 
-### Command Examples
-- ✅ Single-line commands: `dr auth login` (no prompt symbol)
-- ✅ Multi-line scripts: Include `# Comments with periods.`
-- ❌ Don't use `$` or `>` prompts for single commands
+| Context | Format | Example |
+|---------|--------|---------|
+| Inline or procedural text | `UPPERCASE_WITH_UNDERSCORES` | `TEMPLATE_NAME`, `DATABASE_URL` |
+| Code samples (general) | `<camelCase>` angle brackets | `<modelId>` |
+| REST API / OpenAPI endpoints | `{curlyBraces}` | `{projectId}` |
+
+Explain placeholders on first use.
+
+### Command examples
+
+- ✅ Single-line commands: `dr auth login` (no prompt symbol when `$` could be confused with environment variables)
+- ✅ Multi-line terminal sessions: `$` prompt is acceptable for consistency
+- ✅ Multi-line scripts: include `# Comments with periods.`
+- ✅ Use fenced code blocks with a language tag (`bash`, `python`, `json`, etc.)
 
 ### Tone
-- ✅ Conversational and direct
-- ❌ Avoid "please" in instructions (e.g., "Enter your name" not "Please enter your name")
-- ✅ Use imperative mood for instructions: "Install the CLI", "Run the command"
 
-## Detailed Rules
+- ✅ Conversational and direct without being frivolous
+- ✅ Use imperative mood for instructions
+- ✅ Write for a global, technically proficient audience
+- ❌ Avoid idioms, slang, culturally specific humor, and directional language (above, below)
+- ❌ Do not attribute human qualities to software (The service sees… → The service detects…)
 
-### 1. Headings and Titles
+### GitHub Markdown callouts
 
-**Sentence Case**
+GitHub does not support MkDocs admonitions. Use blockquotes:
+
 ```markdown
-✅ ## Getting started
-✅ ### Quick setup guide
-✅ ## Configuration options
+> **Note:** Useful but non-required information.
 
-❌ ## Getting Started
-❌ ### Quick Setup Guide
-❌ ## Configuration Options
+> **Warning:** This action cannot be undone.
+
+> **Important:** Back up the configuration before proceeding.
 ```
 
-**Special Cases**
-```markdown
-✅ ## DataRobot CLI features
-✅ ### OAuth authentication setup
-✅ ## PostgreSQL configuration
-
-Proper nouns always capitalized
-```
-
-### 2. Lists and Bullets
-
-**Description Lists**
-```markdown
-✅ - **Authentication**&mdash;manage DataRobot credentials.
-✅ - **Templates**&mdash;clone and configure applications.
-✅ - **Task runner**&mdash;execute application tasks.
-
-❌ - **Authentication** - manage DataRobot credentials
-❌ - **Templates**: clone and configure applications
-❌ - **Task runner** - execute application tasks
-```
-
-**Periods in Lists**
-```markdown
-✅ Add periods to complete sentences:
-- This is a complete sentence.
-- Another complete sentence.
-
-✅ Add periods to list items with verbs:
-- Install prerequisites.
-- Clone the repository.
-- Build the binary.
-
-❌ No periods for single words:
-- Authentication
-- Templates
-- Configuration
-
-❌ No periods for code-only items:
-- `dr auth login`
-- `dr templates list`
-```
-
-**Nested Lists**
-```markdown
-✅ - **Main item**&mdash;description.
-     - Subitem with description.
-     - Another subitem.
-
-Add periods consistently to all levels
-```
-
-### 3. Voice and Person
-
-**Second Person**
-```markdown
-✅ You can install the CLI using the following methods.
-✅ Use the interactive wizard to configure your template.
-✅ Run this command to authenticate.
-
-❌ We provide several installation methods.
-❌ The user can install the CLI using the following methods.
-❌ One can configure templates using the wizard.
-```
-
-**Present Tense**
-```markdown
-✅ The CLI provides authentication management.
-✅ This command generates shell completions.
-✅ The wizard guides you through setup.
-
-❌ The CLI will provide authentication management.
-❌ This command will generate shell completions.
-❌ The wizard will guide you through setup.
-```
-
-**Active Voice**
-```markdown
-✅ The wizard validates your input.
-✅ Run this command to generate completions.
-✅ The CLI stores credentials securely.
-
-❌ Your input will be validated by the wizard.
-❌ Completions can be generated by running this command.
-❌ Credentials are stored securely by the CLI.
-```
-
-### 4. Contractions
-
-**Allowed (Pronoun + Verb)**
-```markdown
-✅ It's easy to get started.
-✅ You're ready to begin.
-✅ We're building a better CLI.
-✅ They're available in the releases.
-```
-
-**Avoid (Noun + Verb Possessives)**
-```markdown
-✅ The browser opens automatically.
-✅ The template configuration includes...
-✅ Use the system default settings.
-
-❌ The browser's automatic opening...
-❌ The template's configuration includes...
-❌ Use the system's default settings.
-```
-
-### 5. Placeholders and Variables
-
-**Format**
-```markdown
-✅ dr templates clone TEMPLATE_NAME
-✅ export DATABASE_URL=postgresql://...
-✅ cd YOUR_PROJECT_DIR
-
-❌ dr templates clone <template-name>
-❌ export DATABASE_URL=<database-url>
-❌ cd <your-project-dir>
-```
-
-**In Tables**
-```markdown
-✅ | Parameter | Description |
-   |-----------|-------------|
-   | TEMPLATE_NAME | Name of the template. |
-   | DATABASE_URL | Database connection string. |
-
-❌ Use angle brackets: <template-name>
-```
-
-### 6. Code Examples
-
-**Single Commands**
-```markdown
-✅ dr auth login
-✅ task build
-✅ go test ./...
-
-❌ $ dr auth login
-❌ > task build
-❌ % go test ./...
-```
-
-**Multi-line Scripts**
-```markdown
-✅ # Clone the repository.
-   git clone https://github.com/datarobot-oss/cli.git
-   cd cli
-   
-   # Build the CLI.
-   task build
-
-Add periods to comments
-```
-
-**Inline Code**
-```markdown
-✅ Use the `dr auth login` command to authenticate.
-✅ The `--verbose` flag enables detailed logging.
-✅ Edit the `config.yaml` file.
-
-Wrap commands, flags, and filenames in backticks
-```
-
-### 7. Tables
-
-**Headers and Content**
-```markdown
-✅ | Command | Description |
-   |---------|-------------|
-   | `dr auth` | Authentication management. |
-   | `dr templates` | Template operations. |
-
-Add periods to descriptions
-Use sentence case for headers
-```
-
-### 8. Links and References
-
-**Format**
-```markdown
-✅ See [Getting started](getting-started.md) for details.
-✅ Read the [command reference](../commands/) documentation.
-✅ Visit the [DataRobot website](https://datarobot.com).
-
-Use sentence case for link text
-Include periods outside links
-```
-
-**See Also Sections**
-```markdown
-✅ ## See also
-
-- [Getting started](getting-started.md)&mdash;installation guide.
-- [Authentication](authentication.md)&mdash;managing credentials.
-- [Templates](templates.md)&mdash;working with templates.
-
-Use sentence case and em dashes
-Add periods to descriptions
-```
-
-### 9. Admonitions and Notes
-
-**Format**
-```markdown
-✅ **Note:** The CLI requires Go 1.25.8 or later.
-
-✅ **Important:** Never commit `.env` files to version control.
-
-✅ **Tip:** Use tab completion to discover commands.
-
-Capitalize type, use colon, add period at end
-```
-
-### 10. Special Terms
-
-**DataRobot-Specific**
-```markdown
-✅ DataRobot (always capitalized)
-✅ DataRobot CLI
-✅ OAuth (not oAuth or oauth)
-✅ API key (not API Key or api key in sentences)
-
-Follow brand guidelines
-```
-
-**Technical Terms**
-```markdown
-✅ Bash, Zsh, Fish, PowerShell (shell names)
-✅ macOS, Linux, Windows (operating systems)
-✅ PostgreSQL, MongoDB (databases)
-✅ GitHub, GitLab (services)
-
-Use official capitalization
-```
-
-## Files to Check
-
-When updating documentation, verify these files follow the style guide:
-
-### Root Level
-- [ ] `README.md`
-- [ ] `CONTRIBUTING.md`
-
-### User Guides (`docs/user-guide/`)
-- [ ] `README.md`
-- [ ] `getting-started.md`
-- [ ] `authentication.md`
-- [ ] `templates.md`
-- [ ] `shell-completions.md`
-- [ ] `configuration.md`
-
-### Template System (`docs/template-system/`)
-- [ ] `README.md`
-- [ ] `structure.md`
-- [ ] `interactive-config.md`
-- [ ] `environment-variables.md`
-
-### Commands (`docs/commands/`)
-- [ ] `README.md`
-- [ ] `auth.md`
-- [ ] `templates.md`
-- [ ] `run.md`
-- [ ] `dotenv.md`
-- [ ] `completion.md`
-- [ ] `version.md`
-
-### Development (`docs/development/`)
-- [ ] `README.md`
-- [ ] `building.md`
-- [ ] `architecture.md`
-- [ ] `testing.md`
-- [ ] `release.md`
-
-### Documentation Hub
-- [ ] `docs/index.md`
-
-## Verification Process
-
-### Manual Review
-1. Check all headings use sentence case
-2. Verify lists use em dashes for descriptions
-3. Confirm periods are present in list items
-4. Review voice (second person, present tense, active)
-5. Check placeholders use UPPERCASE_UNDERSCORE format
-6. Verify no noun possessive contractions
-7. Confirm command examples omit prompts for single lines
-
-### Automated Checks (Future)
-Consider adding linting rules for:
-- Title case detection in headings
-- Hyphen usage in lists (should be em dashes)
-- Missing periods in list items
-- Future tense usage
-- Placeholder format violations
-
-## Common Mistakes
-
-### Heading Case
-```markdown
-❌ ## Getting Started With DataRobot CLI
-✅ ## Getting started with DataRobot CLI
-
-❌ ### Installation And Setup
-✅ ### Installation and setup
-```
-
-### List Formatting
-```markdown
-❌ - **Feature** - this is a feature
-✅ - **Feature**&mdash;this is a feature.
-
-❌ - Install the CLI
-   - Run the command
-✅ - Install the CLI.
-   - Run the command.
-```
-
-### Voice Issues
-```markdown
-❌ We provide a CLI for managing applications.
-✅ The CLI manages DataRobot applications.
-
-❌ The CLI will generate completions.
-✅ The CLI generates completions.
-
-❌ Credentials are stored by the CLI.
-✅ The CLI stores credentials.
-```
-
-### Placeholder Format
-```markdown
-❌ dr templates clone <template-name>
-✅ dr templates clone TEMPLATE_NAME
-
-❌ export DATABASE_URL=<your-url>
-✅ export DATABASE_URL=YOUR_DATABASE_URL
-```
-
-## Exception Cases
-
-### Acronyms and Abbreviations
-- Keep standard acronyms uppercase: API, CLI, URL, HTTP, REST, JSON
-- Use official product names: DataRobot, PostgreSQL, MongoDB
-
-### Code Blocks
-- Code content follows language conventions (not style guide)
-- Comments within code should have periods
-
-### External Links
-- Use the official name/title of external resources
-- Example: "Bubble Tea" (official name) not "bubble tea"
-
-## Updates and Maintenance
-
-### When to Update This Spec
-- DataRobot style guide changes
-- New documentation patterns emerge
-- Automation requirements change
-- User feedback indicates unclear guidelines
-
-### Version History
-- 2025-10-24: Initial specification created based on DataRobot corporate style guide review
-
-## Reference
-
-This specification is based on:
-- DataRobot corporate style guide (`.github/style-guide/`)
-- Go documentation conventions
-- Technical writing best practices
-
-For questions or clarifications, consult the full style guide in `.github/style-guide/`.
+Capitalize the callout type, use a colon, and end with a period.
+
+## Reference index
+
+Each file in [`references/`](./references/) covers one topic from the full DataRobot style guide. For when to read each file, see the [reference dictionary](./references/README.md).
+
+| Reference | Summary |
+|-----------|---------|
+| [purpose-and-voice.md](./references/purpose-and-voice.md) | Brand voice, audience assumptions, documentation voice |
+| [grammar-and-punctuation.md](./references/grammar-and-punctuation.md) | Sentence case, periods, abbreviations, pronouns, contractions, voice/tense, person rules |
+| [capitalization-and-proper-nouns.md](./references/capitalization-and-proper-nouns.md) | Brand names, DataRobot proper nouns, technical terms, API field names |
+| [words-to-avoid.md](./references/words-to-avoid.md) | Universal and UI-specific banned words and phrases |
+| [ui-copy.md](./references/ui-copy.md) | Buttons, inputs, validation, tables, modals, empty states |
+| [api-and-sdk-documentation.md](./references/api-and-sdk-documentation.md) | API descriptions, parameters, changelog conventions |
+| [error-messages.md](./references/error-messages.md) | Error message structure and wording |
+| [technical-documentation.md](./references/technical-documentation.md) | Headings, lists, procedures, UI elements, links, code, tables, images |
+| [accessibility-and-inclusive-documentation.md](./references/accessibility-and-inclusive-documentation.md) | Semantic structure, inclusive language, screen reader considerations |
+| [timeless-documentation.md](./references/timeless-documentation.md) | Avoid time-anchor words in reference documentation |
+| [anthropomorphism.md](./references/anthropomorphism.md) | Do not attribute human qualities to software |
+| [code-in-text.md](./references/code-in-text.md) | When to use code font; method names; inflection rules |
+| [formatting-conventions.md](./references/formatting-conventions.md) | Dates, times, numbers, units, file formats, default names |
+| [standard-terminology.md](./references/standard-terminology.md) | Action vocabulary, data terms, standardized product terms |
+| [content-best-practices.md](./references/content-best-practices.md) | Minimum viable content, scannability, local consistency |
+| [github-markdown-authoring.md](./references/github-markdown-authoring.md) | GFM features, callouts, structure, diagrams, reusable content |
+| [platform-and-deployment-terminology.md](./references/platform-and-deployment-terminology.md) | Workbench, Console, Registry, platform naming |
+| [release-notes-and-announcements.md](./references/release-notes-and-announcements.md) | Version notes, feature summaries, issue-fix wording |
+| [quick-reference.md](./references/quick-reference.md) | Context-to-section index for common authoring tasks |
+| [appendix-google-alignment-gaps.md](./references/appendix-google-alignment-gaps.md) | Intentional divergences from the Google style guide |
+| [document-history.md](./references/document-history.md) | Style guide change log |
+
+## App Framework README checklist
+
+When updating component documentation, verify these elements:
+
+- [ ] Sentence-case headings with intro text under every section
+- [ ] No `[[INSERT … HERE]]` placeholders or HTML comment instructions in final output
+- [ ] Imperative or neutral voice — no we / our; minimal you / your
+- [ ] Present tense, active voice
+- [ ] Lists use consistent punctuation and parallel structure
+- [ ] Placeholders use `UPPERCASE_WITH_UNDERSCORES` in procedural text
+- [ ] Code blocks have language tags; single-line commands omit `$` when ambiguous
+- [ ] Links use descriptive text and `.md` extensions for repo-relative paths
+- [ ] Callouts use blockquote syntax, not MkDocs admonitions
+- [ ] Timeless language (no currently, new, latest)
+- [ ] Component dependencies section matches `copier-module.yaml` (auto-generated; do not override)
+
+## Verification process
+
+1. Check all headings use sentence case and have intro text
+2. Verify voice: no we / our; imperatives preferred over you can / you must
+3. Confirm present tense and active voice
+4. Verify lists use correct punctuation and parallel structure
+5. Check placeholders use the correct format for context
+6. Confirm no noun possessive contractions
+7. Verify command examples and code blocks follow GitHub Markdown conventions
+8. Confirm timeless language (except in release notes)
+9. Check callouts use blockquote format
+
+## Version history
+
+| Date | Change |
+|------|--------|
+| 2026-07-20 | Added [reference dictionary](./references/README.md) with per-file "when to read" guidance for README merges. |
+| 2026-07-17 | Split authoritative guide into [`references/`](./references/) topic files; this spec is now a slim entry point with quick reference and README checklist. |
+| 2026-06-23 | Aligned with DataRobot GitHub style guide: voice/person rules, contractions, GitHub Markdown callouts, timeless docs, accessibility, placeholder formats, and link conventions. |
+| 2025-10-24 | Initial specification created based on DataRobot corporate style guide review. |

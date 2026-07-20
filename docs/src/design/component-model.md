@@ -5,9 +5,9 @@
 The App Framework Template Studio is the templating and update-management layer behind the component system described in these docs. It solves two core problems:
 
 1. **Maintenance at scale** — A bug fix to five foundation application templates with 100 applications per template means the fix needs to reach 500 cloned applications. Manual propagation does not scale.
-2. **Template creation speed** — There is value in standing up the latest AI blueprint on DataRobot quickly. You need good building blocks.
+2. **Template creation speed** — Standing up an AI blueprint on DataRobot quickly requires good building blocks.
 
-Components are `copier`-style templates. Each is a top-level folder or file set that you can add to your recipe. The answers you give during template application are recorded in `.datarobot/` as YAML, enabling future automated updates at the component-instance level.
+Components are `copier`-style templates. Each is a top-level folder or file set added to a recipe. Answers given during template application are recorded in `.datarobot/` as YAML, enabling future automated updates at the component-instance level.
 
 ## Global components
 
@@ -20,7 +20,7 @@ These appear once per application template:
 
 ## One-to-many components
 
-These can be applied multiple times as you build out the template:
+These can be applied multiple times while building out the template:
 
 | Component | Repository | Description |
 |-----------|------------|-------------|
@@ -32,7 +32,7 @@ These can be applied multiple times as you build out the template:
 
 ## Technical underpinnings
 
-It's all built on top of [Copier](https://copier.readthedocs.io/). Similar to Yeoman or Cookiecutter, but with Git semantics that make updates after you copy the template baked into the box.
+The component model is built on [Copier](https://copier.readthedocs.io/). Similar to Yeoman or Cookiecutter, but with Git semantics that make updates after copying the template part of the workflow.
 
 ## Update model
 

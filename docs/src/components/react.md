@@ -93,7 +93,7 @@ uvx copier update -a .datarobot/answers/react-REACT_APP_NAME.yml -A
 
 ### Frontend assets not included in the deployed application
 
-You likely skipped the `ApplicationSource` wiring step above. Confirm that `files=` uses `.stdout.apply(...)` rather than calling `get_*_app_files(...)` directly.
+Confirm that the `ApplicationSource` wiring step above was completed. Verify that `files=` uses `.stdout.apply(...)` rather than calling `get_*_app_files(...)` directly.
 
 ### `uvx copier copy` fails on Node version
 

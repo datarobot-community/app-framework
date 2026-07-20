@@ -22,12 +22,13 @@ Each foundation application template starts in a private repository and publishe
 
 **So, what is the App Framework?**
 
-It is the software and templates that build application templates and make them easier to customize and extend. The App Framework succeeds when adding new features, creating application templates from scratch, and upgrading existing application templates remains simple.
+It is the software and templates that build application templates and make them easier to customize and extend. The App Framework succeeds when adding features, creating application templates from scratch, and upgrading existing application templates remains straightforward.
 
 ## In this section
 
-- [**Principles**](principles.md)&mdash;The design decisions that guide every component.
-- [**Component model**](component-model.md)&mdash;How templates are structured, applied, and updated.
-- [**CLI**](cli.md)&mdash;The `dr` command and what it handles.
-- [**Declarative API**](declarative-api.md)&mdash;Infrastructure-as-code for DataRobot resources.
-- [**UI library**](ui-library.md)&mdash;The shared dr-ui component registry for React frontends.
+- [**Principles**](principles.md) — The design decisions that guide every component.
+- [**Component model**](component-model.md) — How templates are structured, applied, and updated.
+- [**CLI**](cli.md) — The `dr` command and what it handles.
+- [**Declarative API**](declarative-api.md) — Infrastructure-as-code for DataRobot resources.
+- [**Documentation**](documentation.md) — How component docs and skills are organized, including writing style standards.
+- [**UI library**](ui-library.md) — The shared dr-ui component registry for React frontends.

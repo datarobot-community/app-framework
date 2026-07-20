@@ -21,20 +21,20 @@ Install all skills from this repository using [`npx ai-agent-skills`](https://gi
 npx ai-agent-skills install datarobot-community/app-framework
 ```
 
-This registers the following skills in your AI assistant:
+This registers the following skills in the AI assistant:
 
 | Skill | Description |
 |-------|-------------|
 | `datarobot-app-framework` | Build and deploy applications on DataRobot using the App Framework component system — FastAPI applications, LLM integrations, and agentic workflows. |
-| `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema. |
+| `datarobot-app-framework-doc-update` | Generate and intelligently merge README documentation for a component using its `copier-module.yaml` schema and the [Documentation Style Specification](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md). |
 
 ## Available skills
 
 ### `datarobot-app-framework`
 
-Guides your AI assistant through scaffolding, configuring, and deploying App Framework recipes using `af-component-*` building blocks. Covers agents (CrewAI, LangGraph, LlamaIndex), FastAPI backends, React frontends, and LLM integrations.
+Guides an AI assistant through scaffolding, configuring, and deploying App Framework recipes using `af-component-*` building blocks. Covers agents (CrewAI, LangGraph, LlamaIndex), FastAPI backends, React frontends, and LLM integrations.
 
-Trigger it by asking your assistant to:
+Trigger the skill by asking the assistant to:
 
 - Build or deploy an application on DataRobot using the App Framework.
 - Add a component (`dr component add`, `uvx copier copy`).
@@ -42,9 +42,9 @@ Trigger it by asking your assistant to:
 
 ### `datarobot-app-framework-doc-update`
 
-Generates a structured `README.generated.md` scaffold from a component's `copier-module.yaml`, then intelligently merges it with the existing `README.md` — preserving human-written content and using the template's authoring hints to fill any gaps.
+Generates a structured `README.generated.md` scaffold from a component's `copier-module.yaml`, then intelligently merges it with the existing `README.md` — preserving human-written content, applying the [Documentation Style Specification](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md), and using the template's authoring hints to fill any gaps.
 
-Trigger it by asking your assistant to:
+Trigger the skill by asking the assistant to:
 
 - Update or regenerate the README for a component repository.
 - Generate documentation from `copier-module.yaml`.

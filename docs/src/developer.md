@@ -33,22 +33,22 @@ choco install go-task
 task docs-serve
 ```
 
-This command installs dependencies and starts a local server at [http://localhost:8000](http://localhost:8000). The site reloads automatically as you edit files in the `docs/` directory.
+This command installs dependencies and starts a local server at [http://localhost:8000](http://localhost:8000). The site reloads automatically when files in the `docs/` directory change.
 
-If you only need to review or edit the documentation for this repository, this is the only section you need.
+For documentation-only edits in this repository, this section is sufficient.
 
 ## Copier watch
 
-Use this section only if you are developing or testing an App Framework component template. It is not required for ordinary documentation edits in this repository.
+Use this section only when developing or testing an App Framework component template. It is not required for ordinary documentation edits in this repository.
 
 `tools/copier-watch/copier-watch.py` is a development tool for iterating efficiently on [copier](https://copier.readthedocs.io/en/stable/) templates such as `af-component-fastapi-backend`.
 
-The script watches all file changes in a source template repository. When you edit a template, it:
+The script watches all file changes in a source template repository. When a template changes, it:
 
 1. Creates a local commit on the source repository and amends it on each subsequent change.
 2. Runs `copier update` on the destination repository using that local commit.
 
-This lets you iterate on Jinja templates without pushing remote commits. For each change in the source repository, it also resets the destination repository and applies the full changeset from scratch, so you do not accumulate partial changes.
+This enables iteration on Jinja templates without pushing remote commits. For each change in the source repository, it also resets the destination repository and applies the full changeset from scratch, so partial changes do not accumulate.
 
 !!! warning
     This script modifies Git repositories and can cause data loss. Ensure the destination repository has a clean `git status` before use. It runs `git reset` and `git clean` on the destination.
@@ -101,4 +101,4 @@ This writes `README.generated.md` into the target component repository. The outp
 - Component dependencies table (required and collaborates-with), populated from `copier-module.yaml`.
 - Section scaffolding with inline authoring guidance for: prerequisites, local development, troubleshooting, next steps, and contributing.
 
-The `[[INSERT ... HERE]]` placeholders and comment blocks guide what to write in each section. Delete the comments once the section is filled in.
+The `[[INSERT ... HERE]]` placeholders and comment blocks guide what to write in each section. Follow the [Documentation Style Specification](https://github.com/datarobot-community/app-framework/blob/main/skills/datarobot-app-framework-doc-update/documentation-style-spec.md) when filling placeholders. Delete the comments once the section is complete.

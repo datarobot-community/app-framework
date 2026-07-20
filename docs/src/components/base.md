@@ -4,7 +4,7 @@
 
 The foundational scaffold required for every App Framework recipe. Apply this first — all other components build on top of it.
 
-`af-component-base` sets up the task runner, Pulumi project structure, CI/CD scaffolding, and the `.datarobot/` configuration directory. It walks you through a short wizard and writes the answers to `.datarobot/answers/base.yml`, which subsequent components inherit.
+`af-component-base` sets up the task runner, Pulumi project structure, CI/CD scaffolding, and the `.datarobot/` configuration directory. It runs a short wizard and writes the answers to `.datarobot/answers/base.yml`, which subsequent components inherit.
 
 ## Prerequisites
 
@@ -46,10 +46,10 @@ dr component update .datarobot/answers/base.yml
 
 ## What it adds
 
-- `Taskfile.yaml`&mdash;task runner with `.env` auto-loading and tab completion.
-- `Pulumi.yaml` + `infra/`&mdash;base Pulumi project that other components plug into.
-- `.datarobot/answers/base.yml`&mdash;recorded answers reused by all subsequent components.
-- `.github/`&mdash;CI/CD workflows for updates, tests, and deployment.
+- `Taskfile.yaml` — task runner with `.env` auto-loading and tab completion.
+- `Pulumi.yaml` + `infra/` — base Pulumi project that other components plug into.
+- `.datarobot/answers/base.yml` — recorded answers reused by all subsequent components.
+- `.github/` — CI/CD workflows for updates, tests, and deployment.
 - `LICENSE`, `CONTRIBUTING.md`, `.github/CODEOWNERS`.
 
 ## Troubleshooting
@@ -68,4 +68,4 @@ Install or update the DataRobot CLI. See [cli.datarobot.com](https://cli.datarob
 
 ### Template conflicts after `copier update`
 
-Copier shows a diff for any file with local modifications. Review each conflict, keep your changes where appropriate, and commit the result.
+Copier shows a diff for any file with local modifications. Review each conflict, keep local changes where appropriate, and commit the result.
