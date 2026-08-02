@@ -101,10 +101,10 @@ repeatable: true
 depends_on:
   llm:
     url: https://github.com/datarobot-community/af-component-llm
-    ref: v11.7.1
+    ref: v11.3.0
 collaborates_with:
   mcp:
-    url: https://github.com/datarobot-community/af-component-fastmcp-server
+    url: https://github.com/datarobot-community/af-component-datarobot-mcp
     ref: main
     repeatable: true
 ```

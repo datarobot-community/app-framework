@@ -1,0 +1,359 @@
+# AGENTS.md
+
+Instructions for AI coding agents working in this repository. Human contributors should
+read the [Developer Guide](docs/src/developer.md) first; this file adds the conventions and
+provenance rules that are specific to agents.
+
+## What this repository is
+
+`app-framework` is the hub repository for the DataRobot App Framework. It holds three things:
+
+1. **The documentation site** published at [af.datarobot.com](https://af.datarobot.com) (`docs/`).
+2. **The AI agent skills** installed with `npx ai-agent-skills install datarobot-community/app-framework` (`skills/`).
+3. **Repository tooling** for maintaining components and the architecture diagram (`tools/`).
+
+The components themselves (`af-component-*`) live in separate repositories under the
+[datarobot-community](https://github.com/datarobot-community) GitHub organization. Nothing
+in this repository is a component; it documents and tools them.
+
+## Repository layout
+
+| Path | Contents |
+|------|----------|
+| `docs/src/` | Markdown pages, images, and `architecture.html`. This is the MkDocs `docs_dir`. |
+| `docs/properdocs.yml` | Site configuration: theme, palette, navigation, Markdown extensions. |
+| `docs/overrides/` | Theme overrides, including `.icons/datarobot/logo.svg` (the nav logo). |
+| `docs/site/` | Build output. Generated, gitignored, never edited or committed. |
+| `skills/` | Skills published to AI assistants. One directory per skill, each with `SKILL.md`. |
+| `tools/architecture-diagram/` | `render.py` and `audit.py` for the architecture diagram. |
+| `tools/af_component_doc_update/` | Generates `README.generated.md` from a component's `copier-module.yaml`. |
+| `tools/copier-watch/` | Iterates on copier templates without pushing commits. |
+| `Taskfile.yaml` | Task runner entry points for the docs site. |
+
+## Building and rendering the docs
+
+### Prerequisites
+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) — manages the docs virtualenv.
+- [Task](https://taskfile.dev/installation/) — `brew install go-task/tap/go-task`.
+- Google Chrome — only needed to regenerate the architecture diagram images.
+
+### Commands
+
+```bash
+task docs-serve   # uv sync && properdocs serve — live reload at http://localhost:8000
+task docs-build   # uv sync && properdocs build — writes docs/site/
+```
+
+Both run from `docs/`. `properdocs` wraps MkDocs Material, so `docs/properdocs.yml` is an
+MkDocs configuration file. Run `task docs-build` before claiming a docs change is done: it
+is the same command GitHub Actions runs, and it fails on broken navigation entries.
+
+### Adding or changing a page
+
+- Add the Markdown file under `docs/src/`, then add it to the `nav:` tree in
+  `docs/properdocs.yml`. A page that is not in `nav:` is built but unreachable.
+- Cross-page links are relative to the source file (`../img/foo.svg`, `design/index.md`).
+- Prose follows the [Documentation Style Specification](skills/datarobot-app-framework-doc-update/documentation-style-spec.md)
+  and the topic files in [`skills/datarobot-app-framework-doc-update/references/`](skills/datarobot-app-framework-doc-update/references/README.md).
+  Write timelessly, avoid marketing language, and keep bold text rare.
+
+### Theme and branding
+
+- Colors are defined per palette scheme in `docs/src/stylesheets/extra.css`. Set every
+  brand variable inside a `[data-md-color-scheme="slate"]` or `[data-md-color-scheme="default"]`
+  block — a shared rule pins one color across both schemes and breaks the palette toggle.
+- The DataRobot mark is installed as `theme.icon.logo` (`docs/overrides/.icons/datarobot/logo.svg`)
+  so Material inlines it as SVG and it inherits the header color. A `theme.logo` `<img>` would not flip.
+- The favicon (`docs/src/img/favicon.svg`) cannot read the docs palette, only the browser's,
+  so it carries its own `prefers-color-scheme` rule.
+- Images that differ per scheme use Material's suffixes:
+
+  ```markdown
+  ![Alt](img/architecture-overview.svg#only-dark)
+  ![Alt](img/architecture-overview-light.svg#only-light)
+  ```
+
+### Publishing
+
+`.github/workflows/docs_publish.yml` builds `docs/` and deploys `docs/site/` to GitHub
+Pages on every push to `main`. There is no manual publish step. Do not commit `docs/site/`.
+
+## The architecture diagram
+
+### One source, four renderings
+
+[`docs/src/architecture.html`](docs/src/architecture.html) is the only file to edit. It is a
+self-contained, zero-dependency interactive blueprint: clickable boxes with per-component
+drawers, a numbered "walk the flow" tour, hover connection tracing, and a light/dark toggle
+that shares Material's `__palette` localStorage key with the docs header.
+
+The four static images are generated from it and must never be hand-edited:
+
+| File | Variant |
+|------|---------|
+| `docs/src/img/architecture-overview.svg` | Vector, dark |
+| `docs/src/img/architecture-overview.png` | Raster at 2×, dark |
+| `docs/src/img/architecture-overview-light.svg` | Vector, light |
+| `docs/src/img/architecture-overview-light.png` | Raster at 2×, light |
+
+### Regenerate and verify
+
+```bash
+python3 tools/architecture-diagram/render.py   # rewrites all four images
+python3 tools/architecture-diagram/audit.py    # geometry and reference check; exits non-zero on failure
+```
+
+`render.py` loads the page in headless Chrome once per color scheme and reads the *rendered*
+geometry and that scheme's own CSS variables out of the DOM, so the static images cannot
+drift from the interactive one. Override the browser with `CHROME=/path/to/chrome`. Scratch
+output goes to `tools/architecture-diagram/.build/` (gitignored).
+
+`audit.py` fails on overlapping canvas elements (more than 3px), clipped box text, anything
+outside the stage bounds, tour steps referencing unknown nodes or arrows, nodes without a
+drawer, and drawer cross-navigation pills pointing at nothing. Run it after every edit, then
+re-run `render.py`, then commit the HTML and all four images together.
+
+### Editing rules
+
+Everything lives in the single `<script>` block:
+
+- `panels`, `N` (nodes), `A` (arrows), and `subheads` between the `/*==DATA-START==*/`
+  markers define the canvas.
+- `D` holds the per-box drawers, keyed by node id; `STEPS` holds the guided tour.
+- `REPO_URL` maps a category key to its GitHub repository; drawer badges and file links use it.
+
+Conventions enforced by `audit.py` or by review:
+
+- One color per repository. Rose (`--seam`) marks the numbered cross-boundary flow.
+- Each numbered glyph appears exactly once on the canvas and once in the process strip.
+- Depth belongs in drawers, never on the canvas. Canvas text is a title plus a one-line subtitle.
+- Category hues encode which repository a box belongs to. Only `--bg`, `--base`, and `--link`
+  are brand colors; the rest are functional and deliberately outside the brand palette, which
+  the `:root` comment in `architecture.html` records. A new category needs a new hue in both
+  schemes, and the legend in `render.py` updated to match the one in the page.
+
+### Rebuilding the diagram
+
+For any substantial rewrite, work in four phases:
+
+1. **Investigate** — pull every source repository, then fan out parallel read-only agents,
+   one per repository plus one per integration seam. Demand `file:line` evidence for every
+   claim and reject hedged answers.
+2. **Build** — edit the data section of the HTML only.
+3. **Verify** — run `audit.py`, then screenshot the page in headless Chrome and read the image
+   before claiming the layout is correct. Text changes are invisible until `render.py` runs, so
+   the four images and the HTML always move in the same commit.
+4. **Fact-check** — the review below.
+
+### Sources used to harvest the content
+
+Every box, drawer, and tour step traces back to one of these. When the diagram changes,
+re-read the source rather than inferring from the existing HTML:
+
+- **Component repositories** in `datarobot-community`: `af-component-base`, `-llm`, `-agent`,
+  `-fastapi-backend`, `-react`, `-datarobot-mcp`. Each repository's `copier-module.yaml` is
+  authoritative for its dependencies and whether it is repeatable.
+- **The catalog itself** — the GitHub search
+  [`org:datarobot-community af-component`](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories).
+  Cite the search, not a hardcoded list: the search shows a reader exactly the components they
+  can actually use, and stays correct as more are published.
+- **Component authoring**: `datarobot-community/scaffold-af-component`.
+- **Reference applications**: `datarobot-agent-application`, `datarobot-mcp-template`,
+  `talk-to-my-data-agent`, `talk-to-my-docs-agents`, `guarded-rag-assistant`,
+  `forecast-assistant`, `predictive-ai-starter`.
+- **Runtime and CLI source**: `datarobot-oss/datarobot-genai`, `datarobot-oss/cli`.
+- **Provisioning**: `pulumi-datarobot` for the raw resources, `datarobot-oss/datarobot-pulumi-utils`
+  for the component resources, `terraform-provider-datarobot` for the same model in Terraform.
+- **Observability**: `datarobot-community/datarobot-opentelemetry-integration`.
+- **Product documentation**: [docs.datarobot.com](https://docs.datarobot.com), including the
+  [CLI overview](https://docs.datarobot.com/en/docs/agentic-ai/cli/overview.html), plus
+  [cli.datarobot.com](https://cli.datarobot.com).
+- **This site**: `docs/src/design/`, `docs/src/components/`, and `docs/src/glossary.md`, which
+  must agree with the diagram. If they disagree, one of them is stale — fix both.
+
+## Review before publishing
+
+Everything in this repository is published: the docs site is public, and `skills/` is installed
+into third-party AI assistants. Every change gets the shallow review. The full adversarial review
+runs only when the user asks for it.
+
+### Shallow review — every change, no exceptions
+
+Do this yourself, inline, on your own diff. It is mechanical and cheap: no subagents.
+
+```bash
+# 1. Every repository named in the diff must be public. Internal repos look public to a
+#    signed-in DataRobot employee — this is the check that catches them.
+gh repo view <owner>/<repo> --json visibility,isArchived \
+  -q '.visibility + " archived=" + (.isArchived|tostring)'      # want: PUBLIC archived=false
+
+# 2. Every URL added must resolve for an anonymous reader.
+curl -s -o /dev/null -w '%{http_code} %{url_effective}\n' -L <url>
+
+# 3. Nothing internal leaked into the diff.
+git diff | grep -inE 'confluence|jira|internal|codename|roadmap|not yet|coming soon'
+```
+
+Then read the diff once against the [recurring defects](#recurring-defects) list below, and fix
+what you find. Report what you checked and what you found, including "nothing" — a review with
+no findings and no reported checks is not a review.
+
+### Full adversarial review — on request only
+
+Do not run this unless the user asks for a full adversarial review, a deep review, or a
+fact-check pass. It spawns several agents and is expensive. It is worth asking for when the
+change rewrites the architecture diagram, adds a page, changes what a component is claimed to
+do, or prepares a release.
+
+Run the three passes below as separate agents whose instruction is to *refute*, not to confirm —
+an agent asked to check its own work approves it.
+
+#### Pass 1 — Refute every claim
+
+Extract the factual claims the change makes (what a component does, what a command produces,
+what depends on what, which resource is provisioned) and try to disprove each one with
+`file:line` evidence from the source repository or a paragraph from public product
+documentation. Report every claim that is wrong, stale, or overstated, then fix them. Rules:
+
+- A claim with no source is a claim to delete, not a claim to soften.
+- `copier-module.yaml` beats a README; a README beats memory.
+- Version-specific behavior gets no version number unless the source states one.
+- Re-run `audit.py` and `render.py` after fixes, and re-run this pass on the corrections.
+
+#### Pass 2 — Public sources only, no internal disclosure
+
+The only admissible sources are public open-source repositories and public documentation
+(`docs.datarobot.com`, `af.datarobot.com`, `cli.datarobot.com`). Confluence pages, Jira tickets,
+Slack threads, internal design documents, and private repositories are not sources, and nothing
+learned from them belongs in a published file.
+
+Check every repository the change cites — private and internal repositories look identical to
+public ones when you are signed in as a DataRobot employee:
+
+```bash
+gh repo view <owner>/<repo> --json visibility,isArchived \
+  -q '.visibility + " archived=" + (.isArchived|tostring)'
+```
+
+Only `PUBLIC archived=false` may be linked or named. Verify documentation links resolve for an
+anonymous reader:
+
+```bash
+curl -s -o /dev/null -w '%{http_code} %{url_effective}\n' -L <url>
+```
+
+Then confirm the change discloses none of the following:
+
+- Internal codenames, internal team or project names, internal tool and plugin names.
+- Components, features, or repositories that are not yet released. If a capability has no public
+  repository, describe the public path to it instead — for example, provisioning a
+  `VectorDatabase` directly with `pulumi_datarobot` — and do not hint that a component is coming.
+- Roadmap, timelines, alpha or beta status, internal metrics, customer names, or infrastructure
+  details.
+- Hostnames, URLs, or paths that only resolve inside the DataRobot network.
+
+An anonymous reader must be able to follow every instruction end to end. A link they cannot open
+is both a broken document and a disclosure.
+
+#### Pass 3 — Brand and messaging consistency
+
+Check the change against DataRobot's public positioning on
+[datarobot.com](https://www.datarobot.com) and [docs.datarobot.com](https://docs.datarobot.com):
+
+- **Product naming** — use the names public documentation uses, capitalized the way it
+  capitalizes them: DataRobot, Custom Application, LLM Gateway, Use Case, Playground, Registry.
+  Never invent a product name, and never promote an internal name to a product name.
+- **Claims about the platform** — describe only capabilities the public docs describe. No
+  performance, cost, or competitive claims; no superlatives.
+- **Voice** — explain, do not sell. The
+  [Documentation Style Specification](skills/datarobot-app-framework-doc-update/documentation-style-spec.md)
+  governs; [`words-to-avoid.md`](skills/datarobot-app-framework-doc-update/references/words-to-avoid.md)
+  and [`purpose-and-voice.md`](skills/datarobot-app-framework-doc-update/references/purpose-and-voice.md)
+  are the specific checks for marketing language creeping into reference material.
+- **Visual identity** — take colors from the variables already defined in
+  `docs/src/stylesheets/extra.css` and in the `:root` blocks of `architecture.html` rather than
+  introducing new hex values. The one deliberate exception is the diagram's category hues, which
+  are functional rather than brand colors and are documented as such in the page. Keep the
+  DataRobot mark as the only logo.
+
+## Recurring defects
+
+Everything here has actually shipped in this repository or been caught on the way out. Read the
+diff against this list during the shallow review.
+
+- **Wrong GitHub organization.** Component URLs written as `github.com/datarobot/af-component-*`.
+  Every component is under `datarobot-community`.
+- **Internal repositories cited as if public.** A signed-in DataRobot employee sees internal
+  repositories exactly as they see public ones, and a browser tab that opens for you 404s for a
+  reader. The public diagram linked four internal component repositories this way. Check
+  `gh repo view --json visibility` for every repository you name, every time.
+- **Dead documentation links.** Product documentation URLs move without redirects: the skill
+  pointed at `docs.datarobot.com/en/docs/more-info/app-framework/cli.html`, which is a 404; the
+  0-Vibe guide pointed at `datarobot-oss/oss-template-repo`, which does not exist. `curl` each
+  URL you add. Also, a link into `af.datarobot.com` resolves only after the change merges and
+  Pages redeploys — link a page that already exists.
+- **Invented version references.** An example `copier-module.yaml` pinned `v11.7.1` when the real
+  tags stop at `v11.3.0`. Read the tag list before writing a ref, even in an example.
+- **CLI command drift.** Three variants have shipped wrong: `dr run infra:down` for
+  `dr task infra:down`, `dr component add <short-name>` where the documented form is the full
+  repository URL, and `pip install datarobot-cli` for the installer at `cli.datarobot.com/install`.
+  Check commands against `docs/src/design/cli.md` and the CLI documentation.
+- **Temporal framing that leaks the roadmap.** "not yet a component", "once released", "coming
+  soon" all tell a reader unreleased work exists. Describe what is available and the public path
+  to anything else — usually a Pulumi resource — with no hint of what is planned.
+- **Marketing language in reference material.** "flagship", "production-ready", "the most X",
+  "the clearest Y" have all had to be removed. State what a thing is and what it contains.
+- **Product-name capitalization.** Use Case, Playground, Workbench, Console, and Registry are
+  capitalized; `LLMBlueprint` is written "LLM blueprint" in prose. See
+  [`capitalization-and-proper-nouns.md`](skills/datarobot-app-framework-doc-update/references/capitalization-and-proper-nouns.md)
+  and [`platform-and-deployment-terminology.md`](skills/datarobot-app-framework-doc-update/references/platform-and-deployment-terminology.md).
+- **Diagram text edited without re-rendering.** The four static images are what most readers see.
+  A wording fix in `architecture.html` that skips `render.py` ships a page and a picture that
+  disagree. The legend exists twice — in the page and in `render.py` — and both must change together.
+- **Real organizations in examples.** Clone and repository-creation examples use `YOUR_ORG`, not
+  an organization the reader cannot push to.
+- **Committed build output.** `docs/site/` is generated by `task docs-build` and gitignored.
+  If it shows up in `git status`, something removed the ignore rule.
+
+## Skills in this repository
+
+`skills/` is published to AI assistants through the `ai-agent-skills` standard, so its content
+is user-facing. Two skills exist today, and `docs/src/skills.md` documents them for readers:
+
+- `datarobot-app-framework` — scaffolding, wiring, and deploying recipes. Ships scenario files
+  under `scenarios/`.
+- `datarobot-app-framework-doc-update` — generates and merges component READMEs, backed by
+  `tools/af_component_doc_update` and the documentation style specification.
+
+When component behavior, CLI commands, or the component catalog change, update all four of
+these together, or they will disagree in ways users notice:
+
+1. `skills/**` — the assistant-facing instructions.
+2. `docs/src/components/` and `docs/src/design/` — the reader-facing pages.
+3. `docs/src/architecture.html` plus regenerated images — the picture.
+4. `README.md` — the component table.
+
+Three invariants that have drifted before:
+
+- Every `af-component-*` repository is under `datarobot-community`, never `datarobot`.
+  A `github.com/datarobot/af-component-*` URL is a 404.
+- The DataRobot CLI installs from `https://cli.datarobot.com/install`, not from PyPI.
+- Only components with a public repository may be named. Being able to see a repository is not
+  evidence that a reader can — check visibility, as in Pass 2 below.
+
+## Before you commit
+
+```bash
+python3 tools/architecture-diagram/audit.py   # if architecture.html changed
+python3 tools/architecture-diagram/render.py  # if architecture.html changed
+task docs-build                               # if anything under docs/ changed
+uvx ruff format . && uvx ruff check .         # if any Python under tools/ changed
+git diff
+```
+
+Then run the [shallow review](#shallow-review--every-change-no-exceptions). Run the full
+adversarial review only if the user asks for it.
+
+Commit with a one-line summary starting with a verb ("Adds", "Fixes", "Replaces"), and a body
+explaining why when the change is not obvious. Do not run `git push` — leave that to a human.

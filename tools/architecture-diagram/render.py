@@ -109,7 +109,7 @@ setTimeout(() => {
 
   // title block + legend, in the empty top-left of the canvas
   const legend = [['base','base / framework'],['llm','llm'],['agent','agent'],['api','fastapi + react'],
-                  ['mcp','datarobot-mcp'],['aux','optional components'],['tool','tooling'],['ext','platform / people']];
+                  ['mcp','datarobot-mcp'],['aux','optional capabilities'],['tool','tooling'],['ext','platform / people']];
   let lx = 42;
   const lg = legend.map(([k, label]) => {
     const s = `<rect x="${lx}" y="88" width="10" height="10" rx="2.5" fill="${PAL[k]}"/>`

@@ -23,7 +23,7 @@ mkdir recipe-my-app && cd recipe-my-app
 ## Step 2 — Scaffold base
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 Answer the interactive questions about your recipe name and settings. Defaults are safe.
@@ -31,7 +31,7 @@ Answer the interactive questions about your recipe name and settings. Defaults a
 ## Step 3 — Add FastAPI backend
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-fastapi-backend .
+uvx copier copy https://github.com/datarobot-community/af-component-fastapi-backend .
 ```
 
 Accept defaults for all prompts.
@@ -74,13 +74,13 @@ Outputs the deployment URL. Visit with cmd-click / ctrl-shift-click.
 ## Add React frontend (optional)
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-react .
+uvx copier copy https://github.com/datarobot-community/af-component-react .
 ```
 
 ## Tear down
 
 ```bash
-dr run infra:down
+dr task infra:down
 ```
 
 ## Redeploy / move to another DR instance

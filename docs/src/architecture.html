@@ -23,7 +23,13 @@
   /* Dark is the default, matching the docs theme's first palette. The category
      colours (--base … --seam) are read back out of these variables by paint()
      in the script below, so every JS-drawn panel, node and wire repaints when
-     the scheme flips. Keep them 6-digit hex — paint() parses them. */
+     the scheme flips. Keep them 6-digit hex — paint() parses them.
+
+     --bg, --base and --link are brand colours (DataRobot Black, Green, Indigo).
+     The rest of the category hues are functional: they encode which repository
+     a box belongs to and are chosen for mutual distinguishability and contrast
+     against both backgrounds, deliberately outside the brand palette. Adding a
+     category means adding a hue here in both schemes, not reusing a brand one. */
   :root, [data-md-color-scheme="slate"]{
     --bg:#0B0B0B; --ink:#ffffff; --muted:hsl(150,14%,80%); --muted2:hsl(150,8%,62%); --line:#2a2d31;
     --base:#81FBA5; --llm:#f5a524; --agent:#a78bfa; --api:#38bdf8; --mcp:#2dd4bf;
@@ -198,7 +204,7 @@
       <span class="lg"><span class="dot" style="background:var(--agent)"></span>agent</span>
       <span class="lg"><span class="dot" style="background:var(--api)"></span>fastapi + react</span>
       <span class="lg"><span class="dot" style="background:var(--mcp)"></span>datarobot-mcp</span>
-      <span class="lg"><span class="dot" style="background:var(--aux)"></span>optional components</span>
+      <span class="lg"><span class="dot" style="background:var(--aux)"></span>optional capabilities</span>
       <span class="lg"><span class="dot" style="background:var(--tool)"></span>tooling</span>
       <span class="lg"><span class="dot" style="background:var(--ext)"></span>platform / people</span>
       <span class="lg"><span class="ln" style="border-color:var(--seam)"></span>numbered flow</span>
@@ -284,7 +290,7 @@ const N=[
   {id:'c-mcp',   c:'mcp',   x:392, y:382, w:396, h:58, t:'af-component-datarobot-mcp', s:'FastMCP tool server'},
   {id:'c-api',   c:'api',   x:392, y:452, w:396, h:58, t:'af-component-fastapi-backend', s:'FastAPI Custom Application'},
   {id:'c-react', c:'api',   x:392, y:522, w:396, h:58, t:'af-component-react', s:'React + Vite single-page app'},
-  {id:'c-aux',   c:'aux',   x:392, y:592, w:396, h:58, t:'memory · vdb · evaluation · user-credentials', s:'optional components'},
+  {id:'c-aux',   c:'aux',   x:392, y:592, w:396, h:58, t:'More of the catalog', s:'every af-component-* repo layers the same way'},
   {id:'c-scaf',  c:'tool',  sm:1, x:392, y:662, w:396, h:54, t:'scaffold-af-component', s:'GitHub template for authoring your own'},
 
   // ---- recipe repository
@@ -308,7 +314,7 @@ const N=[
   {id:'d-gw',    c:'llm',   x:1757, y:264, w:298, h:62, t:'LLM Gateway', s:'governed multi-provider model access'},
   {id:'d-mcp',   c:'mcp',   x:1445, y:356, w:282, h:62, t:'MCP server deployment', s:'FastMCP tools · OAuth'},
   {id:'d-llm',   c:'llm',   sm:1, x:1757, y:356, w:298, h:62, t:'Deployed LLM · NIM · external', s:'the other five llm strategies'},
-  {id:'d-uc',    c:'ext',   sm:1, x:1445, y:448, w:282, h:62, t:'Use case · playground', s:'LLM blueprint · registered model'},
+  {id:'d-uc',    c:'ext',   sm:1, x:1445, y:448, w:282, h:62, t:'Use Case · Playground', s:'LLM blueprint · registered model'},
   {id:'d-vdb',   c:'aux',   sm:1, x:1757, y:448, w:298, h:62, t:'Vector database', s:'RAG knowledge base'},
   {id:'d-obs',   c:'ext',   sm:1, x:1445, y:540, w:282, h:56, t:'Tracing & monitoring', s:'OpenTelemetry spans · metrics'},
   {id:'d-cred',  c:'ext',   sm:1, x:1757, y:540, w:298, h:56, t:'Credentials', s:'API token · cloud provider keys'},
@@ -402,7 +408,7 @@ const process={id:'sec-process', x:40, y:1120, w:2040, title:'The end-to-end pro
 
 const notes={id:'sec-notes', x:40, y:1457, w:2040, title:'Cross-cutting facts', items:[
   {c:'base', t:'<b>Why components, not one scaffold</b> — a fix to five foundation templates with a hundred clones each has to reach five hundred repositories. Copier + recorded answers make that a replayable diff instead of manual propagation.'},
-  {c:'base', t:'<b>Repeatable vs one-shot</b> — <code>base</code> applies once. <code>llm</code>, <code>agent</code>, <code>fastapi-backend</code>, <code>react</code>, <code>datarobot-mcp</code> and the optional components are repeatable: apply them again under a different name to get a second agent, a second MCP backend, a second API.'},
+  {c:'base', t:'<b>Repeatable vs one-shot</b> — <code>base</code> applies once. <code>llm</code>, <code>agent</code>, <code>fastapi-backend</code>, <code>react</code>, <code>datarobot-mcp</code> are all repeatable: apply them again under a different name to get a second agent, a second MCP backend, a second API.'},
   {c:'llm', t:'<b>Six model-access strategies</b> — <code>llm</code> asks one question and writes one infra file: LLM Gateway (default), an existing DataRobot deployment, a DataRobot NIM deployment, an LLM blueprint over the gateway, an LLM blueprint over an external provider (Azure · Bedrock · Vertex · Anthropic · Cohere · TogetherAI), or a registered model. Everything downstream sees one <code>datarobot/</code>-prefixed model name.'},
   {c:'agent', t:'<b>Framework choice is a copier answer</b> — <code>base</code>, <code>crewai</code>, <code>langgraph</code>, <code>llamaindex</code> or <code>nat</code> (YAML-driven NeMo Agent Toolkit). All of them sit on the <code>datarobot-genai</code> runtime, so the deployment shape, tracing and chat contract are identical across frameworks.'},
   {c:'ext', t:'<b>One credential</b> — design principle #5: a DataRobot API token is all you need. Model access, storage, deployment and monitoring all resolve through it, so the same repo promotes across environments with <code>dr auth set-url</code> + <code>dr task deploy</code>.'},
@@ -420,17 +426,13 @@ const repos={id:'sec-repos', x:40, y:1791, w:2040, title:'Code repositories · c
   {c:'mcp',  t:gl('datarobot-community/af-component-datarobot-mcp','FastMCP server deployed as its own DataRobot deployment')},
   {c:'api',  t:gl('datarobot-community/af-component-fastapi-backend','FastAPI server as a DataRobot Custom Application')},
   {c:'api',  t:gl('datarobot-community/af-component-react','React + Vite SPA on top of the FastAPI backend')},
-  {c:'aux',  t:gl('datarobot-community/af-component-memory','agent memory — DataRobot Memory Space or a provider')},
-  {c:'aux',  t:gl('datarobot-community/af-component-vdb','vector database + knowledgebase/ for RAG')},
-  {c:'aux',  t:gl('datarobot-community/af-component-evaluation','evaluation pipelines, datasets and judges')},
-  {c:'aux',  t:gl('datarobot-community/af-component-user-credentials','per-user API token, AWS, Azure and GCP credentials')},
   {c:'tool', t:gl('datarobot-community/scaffold-af-component','GitHub template for authoring your own component')},
   {c:'tool', t:gl('datarobot-oss/cli','the dr CLI — auth, dotenv, component, run, task')},
   {c:'agent',t:gl('datarobot-oss/datarobot-genai','the agent runtime every framework choice builds on')},
   {c:'tool', t:gl('datarobot-community/pulumi-datarobot','Pulumi provider for DataRobot resources')},
   {c:'tool', t:gl('datarobot-community/terraform-provider-datarobot','Terraform provider — the source the Pulumi one is generated from')},
   {c:'tool', t:gl('datarobot-oss/datarobot-pulumi-utils','higher-level Pulumi ComponentResources used by the infra files')},
-  {c:'base', t:gl('datarobot-community/datarobot-agent-application','flagship template — base + llm + agent + mcp')},
+  {c:'base', t:gl('datarobot-community/datarobot-agent-application','the most complete template — base + llm + agent + mcp')},
   {c:'base', t:gl('datarobot-community/talk-to-my-data-agent','conversational analytics — base + llm + fastapi + react')},
   {c:'base', t:gl('datarobot-community/datarobot-mcp-template','standalone MCP server template — base + mcp')},
   {c:'ext',  t:gl('datarobot-oss/datarobot-agent-skills','coding-assistant skills for the DataRobot platform APIs')},
@@ -445,7 +447,7 @@ const repoMeta={
   agent:'af-component-agent',
   api:'fastapi-backend · react',
   mcp:'af-component-datarobot-mcp',
-  aux:'optional components',
+  aux:'optional capabilities',
   tool:'tooling',
   ext:'DataRobot platform',
 };
@@ -498,7 +500,7 @@ const D={
     b:`<div class="sec"><h3>Design principle #5</h3><p>“A DataRobot API token is all you need.” Everything but the AI itself is swappable for your preferred stack — but you should never need a second credential to get a template running.</p></div>
     <div class="sec"><h3>Where it lives</h3><ul><li><code>dr auth set-url</code> stores the endpoint; <code>DATAROBOT_ENDPOINT</code> and <code>DATAROBOT_API_TOKEN</code> land in <code>.env</code>.</li>
       <li>Promoting to another environment is <code>dr auth set-url</code> + <code>dr task deploy</code> — the repo does not change.</li>
-      <li>Extra provider credentials are only needed for the external-LLM strategy or the user-credentials component.</li></ul></div>`},
+      <li>Extra provider credentials are only needed for the external-LLM strategy, or when a recipe provisions per-user credential resources.</li></ul></div>`},
 
   // ===== component catalog
   'c-base':{r:'base',t:'af-component-base',role:'The root scaffold every App Framework recipe starts from. Applied first, exactly once — every other component reads the answers it writes.',
@@ -515,8 +517,8 @@ const D={
       <li><b>LLM Gateway</b> (default) — governed multi-provider access, no credential of your own.</li>
       <li><b>DataRobot Deployed LLM</b> — an existing deployment, routed by deployment id.</li>
       <li><b>DataRobot NIM Deployed LLM</b> — an NVIDIA NIM deployment.</li>
-      <li><b>LLM Blueprint with LLM Gateway</b> — the most production-ready option: full governance and monitoring.</li>
-      <li><b>LLM Blueprint with External LLM</b> — your own Azure OpenAI / Bedrock / Vertex / Anthropic / Cohere / TogetherAI credentials, wrapped in a governed deployment.</li>
+      <li><b>LLM blueprint with LLM Gateway</b> — adds governance, moderation and monitoring on top of gateway access.</li>
+      <li><b>LLM blueprint with external LLM</b> — your own Azure OpenAI / Bedrock / Vertex / Anthropic / Cohere / TogetherAI credentials, wrapped in a governed deployment.</li>
       <li><b>LLM from a Registered Model</b> — a registered model not yet deployed.</li></ul></div>
     <div class="sec"><h3>One canonical model name</h3><p>Whatever the strategy, the value handed downstream is a <code>datarobot/</code>-prefixed model name. The runtime routes gateway, deployment and NIM on that prefix directly, and strips it for the external-provider path.</p></div>
     <div class="sec"><h3>Pre-flight check</h3><p>The infra file sends a one-token completion through LiteLLM before deploying, so a misconfigured model fails at <code>pulumi up</code> rather than at first chat.</p></div>
@@ -556,12 +558,10 @@ const D={
       <li><b>Production</b> — <code>vite build</code> writes into the FastAPI component\'s <code>static/</code> directory, so one deployed process serves both.</li></ul></div>
     <div class="sec"><h3>Pulumi role</h3><p>Its infra file is a local build command, not a DataRobot resource: it hashes the frontend sources and rebuilds the bundle before the application source is uploaded.</p></div>
     <div class="sec"><h3>Also ships</h3><p>TypeScript config, ESLint, Prettier, Vitest with jsdom, and a <code>components.json</code> wired for the shared <a class="ext" target="_blank" href="https://af.datarobot.com/guides/using-dr-ui/">dr-ui</a> registry.</p></div>`},
-  'c-aux':{r:'aux',t:'Optional components',role:'Four more components in the same catalog, each layered the same way — a top-level folder and/or a Pulumi file, plus an answers file.',
-    b:`<div class="sec"><h3>memory</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/af-component-memory">af-component-memory</a> — agent memory. Provisions a DataRobot <b>Memory Space</b> (or a provider such as mem0) and wires the credentials and LLM routing into the agent\'s runtime parameters. Requires base + llm.</p></div>
-    <div class="sec"><h3>vdb</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/af-component-vdb">af-component-vdb</a> — adds a <code>knowledgebase/</code> folder and provisions a <code>DatasetFromFile</code> plus a <b>VectorDatabase</b> with chunking parameters. Requires base + llm.</p></div>
-    <div class="sec"><h3>evaluation</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/af-component-evaluation">af-component-evaluation</a> — an evaluation folder with generate / run / summarize pipelines, user datasets, judge-based and judge-free examples, and its own agent skill.</p></div>
-    <div class="sec"><h3>user-credentials</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/af-component-user-credentials">af-component-user-credentials</a> — API token, AWS, Azure and Google Cloud credential resources for flows that need per-user secrets.</p></div>
-    <div class="sec"><h3>Finding them all</h3><p>Search <code>af-component</code> in the <a class="ext" target="_blank" href="https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories">datarobot-community org</a> — the catalog is the search result, not a hard-coded list.</p></div>`},
+  'c-aux':{r:'aux',t:'More of the catalog',role:'The catalog is a set of repositories, not a fixed list. Anything published as an af-component-* repository layers in the same way — a top-level folder and/or a Pulumi file, plus an answers file.',
+    b:`<div class="sec"><h3>Finding what is available</h3><p>Search <code>af-component</code> in the <a class="ext" target="_blank" href="https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories">datarobot-community org</a> — the catalog is the search result, not a hard-coded list, so what you see is what you can apply.</p></div>
+    <div class="sec"><h3>Adding one</h3><p>Every component applies the same way: <code>dr component add https://github.com/datarobot-community/af-component-&lt;name&gt; .</code>, or <code>uvx copier copy</code> with the same URL. Each writes its own answers file into <code>.datarobot/answers/</code>, so <code>dr component update</code> can pull in later template changes.</p></div>
+    <div class="sec"><h3>Beyond the catalog</h3><p>Any DataRobot resource is reachable from a Pulumi file, whether or not a component wraps it. ${NP('c-scaf','scaffold-af-component')} turns a folder you have written by hand into a component of your own.</p></div>`},
   'c-scaf':{r:'tool',gh:'datarobot-community/scaffold-af-component',t:'scaffold-af-component',role:'A GitHub template for authoring your own component: copier.yml, template tree, Taskfile and CI, ready to go.',
     b:`<div class="sec"><h3>Anatomy of a component</h3><ul>
       <li><code>copier.yml</code> — questions, <code>_subdirectory: template</code>, <code>_answers_file</code>, and <code>_external_data</code> to read the base answers.</li>
@@ -605,7 +605,7 @@ const D={
       <li><code>app/</code> — app factory, config, dependencies, auth, telemetry.</li>
       <li><code>static/</code> — the React bundle lands here at build time.</li>
       <li><code>tests/</code>, <code>Taskfile.yaml</code>, its own <code>pyproject.toml</code>.</li></ul></div>
-    <div class="sec"><h3>What a real template adds</h3><p>The flagship <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-agent-application">agent application</a> grows this folder into chats, messages, users, memory, an AG-UI bridge to the agent, and Alembic migrations — all on top of the same minimal component surface.</p></div>`},
+    <div class="sec"><h3>What a real template adds</h3><p>The <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-agent-application">datarobot-agent-application</a> template grows this folder into chats, messages, users, memory, an AG-UI bridge to the agent, and Alembic migrations — all on top of the same minimal component surface.</p></div>`},
   'r-web':{r:'api',gh:'datarobot-community/af-component-react',t:'frontend_web/',role:'The React + Vite single-page app. Never deployed on its own — it builds into the FastAPI folder.',
     b:`<div class="sec"><h3>Development</h3><p><code>vite dev</code> on <code>:5173</code> with a proxy: any request under <code>/api/</code> is rewritten and forwarded to <code>http://localhost:8080</code>. In a DataRobot Codespace the base path becomes <code>/notebook-sessions/&lt;id&gt;/ports/5173/</code> automatically.</p></div>
     <div class="sec"><h3>Build</h3><p><code>build.outDir</code> points at the FastAPI component\'s <code>static/</code> directory with <code>manifest: true</code>. Pulumi hashes the frontend sources and rebuilds before uploading the application source.</p></div>
@@ -643,7 +643,7 @@ const D={
       <li><code>ExecutionEnvironment</code> — the GenAI Agents image (looked up, or built from your folder).</li>
       <li><code>CustomModel</code> — your agent code plus runtime parameters (LLM config, MCP wiring, memory, session secrets).</li>
       <li><code>RegisteredModel</code> → <code>Deployment</code> on a <code>PredictionEnvironment</code>, with association ids and prediction data collection enabled.</li>
-      <li><code>Playground</code> + <code>LlmBlueprint</code> so the agent is usable from the DataRobot workbench, not just over the API.</li></ul></div>
+      <li><code>Playground</code> + <code>LlmBlueprint</code> so the agent is usable from the DataRobot Workbench, not just over the API.</li></ul></div>
     <div class="sec"><h3>Contract</h3><p>The FastAPI backend talks to it over the DRAgent server\'s <code>/generate/stream</code> endpoint, bridged to AG-UI events for the React client. Locally the same contract is served by the dev server on <code>:8842</code>.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('c-agent','af-component-agent')}${NP('d-gw','LLM Gateway')}${NP('d-mcp','MCP server deployment')}${NP('d-mem','Memory Space')}</p></div>`},
   'd-mcp':{r:'mcp',t:'MCP server deployment',role:'The FastMCP server as its own DataRobot deployment — a governed tool surface for your agent and for external MCP clients.',
@@ -665,20 +665,20 @@ const D={
       <li><b>LLM blueprint over an external provider</b> — your Azure OpenAI / Bedrock / Vertex / Anthropic / Cohere / TogetherAI credentials, turned into DataRobot credential resources and runtime parameters.</li>
       <li><b>Registered model</b> — an existing registered model, deployed by the component.</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('c-llm','af-component-llm')}${NP('d-gw','LLM Gateway')}</p></div>`},
-  'd-mem':{r:'aux',gh:'datarobot-community/af-component-memory',t:'Memory Space',role:'Agent memory as a DataRobot resource, provisioned by the optional memory component.',
-    b:`<div class="sec"><h3>What the component does</h3><ul>
-      <li>Creates a <code>MemorySpace</code> and resolves which LLM it should use for summarisation and retrieval.</li>
-      <li>Alternatively wires an external provider (for example mem0) via an API-token credential.</li>
-      <li>Feeds the result into the agent deployment as runtime parameters — no application code is rendered.</li></ul></div>
-    <div class="sec"><h3>Boxes</h3><p>${NP('c-aux','Optional components')}${NP('d-agent','Agent deployment')}</p></div>`},
-  'd-vdb':{r:'aux',gh:'datarobot-community/af-component-vdb',t:'Vector database',role:'A DataRobot vector database over documents you drop into the recipe, provisioned by the optional vdb component.',
-    b:`<div class="sec"><h3>What the component does</h3><ul>
-      <li>Adds a <code>knowledgebase/</code> folder to the repo — put your documents there.</li>
-      <li>Creates a <code>DatasetFromFile</code> and a <code>VectorDatabase</code> with configurable chunking parameters.</li>
-      <li>Requires base + llm, because the embedding configuration follows the chosen model strategy.</li></ul></div>
+  'd-mem':{r:'aux',gh:'datarobot-community/pulumi-datarobot',t:'Memory Space',role:'Agent memory as a DataRobot resource, so a conversation survives beyond one request.',
+    b:`<div class="sec"><h3>How a recipe provisions it</h3><ul>
+      <li><code>MemorySpace</code> is a resource in the <a class="ext" target="_blank" href="https://github.com/datarobot-community/pulumi-datarobot">Pulumi provider</a> — one more file under <code>infra/infra/</code>, alongside the LLM and agent files.</li>
+      <li>The memory space is passed to the agent deployment as a runtime parameter, so no application code changes.</li>
+      <li>An external provider works the same way: store its key as a DataRobot credential resource and hand the agent the reference.</li></ul></div>
+    <div class="sec"><h3>Boxes</h3><p>${NP('c-aux','More of the catalog')}${NP('d-agent','Agent deployment')}</p></div>`},
+  'd-vdb':{r:'aux',gh:'datarobot-community/pulumi-datarobot',t:'Vector database',role:'A DataRobot vector database over documents you drop into the recipe, so the agent answers from your own material.',
+    b:`<div class="sec"><h3>How a recipe provisions it</h3><ul>
+      <li>Add a <code>knowledgebase/</code> folder to the repo — put your documents there, version-controlled with the code.</li>
+      <li><code>infra/infra/vdb.py</code> creates a <code>DatasetFromFile</code> and a <code>VectorDatabase</code> with configurable chunking parameters.</li>
+      <li>It follows the model strategy the <code>llm</code> component chose, because the embedding configuration comes from the same blueprint.</li></ul></div>
     <div class="sec"><h3>Guide</h3><p><a class="ext" target="_blank" href="https://af.datarobot.com/guides/vector-database/">Adding a vector database</a> walks through grounding an agent in real documents.</p></div>`},
-  'd-uc':{r:'ext',t:'Use case · playground',role:'The workbench surface. Deployed assets are grouped into a use case, and the agent also lands in a playground with an LLM blueprint.',
-    b:`<div class="sec"><h3>Why it exists</h3><p>A deployment reachable only over the API is hard to demo and hard to hand over. Registering the agent in a playground means a colleague can chat with it in the DataRobot UI without touching your repo.</p></div>
+  'd-uc':{r:'ext',t:'Use Case · Playground',role:'The Workbench surface. Deployed assets are grouped into a Use Case, and the agent also lands in a Playground with an LLM blueprint.',
+    b:`<div class="sec"><h3>Why it exists</h3><p>A deployment reachable only over the API is hard to demo and hard to hand over. Registering the agent in a Playground means a colleague can chat with it in the DataRobot UI without touching your repo.</p></div>
     <div class="sec"><h3>Configuration</h3><p><code>DATAROBOT_DEFAULT_USE_CASE</code> in <code>.env</code>, set during <code>dr dotenv setup</code>. Optional — leave it unset and resources are created standalone.</p></div>`},
   'd-obs':{r:'ext',t:'Tracing & monitoring',role:'OpenTelemetry traces, metrics and logs from both the application and the agent, collected by the platform.',
     b:`<div class="sec"><h3>Where it comes from</h3><ul>
@@ -689,18 +689,18 @@ const D={
     b:`<div class="sec"><h3>Who creates what</h3><ul>
       <li><code>llm</code> — provider credentials for the external-LLM strategy (AWS, Google Cloud, generic API tokens).</li>
       <li><code>agent</code> — session secrets, memory provider keys, JWK material for agent-to-agent auth.</li>
-      <li><code>user-credentials</code> — API token, AWS, Azure and Google Cloud credentials for per-user flows.</li></ul></div>
+      <li>Per-user flows — API token, AWS, Azure and Google Cloud credential resources, one per user rather than one per stack.</li></ul></div>
     <div class="sec"><h3>Never in the repo</h3><p>Values come from <code>.env</code> (gitignored) and become DataRobot credential resources referenced by id in runtime parameters.</p></div>`},
 
   // ===== application templates
-  't-agentapp':{r:'base',gh:'datarobot-community/datarobot-agent-application',t:'datarobot-agent-application',role:'The flagship template and the clearest worked example: base + llm + agent + mcp, with the FastAPI backend and React frontend coming along with the agent component.',
+  't-agentapp':{r:'base',gh:'datarobot-community/datarobot-agent-application',t:'datarobot-agent-application',role:'The most fully composed template: base + llm + agent + mcp, with the FastAPI backend and React frontend coming along with the agent component.',
     b:`<div class="sec"><h3>What you get</h3><p>A multi-agent workflow, a FastAPI backend, a React frontend and an MCP server, deployable in one command — with CrewAI, LangGraph, LlamaIndex or NVIDIA NeMo Agent Toolkit selected at scaffold time.</p></div>
     <div class="sec"><h3>Reading its state</h3><p>Its <code>.datarobot/answers/</code> is the ground truth for how it was composed: <code>base.yml</code>, <code>llm-llm.yml</code>, <code>agent-agent.yml</code>, <code>drmcp-mcp_server.yml</code>.</p></div>
     <div class="sec"><h3>Try it</h3><p>Open it directly in a DataRobot Codespace from the badges in the repo README, or clone and run <code>dr dotenv setup</code>.</p></div>`},
   't-ttmd':{r:'base',gh:'datarobot-community/talk-to-my-data-agent',t:'talk-to-my-data-agent',role:'Conversational analytics over your own datasets — base + llm + fastapi + react, with no agent component at all.',
     b:`<div class="sec"><h3>Why it is interesting</h3><p>It shows the framework is not agent-only. The same base, the same infra layout and the same deployment path, minus the agent folder.</p></div>
     <div class="sec"><h3>Siblings</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/talk-to-my-docs-agents">talk-to-my-docs-agents</a> (multi-agent document Q&amp;A), <a class="ext" target="_blank" href="https://github.com/datarobot-community/guarded-rag-assistant">guarded-rag-assistant</a>, <a class="ext" target="_blank" href="https://github.com/datarobot-community/forecast-assistant">forecast-assistant</a>, <a class="ext" target="_blank" href="https://github.com/datarobot-community/predictive-ai-starter">predictive-ai-starter</a>.</p></div>`},
-  't-mcpt':{r:'base',gh:'datarobot-community/datarobot-mcp-template',t:'datarobot-mcp-template',role:'A production-ready FastMCP server with DataRobot tools built in — base + mcp, nothing else.',
+  't-mcpt':{r:'base',gh:'datarobot-community/datarobot-mcp-template',t:'datarobot-mcp-template',role:'A deployable FastMCP server with DataRobot tools built in — base + mcp, nothing else.',
     b:`<div class="sec"><h3>Use it when</h3><p>You want to give agents governed tools over DataRobot without building an application around them. Ships pre-built tools, OpenTelemetry tracing, dynamic tool registration and deployment infrastructure.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('c-mcp','af-component-datarobot-mcp')}${NP('d-mcp','MCP server deployment')}</p></div>`},
 
@@ -956,7 +956,7 @@ const STEPS=[
     <li>Exactly one file under <code>infra/infra/</code>.</li>
     <li>An answers file under <code>.datarobot/answers/</code> and an env schema under <code>.datarobot/cli/</code>.</li></ul></div>
   <div class="sec"><h3>Repeatable by design</h3><p>Apply <code>agent</code>, <code>datarobot-mcp</code>, <code>fastapi-backend</code>, <code>react</code> or <code>llm</code> again under a different name and you get a second, independently updatable instance.</p></div>
-  <div class="sec"><h3>Boxes</h3><p>${NP('c-agent','af-component-agent')}${NP('c-mcp','af-component-datarobot-mcp')}${NP('c-aux','Optional components')}</p></div>`},
+  <div class="sec"><h3>Boxes</h3><p>${NP('c-agent','af-component-agent')}${NP('c-mcp','af-component-datarobot-mcp')}${NP('c-aux','More of the catalog')}</p></div>`},
 
  {g:'③',c:'seam',title:'Configure — one .env from the components\' schemas',role:'Components declare what they need; the CLI collects it once.',
   nodes:['r-answers','r-core','cli'],arrows:['r-answers->r-core'],
@@ -1006,7 +1006,7 @@ const STEPS=[
   arrows:['d-agent->d-gw','d-agent->d-mcp','d-agent->d-mem','d-vdb->d-agent','mcpclient->d-mcp'],
   b:`<div class="sec"><h3>Models</h3><p>The agent addresses whatever the <code>llm</code> component configured through one canonical <code>datarobot/</code>-prefixed model name — LLM Gateway by default, or a deployment, a NIM, an LLM blueprint or an external provider.</p></div>
   <div class="sec"><h3>Tools</h3><p>A co-deployed MCP server named <code>mcp_server</code> is wired automatically; otherwise <code>MCP_DEPLOYMENT_ID</code>, or <code>EXTERNAL_MCP_URL</code> for a server outside DataRobot. The same deployment is callable by external MCP clients.</p></div>
-  <div class="sec"><h3>State and grounding</h3><p>The optional <code>memory</code> component provisions a Memory Space; the optional <code>vdb</code> component builds a vector database from the repo\'s <code>knowledgebase/</code> folder.</p></div>
+  <div class="sec"><h3>State and grounding</h3><p>A <code>MemorySpace</code> and a <code>VectorDatabase</code> are Pulumi resources like any other: add <code>infra/infra/memory.py</code> or <code>infra/infra/vdb.py</code>, and the agent receives them as runtime parameters.</p></div>
   <div class="sec"><h3>Observability</h3><p>The runtime emits OpenTelemetry GenAI spans, and the deployment collects prediction data with association ids, so a chat turn is traceable end to end.</p></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('d-gw','LLM Gateway')}${NP('d-mcp','MCP server deployment')}${NP('d-mem','Memory Space')}${NP('d-vdb','Vector database')}</p></div>`},
 

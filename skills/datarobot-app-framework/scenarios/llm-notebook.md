@@ -19,7 +19,7 @@ mkdir recipe-my-llm && cd recipe-my-llm
 ## Step 2 — Scaffold base
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 ## Step 3 — Add LLM
