@@ -295,10 +295,15 @@ diff against this list during the shallow review.
   Pages redeploys — link a page that already exists.
 - **Invented version references.** An example `copier-module.yaml` pinned `v11.7.1` when the real
   tags stop at `v11.3.0`. Read the tag list before writing a ref, even in an example.
-- **CLI command drift.** Three variants have shipped wrong: `dr run infra:down` for
-  `dr task infra:down`, `dr component add <short-name>` where the documented form is the full
-  repository URL, and `pip install datarobot-cli` for the installer at `cli.datarobot.com/install`.
-  Check commands against `docs/src/design/cli.md` and the CLI documentation.
+- **CLI command drift.** Check commands against the installed CLI (`dr <group> --help`), not
+  against the docs pages — the pages have been wrong. Two known cases: `pip install datarobot-cli`
+  instead of the installer at `cli.datarobot.com/install`, and `dr component add <short-name>`
+  where the documented form is the full repository URL.
+- **`dr task <task-name>` is not a command.** `dr task` takes only `compose`, `list`, and `run`;
+  `dr run` is the alias for `dr task run`. A Taskfile target is invoked as `dr run deploy`,
+  `dr run infra:info`, `dr run infra:down`. This one is hard to catch because `dr task deploy`
+  prints the `dr task` help and exits 0 — it looks like it worked and deploys nothing. Several
+  docs pages still use the wrong form; verify before copying an existing example.
 - **Temporal framing that leaks the roadmap.** "not yet a component", "once released", "coming
   soon" all tell a reader unreleased work exists. Describe what is available and the public path
   to anything else — usually a Pulumi resource — with no hint of what is planned.

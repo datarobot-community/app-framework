@@ -80,7 +80,7 @@ uvx copier copy https://github.com/datarobot-community/af-component-react .
 ## Tear down
 
 ```bash
-dr task infra:down
+dr run infra:down
 ```
 
 ## Redeploy / move to another DR instance
