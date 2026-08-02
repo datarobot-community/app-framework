@@ -4,19 +4,58 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DataRobot App Framework — architecture</title>
+<script>
+/* Pick the scheme before first paint so the page never flashes the wrong one.
+   Key and value shape are Material for MkDocs' own palette storage (scope is
+   the site root, which is also this page's directory), so this toggle and the
+   one in the docs header read and write the same preference. */
+(function(){
+  var scheme='slate';
+  try{
+    var stored=JSON.parse(localStorage.getItem(new URL('.',location).pathname+'.__palette')||'null');
+    if(stored&&stored.color&&stored.color.scheme==='default')scheme='default';
+  }catch(e){/* storage blocked (file://, private mode) — fall back to dark */}
+  document.documentElement.setAttribute('data-md-color-scheme',scheme);
+})();
+</script>
 <style>
-  :root{
+  /* Dark is the default, matching the docs theme's first palette. The category
+     colours (--base … --seam) are read back out of these variables by paint()
+     in the script below, so every JS-drawn panel, node and wire repaints when
+     the scheme flips. Keep them 6-digit hex — paint() parses them. */
+  :root, [data-md-color-scheme="slate"]{
     --bg:#0B0B0B; --ink:#ffffff; --muted:hsl(150,14%,80%); --muted2:hsl(150,8%,62%); --line:#2a2d31;
     --base:#81FBA5; --llm:#f5a524; --agent:#a78bfa; --api:#38bdf8; --mcp:#2dd4bf;
     --aux:#f472b6; --tool:#909BF5; --ext:#7c8aa8; --seam:#e63640;
     --link:#81FBA5;
     --surface:#141514; --surface2:#1d1f1e;
+    --strong:#ffffff; --hover:#242629; --hdr:#0B0B0Bee; --labelbg:#0B0B0Be6;
+    --seamfg:#ffd7d4; --seamline:#7a2a26; --seambg:#2a0d0cf0;
+    --codebg:#1a1b1a; --codeline:#2c2e2c; --dotted:#3d5c47;
+    --drawerbg:#101110; --tourbg:#141514f2; --scrim:#0009;
+    --shadow:#0009; --shadow2:#000a; --ring:#ffffff66;
+    --playline:#2f6b43; --playbg:#12251a;
+  }
+  /* Light scheme — the dark category colours have too little contrast on white,
+     so each one drops to a deeper shade of the same hue. */
+  [data-md-color-scheme="default"]{
+    --bg:#ffffff; --ink:#0B0B0B; --muted:hsl(150,8%,26%); --muted2:hsl(150,6%,42%); --line:#d7dcd9;
+    --base:#0F8A4A; --llm:#B45309; --agent:#6D28D9; --api:#0369A1; --mcp:#0F766E;
+    --aux:#BE185D; --tool:#4338CA; --ext:#4B5A6B; --seam:#C81E2A;
+    --link:#5C41FF;
+    --surface:#F7F9F8; --surface2:#EDF1EF;
+    --strong:#0B0B0B; --hover:#E1E6E3; --hdr:#ffffffee; --labelbg:#ffffffe6;
+    --seamfg:#8C1119; --seamline:#E9B6B9; --seambg:#FDF1F1f0;
+    --codebg:#F2F5F3; --codeline:#DDE3DF; --dotted:#B9C2E8;
+    --drawerbg:#ffffff; --tourbg:#ffffffF2; --scrim:#0b0b0b3d;
+    --shadow:#0b0b0b1f; --shadow2:#0b0b0b26; --ring:#0b0b0b40;
+    --playline:#9BD9B4; --playbg:#EAF7EF;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--ink);
     font-family:"DM Sans",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
   header{padding:16px 24px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;
-    background:#0B0B0Bee;z-index:50;backdrop-filter:blur(6px)}
+    background:var(--hdr);z-index:50;backdrop-filter:blur(6px)}
   h1{font-size:17px;font-weight:600;margin:0 0 4px;letter-spacing:.2px}
   h1 .v{color:var(--muted2);font-weight:400;font-size:13px}
   .sub{font-size:12.5px;color:var(--muted2);max-width:1240px;line-height:1.55}
@@ -29,19 +68,20 @@
   .zoom{margin-left:auto;display:flex;gap:6px}
   .zoom button{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:7px;
     padding:5px 11px;font-size:12px;cursor:pointer;transition:border-color .2s,background .2s}
-  .zoom button:hover{border-color:var(--muted2);background:#242629}
+  .zoom button:hover{border-color:var(--muted2);background:var(--hover)}
   .hint{font-size:11.5px;color:var(--muted2);margin-left:4px}
   .htop{display:flex;align-items:flex-start;gap:16px}
   .htop h1{flex:1;margin-bottom:0}
   .hcollapse{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:7px;
     padding:5px 11px;font-size:12px;cursor:pointer;white-space:nowrap;flex:none;transition:border-color .2s,background .2s}
-  .hcollapse:hover{border-color:var(--muted2);background:#242629}
+  .hcollapse:hover{border-color:var(--muted2);background:var(--hover)}
+  a.hcollapse{text-decoration:none;display:inline-block}
   header.collapsed .hbody{display:none}
   .secnav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
   .secnav .navlabel{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);margin-right:2px}
   .secnav button{background:var(--surface2);color:var(--muted);border:1px solid var(--line);border-radius:7px;
     padding:5px 11px;font-size:12px;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
-  .secnav button:hover{border-color:var(--muted2);background:#242629;color:#fff}
+  .secnav button:hover{border-color:var(--muted2);background:var(--hover);color:var(--strong)}
 
   #viewport{overflow:auto;height:calc(100vh - 168px)}
   #stage{position:relative;transform-origin:top left}
@@ -56,33 +96,33 @@
   .node{position:absolute;z-index:3;border-radius:11px;padding:7px 11px;cursor:pointer;
     background:var(--surface);border:1px solid var(--line);transition:transform .12s,box-shadow .12s,border-color .12s;
     display:flex;flex-direction:column;justify-content:center}
-  .node:hover{transform:translateY(-2px);box-shadow:0 10px 26px #0009;border-color:var(--muted2)}
+  .node:hover{transform:translateY(-2px);box-shadow:0 10px 26px var(--shadow);border-color:var(--muted2)}
   .node .nt{font-size:13.2px;font-weight:650;line-height:1.18}
   .node .ns{font-size:11px;color:var(--muted2);margin-top:3px;line-height:1.2}
   .node .tag{position:absolute;top:0;left:0;width:4px;height:100%;border-radius:11px 0 0 11px}
   .node.sm .nt{font-size:12.3px}
   .node.sm .ns{font-size:10.4px;margin-top:2px}
 
-  .wlabel{position:absolute;z-index:4;font-size:10.9px;color:var(--muted);background:#0B0B0Be6;
+  .wlabel{position:absolute;z-index:4;font-size:10.9px;color:var(--muted);background:var(--labelbg);
     border:1px solid var(--line);border-radius:6px;padding:1.5px 6px;transform:translate(-50%,-50%);
     white-space:nowrap;pointer-events:none}
-  .wlabel.seam{color:#ffd7d4;border-color:#7a2a26;background:#2a0d0cf0;font-weight:600}
+  .wlabel.seam{color:var(--seamfg);border-color:var(--seamline);background:var(--seambg);font-weight:600}
   .wlabel.clickable{pointer-events:auto;cursor:pointer}
-  .wlabel.clickable:hover{border-color:var(--muted2);color:#fff}
+  .wlabel.clickable:hover{border-color:var(--muted2);color:var(--strong)}
   .node.dim,.wlabel.dim{opacity:.13;filter:saturate(.25)}
   svg path.dim{opacity:.05}
-  .node.hl{box-shadow:0 0 0 2px #ffffff66,0 10px 26px #000a}
+  .node.hl{box-shadow:0 0 0 2px var(--ring),0 10px 26px var(--shadow2)}
   .notes .item.step{padding:5px 9px;margin:-5px -9px;border:1px solid transparent;border-radius:9px;cursor:pointer;transition:background .12s,border-color .12s}
   .notes .item.step:hover{background:var(--surface2);border-color:var(--line)}
   .notes .item.step.active{background:var(--surface2);border-color:var(--muted2)}
   .pill[data-node]{cursor:pointer}
-  .pill[data-node]:hover{border-color:var(--muted2);color:#fff}
+  .pill[data-node]:hover{border-color:var(--muted2);color:var(--strong)}
   #tour{position:fixed;right:18px;bottom:18px;z-index:80;display:flex;gap:7px;align-items:center;
-    background:#141514f2;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12px;box-shadow:0 8px 24px #0008}
+    background:var(--tourbg);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12px;box-shadow:0 8px 24px var(--shadow)}
   #tour button{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:4px 10px;font-size:12px;cursor:pointer}
   #tour button:hover{border-color:var(--muted2)}
-  #tour #tplay{color:var(--base);border-color:#2f6b43;font-weight:600}
-  #tour #tplay:hover{border-color:var(--base);background:#12251a}
+  #tour #tplay{color:var(--base);border-color:var(--playline);font-weight:600}
+  #tour #tplay:hover{border-color:var(--base);background:var(--playbg)}
   #tour .tinfo{color:var(--muted);min-width:120px;text-align:center}
   body.tourview #tour{right:470px}
   #viewport{transition:margin-right .22s ease}
@@ -97,12 +137,12 @@
   .notes h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;letter-spacing:.55px;color:var(--muted2)}
   .notes .grid{display:flex;flex-wrap:wrap;gap:11px 30px}
   .notes .item{font-size:11.6px;color:var(--muted);line-height:1.45;max-width:325px}
-  .notes .item b{color:#fff;font-weight:650}
+  .notes .item b{color:var(--strong);font-weight:650}
   .notes .item .k{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
 
-  #scrim{position:fixed;inset:0;background:#0009;opacity:0;pointer-events:none;transition:.18s;z-index:90}
+  #scrim{position:fixed;inset:0;background:var(--scrim);opacity:0;pointer-events:none;transition:.18s;z-index:90}
   #scrim.on{opacity:1;pointer-events:auto}
-  #drawer{position:fixed;top:0;right:0;height:100vh;width:450px;max-width:93vw;background:#101110;
+  #drawer{position:fixed;top:0;right:0;height:100vh;width:450px;max-width:93vw;background:var(--drawerbg);
     border-left:1px solid var(--line);z-index:100;transform:translateX(102%);transition:transform .22s ease;
     display:flex;flex-direction:column}
   #drawer.on{transform:none}
@@ -112,27 +152,30 @@
   #drawer .role{font-size:12.5px;color:var(--muted2);line-height:1.5}
   #drawer .dbody{padding:6px 20px 30px;overflow:auto}
   #drawer .x{position:absolute;top:14px;right:16px;cursor:pointer;color:var(--muted2);font-size:20px;line-height:1;border:none;background:none}
-  #drawer .x:hover{color:#fff}
+  #drawer .x:hover{color:var(--strong)}
   .sec{margin-top:15px}
   .sec h3{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);margin:0 0 6px}
   .sec ul{margin:0;padding-left:16px}
   .sec li{font-size:12.3px;line-height:1.55;margin-bottom:3px;color:var(--muted)}
   .sec p{font-size:12.3px;line-height:1.55;color:var(--muted);margin:0}
-  code{background:#1a1b1a;border:1px solid #2c2e2c;border-radius:5px;padding:1px 5px;font-size:11.2px;color:var(--link);font-family:ui-monospace,Menlo,monospace}
+  code{background:var(--codebg);border:1px solid var(--codeline);border-radius:5px;padding:1px 5px;font-size:11.2px;color:var(--link);font-family:ui-monospace,Menlo,monospace}
   .pill{display:inline-block;font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted);margin:2px 4px 2px 0}
-  .ghlink{color:var(--link);text-decoration:none;border-bottom:1px dotted #3d5c47;font-family:ui-monospace,Menlo,monospace;font-size:.95em;transition:color .3s ease,border-color .3s ease}
-  .ghlink:hover{color:#fff;border-bottom-color:var(--link)}
+  .ghlink{color:var(--link);text-decoration:none;border-bottom:1px dotted var(--dotted);font-family:ui-monospace,Menlo,monospace;font-size:.95em;transition:color .3s ease,border-color .3s ease}
+  .ghlink:hover{color:var(--strong);border-bottom-color:var(--link)}
   #drepo .ghlink{font-weight:600}
   .path{color:var(--link);font-family:ui-monospace,Menlo,monospace;font-size:11px}
-  a.path{text-decoration:none;border-bottom:1px dotted #3d5c47;transition:color .3s ease}
-  a.path:hover,a.ext:hover{color:#fff}
-  a.ext{color:var(--link);text-decoration:none;border-bottom:1px dotted #3d5c47;transition:color .3s ease}
+  a.path{text-decoration:none;border-bottom:1px dotted var(--dotted);transition:color .3s ease}
+  a.path:hover,a.ext:hover{color:var(--strong)}
+  a.ext{color:var(--link);text-decoration:none;border-bottom:1px dotted var(--dotted);transition:color .3s ease}
 </style>
 </head>
 <body>
 <header>
   <div class="htop">
     <h1>DataRobot App Framework — from component catalog to running application <span class="v">· flow is left → right</span></h1>
+    <!-- target=_top so the link escapes the iframe this page is embedded in on /design/ -->
+    <a class="hcollapse" id="backlink" href="./" target="_top" title="Back to the App Framework documentation">← Docs</a>
+    <button id="themetoggle" class="hcollapse" title="Switch between light and dark mode" aria-live="polite"></button>
     <button id="hcollapse" class="hcollapse" title="Collapse or expand the header">Collapse ▲</button>
   </div>
   <div class="hbody">
@@ -390,15 +433,17 @@ const repos={id:'sec-repos', x:40, y:1791, w:2040, title:'Code repositories · c
 ]};
 
 /* ---------- drawers ---------- */
+/* Keyed by category, so the drawer's dot takes its colour from the active
+   palette rather than a second copy of the hex values. */
 const repoMeta={
-  base:['af-component-base','#81FBA5'],
-  llm:['af-component-llm','#f5a524'],
-  agent:['af-component-agent','#a78bfa'],
-  api:['fastapi-backend · react','#38bdf8'],
-  mcp:['af-component-datarobot-mcp','#2dd4bf'],
-  aux:['optional components','#f472b6'],
-  tool:['tooling','#909BF5'],
-  ext:['DataRobot platform','#7c8aa8'],
+  base:'af-component-base',
+  llm:'af-component-llm',
+  agent:'af-component-agent',
+  api:'fastapi-backend · react',
+  mcp:'af-component-datarobot-mcp',
+  aux:'optional components',
+  tool:'tooling',
+  ext:'DataRobot platform',
 };
 const REPO_URL={
   base:'https://github.com/datarobot-community/af-component-base',
@@ -706,15 +751,30 @@ const D={
 
 /* ================= render ================= */
 const tint=(hex,a)=>{const n=parseInt(hex.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`};
+
+/* The category colours are declared as CSS custom properties (one set per
+   scheme) and read back here, so paint() can re-colour every inline style the
+   diagram writes when the light/dark toggle flips. C stays the dark palette:
+   it is the fallback, and tools/architecture-diagram/render.py reads it when
+   exporting the static SVG. */
+let PAL={...C};
+function readPal(){
+  const cs=getComputedStyle(document.documentElement),out={};
+  for(const k in C){const v=cs.getPropertyValue('--'+k).trim();
+    out[k]=/^#[0-9a-fA-F]{6}$/.test(v)?v:C[k];}
+  return out;
+}
 const stage=document.getElementById('stage'), wires=document.getElementById('wires');
 stage.style.width=STAGE_W+'px'; stage.style.height=STAGE_H+'px';
 wires.setAttribute('width',STAGE_W); wires.setAttribute('height',STAGE_H); wires.setAttribute('viewBox',`0 0 ${STAGE_W} ${STAGE_H}`);
 const nmap={}; N.forEach(n=>nmap[n.id]=n);
 
-panels.forEach(p=>{const col=C[p.c];const d=document.createElement('div');d.className='panel';
-  d.style.cssText=`left:${p.x}px;top:${p.y}px;width:${p.w}px;height:${p.h}px;border-color:${tint(col,.5)};background:${tint(col,.04)}`;
-  d.innerHTML=`<span class="ptitle" style="color:${col}">${p.t}</span>`+(p.s?`<span class="psub">${p.s}</span>`:'');
-  stage.appendChild(d);});
+/* Geometry is set here, colour in paint(). */
+const panelEls=[];
+panels.forEach(p=>{const d=document.createElement('div');d.className='panel';
+  d.style.cssText=`left:${p.x}px;top:${p.y}px;width:${p.w}px;height:${p.h}px`;
+  d.innerHTML=`<span class="ptitle">${p.t}</span>`+(p.s?`<span class="psub">${p.s}</span>`:'');
+  panelEls.push({el:d,c:p.c});stage.appendChild(d);});
 
 subheads.forEach(s=>{const d=document.createElement('div');d.className='subhead';
   d.style.cssText=`left:${s.x}px;top:${s.y}px`;d.textContent=s.text;stage.appendChild(d);});
@@ -723,13 +783,13 @@ subheads.forEach(s=>{const d=document.createElement('div');d.className='subhead'
   if(card.id)d.id=card.id;
   d.style.cssText=`left:${card.x}px;top:${card.y}px;width:${card.w}px`;
   d.innerHTML=`<h4>${card.title}</h4><div class="grid">`+
-    card.items.map(i=>`<div class="item${i.step!==undefined?' step':''}"${i.step!==undefined?` data-step="${i.step}"`:''}><span class="k" style="background:${C[i.c]}"></span>${i.t}</div>`).join('')+`</div>`;
+    card.items.map(i=>`<div class="item${i.step!==undefined?' step':''}"${i.step!==undefined?` data-step="${i.step}"`:''}><span class="k" data-c="${i.c}"></span>${i.t}</div>`).join('')+`</div>`;
   stage.appendChild(d);});
 
 const nodeEls={},edgeReg=[];
-N.forEach(n=>{const col=C[n.c];const d=document.createElement('div');d.className='node'+(n.sm?' sm':'');d.dataset.id=n.id;
-  d.style.cssText=`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px;border-color:${tint(col,.6)};background:linear-gradient(180deg,${tint(col,.16)},${tint(col,.05)})`;
-  d.innerHTML=`<span class="tag" style="background:${col}"></span><div class="nt">${n.t}</div><div class="ns">${n.s}</div>`;
+N.forEach(n=>{const d=document.createElement('div');d.className='node'+(n.sm?' sm':'');d.dataset.id=n.id;
+  d.style.cssText=`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px`;
+  d.innerHTML=`<span class="tag"></span><div class="nt">${n.t}</div><div class="ns">${n.s}</div>`;
   d.addEventListener('click',()=>openDrawer(n.id));
   d.addEventListener('mouseenter',()=>hoverNode(n.id,true));
   d.addEventListener('mouseleave',()=>hoverNode(n.id,false));
@@ -742,12 +802,13 @@ const nm={top:[0,-1],bottom:[0,1],left:[-1,0],right:[1,0]};
 const NS='http://www.w3.org/2000/svg';
 const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
 const defs=el('defs',{});
-[['m-internal',C.line],['m-seam',C.seam],['m-call',C.api],['m-reg',C.base]].forEach(([id,col])=>{
+[['m-internal','line'],['m-seam','seam'],['m-call','api'],['m-reg','base']].forEach(([id,key])=>{
   const m=el('marker',{id,markerWidth:8,markerHeight:8,refX:6.5,refY:3,orient:'auto',markerUnits:'strokeWidth'});
-  m.appendChild(el('path',{d:'M0,0 L7,3 L0,6 Z',fill:col}));defs.appendChild(m);});
+  m.appendChild(el('path',{d:'M0,0 L7,3 L0,6 Z','data-c':key}));defs.appendChild(m);});
 wires.appendChild(defs);
-const ST={internal:{c:C.line,w:1.5,d:'',o:.85},seam:{c:C.seam,w:2.6,d:'',o:1},
-  call:{c:C.api,w:1.7,d:'6 5',o:.9},reg:{c:C.base,w:1.7,d:'7 5',o:.9}};
+/* pk indexes the palette; the stroke itself is applied by paint(). */
+const ST={internal:{pk:'line',w:1.5,d:'',o:.85},seam:{pk:'seam',w:2.6,d:'',o:1},
+  call:{pk:'api',w:1.7,d:'6 5',o:.9},reg:{pk:'base',w:1.7,d:'7 5',o:.9}};
 
 function bez(p0,s0,p1,s1){const dist=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]);const k=Math.max(30,Math.min(120,dist*.4));
   const c0=[p0[0]+nm[s0][0]*k,p0[1]+nm[s0][1]*k],c1=[p1[0]+nm[s1][0]*k,p1[1]+nm[s1][1]*k];
@@ -769,15 +830,68 @@ function geom(a,F,T){
   if(a.via){const p=anc(F,a.a0||'right'),q=anc(T,a.a1||'left');return poly([p,...a.via,q]);}
   const s=a.sides||sides(F,T);return bez(anc(F,s[0]),s[0],anc(T,s[1]),s[1]);}
 
-A.forEach(a=>{const F=nmap[a.f],T=nmap[a.t];if(!F||!T)return;const st=ST[a.k]||ST.internal;
+A.forEach(a=>{const F=nmap[a.f],T=nmap[a.t];if(!F||!T)return;
+  const kind=ST[a.k]?a.k:'internal',st=ST[kind];
   const g=geom(a,F,T);
-  const pathEl=el('path',{d:g.d,fill:'none',stroke:st.c,'stroke-width':st.w,'stroke-dasharray':st.d,
-    'stroke-opacity':st.o,'marker-end':`url(#m-${a.k})`,'stroke-linecap':'round','stroke-linejoin':'round'});
+  const pathEl=el('path',{d:g.d,fill:'none','stroke-width':st.w,'stroke-dasharray':st.d,
+    'stroke-opacity':st.o,'marker-end':`url(#m-${kind})`,'stroke-linecap':'round','stroke-linejoin':'round'});
   wires.appendChild(pathEl);
-  const edge={key:a.f+'->'+a.t,f:a.f,t:a.t,path:pathEl,label:null};edgeReg.push(edge);
+  const edge={key:a.f+'->'+a.t,f:a.f,t:a.t,k:kind,path:pathEl,label:null};edgeReg.push(edge);
   if(a.l){const lab=document.createElement('div');lab.className='wlabel'+(a.k==='seam'?' seam':'');lab.textContent=a.l;
     lab.style.left=(g.mid[0]+(a.lo?a.lo[0]:0))+'px';lab.style.top=(g.mid[1]+(a.lo?a.lo[1]:0))+'px';
     stage.appendChild(lab);edge.label=lab;}});
+
+/* ================= theme ================= */
+/* Everything the diagram colours inline is (re-)applied here, so switching
+   scheme never rebuilds the DOM and no interaction state is lost. Strokes and
+   marker fills are set as attributes, not inline styles, because the static
+   export in tools/architecture-diagram/render.py copies the paths verbatim. */
+function paint(){
+  PAL=readPal();
+  panelEls.forEach(({el,c})=>{const col=PAL[c];
+    el.style.borderColor=tint(col,.5);el.style.background=tint(col,.04);
+    el.querySelector('.ptitle').style.color=col;});
+  document.querySelectorAll('.notes .k').forEach(k=>{k.style.background=PAL[k.dataset.c];});
+  N.forEach(n=>{const col=PAL[n.c],d=nodeEls[n.id];
+    d.style.borderColor=tint(col,.6);
+    d.style.background=`linear-gradient(180deg,${tint(col,.16)},${tint(col,.05)})`;
+    d.querySelector('.tag').style.background=col;});
+  wires.querySelectorAll('defs marker path').forEach(m=>m.setAttribute('fill',PAL[m.dataset.c]));
+  edgeReg.forEach(e=>e.path.setAttribute('stroke',PAL[ST[e.k].pk]));
+}
+
+/* Shared with the docs: Material for MkDocs stores the palette choice under
+   "<site root>.__palette", and the two schemes are declared dark-first in
+   properdocs.yml, so slate is index 0 and default index 1. */
+const THEME_KEY=new URL('.',location).pathname+'.__palette';
+const THEME_INDEX={slate:0,default:1};
+const themeBtn=document.getElementById('themetoggle');
+function scheme(){return document.documentElement.getAttribute('data-md-color-scheme')==='default'?'default':'slate';}
+function setScheme(s,persist){
+  document.documentElement.setAttribute('data-md-color-scheme',s);
+  const light=s==='default';
+  themeBtn.textContent=light?'☾ Dark':'☀ Light';
+  themeBtn.title=light?'Switch to dark mode':'Switch to light mode';
+  paint();
+  if(!persist)return;
+  try{
+    const stored=JSON.parse(localStorage.getItem(THEME_KEY)||'null')||{};
+    stored.color=Object.assign({media:'',primary:'custom',accent:'custom'},stored.color,{scheme:s});
+    stored.index=THEME_INDEX[s];
+    localStorage.setItem(THEME_KEY,JSON.stringify(stored));
+  }catch(e){/* storage blocked — the choice just will not survive the page */}
+}
+themeBtn.addEventListener('click',()=>setScheme(scheme()==='default'?'slate':'default',true));
+/* Follow the docs' own toggle: it writes the same key, and a storage event
+   reaches this page whether it is a sibling tab or the iframe on /design/. */
+addEventListener('storage',e=>{
+  if(e.key!==THEME_KEY||!e.newValue)return;
+  try{
+    const s=JSON.parse(e.newValue).color.scheme==='default'?'default':'slate';
+    if(s!==scheme())setScheme(s,false);
+  }catch(err){/* someone else's malformed value — leave the scheme alone */}
+});
+setScheme(scheme(),false);
 
 /* drawer */
 const drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
@@ -789,7 +903,7 @@ function linkPaths(container,repoKey){const base=REPO_URL[repoKey];if(!base)retu
     a.href=base+(isDir?'/tree/main/':'/blob/main/')+p.replace(/\/$/,'');a.textContent=p;sp.replaceWith(a);});}
 let drawerMode=null;
 function ghRepo(d){if(d.gh)return d.gh;const base=REPO_URL[d.r];return base?base.replace('https://github.com/',''):null;}
-function openDrawer(id){const d=D[id];if(!d)return;const[rn,rc]=repoMeta[d.r];drawerMode='node';document.body.classList.remove('stepdrawer');
+function openDrawer(id){const d=D[id];if(!d)return;const rn=repoMeta[d.r],rc=PAL[d.r]||PAL.ext;drawerMode='node';document.body.classList.remove('stepdrawer');
   const repo=ghRepo(d);
   const gh=repo?` &nbsp;·&nbsp; <a class="ghlink" href="https://github.com/${repo}" target="_blank" rel="noopener">${repo} ↗</a>`:'';
   document.getElementById('drepo').innerHTML=`<span class="dot" style="background:${rc}"></span>${rn}${gh}`;
@@ -921,7 +1035,7 @@ function exitTour(){activeStep=null;clearHL();updateTour();
   drawer.classList.remove('on');scrim.classList.remove('on');
   document.body.classList.remove('stepdrawer','tourview');fit();}
 function openStep(i){const st=STEPS[i];drawerMode='step';
-  document.getElementById('drepo').innerHTML=`<span class="dot" style="background:${C[st.c]}"></span>process · ${i+1} / ${STEPS.length}`;
+  document.getElementById('drepo').innerHTML=`<span class="dot" style="background:${PAL[st.c]}"></span>process · ${i+1} / ${STEPS.length}`;
   document.getElementById('dtitle').textContent=st.g+' '+st.title;
   document.getElementById('drole').textContent=st.role;
   document.getElementById('dbody').innerHTML=st.b;

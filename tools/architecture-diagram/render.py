@@ -24,6 +24,7 @@ WIDTH, HEIGHT = 2130, 1100
 EXPORT_JS = r"""
 <script>
 setTimeout(() => {
+  setScheme('slate', false);   // the static image is dark regardless of any stored preference
   setScale(1);
   const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   const HEIGHT = 1100;            // canvas rows only — the note bands stay out of the static image
