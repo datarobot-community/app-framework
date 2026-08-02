@@ -4,7 +4,8 @@
 
 The App Framework is the software and tooling that makes building, updating, and shipping DataRobot applications fast. It gives developers and data scientists a code-first starting point, similar to Helm charts or full-stack starters, but built specifically for DataRobot.
 
-[![App Framework Architecture](img/architecture-overview.svg)](architecture.html)
+[![App Framework Architecture](img/architecture-overview.svg#only-dark)](architecture.html)
+[![App Framework Architecture](img/architecture-overview-light.svg#only-light)](architecture.html)
 
 *An app is composed from versioned [copier](https://copier.readthedocs.io/) templates, then provisioned as code. [Open the interactive version](architecture.html) to click through each box and walk the numbered flow.*
 

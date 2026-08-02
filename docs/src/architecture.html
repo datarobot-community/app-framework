@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DataRobot App Framework — architecture</title>
+<link rel="icon" href="img/favicon.svg" />
 <script>
 /* Pick the scheme before first paint so the page never flashes the wrong one.
    Key and value shape are Material for MkDocs' own palette storage (scope is
@@ -72,6 +73,8 @@
   .hint{font-size:11.5px;color:var(--muted2);margin-left:4px}
   .htop{display:flex;align-items:flex-start;gap:16px}
   .htop h1{flex:1;margin-bottom:0}
+  /* The DataRobot mark, inline so it takes the text colour of the scheme. */
+  .brand{width:21px;height:21px;flex:none;margin-top:1px;fill:currentColor;color:var(--ink)}
   .hcollapse{background:var(--surface2);color:var(--ink);border:1px solid var(--line);border-radius:7px;
     padding:5px 11px;font-size:12px;cursor:pointer;white-space:nowrap;flex:none;transition:border-color .2s,background .2s}
   .hcollapse:hover{border-color:var(--muted2);background:var(--hover)}
@@ -172,6 +175,7 @@
 <body>
 <header>
   <div class="htop">
+    <svg class="brand" viewBox="-0.85 -2.25 80 80" role="img" aria-label="DataRobot"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H39.1527V8.38847H0V0ZM58.7288 8.38859H39.1524V16.7771H58.7288V8.38859ZM0 16.7772H39.1527V25.1656H0V16.7772ZM78.3056 25.1749H58.7292V33.5633H78.3056V25.1749ZM0 33.564H58.7291V41.9524H0V33.564ZM78.3056 41.9526H58.7292V50.341H78.3056V41.9526ZM0 50.3406H39.1527V58.7291H0V50.3406ZM58.7288 58.7292H39.1524V67.1177H58.7288V58.7292ZM39.1527 67.1178H0V75.5062H39.1527V67.1178Z"/></svg>
     <h1>DataRobot App Framework — from component catalog to running application <span class="v">· flow is left → right</span></h1>
     <!-- target=_top so the link escapes the iframe this page is embedded in on /design/ -->
     <a class="hcollapse" id="backlink" href="./" target="_top" title="Back to the App Framework documentation">← Docs</a>
