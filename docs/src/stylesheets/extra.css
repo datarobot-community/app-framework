@@ -62,3 +62,17 @@
 [data-md-color-scheme="slate"] .md-typeset details {
   border-color: #81FBA5;
 }
+
+/* Wider layout — Material defaults to 61rem, which squeezes the content column
+   (and wide assets like the architecture diagram) on large displays. */
+.md-grid {
+  max-width: 84rem;
+}
+
+/* The sidebars keep their default width, so the extra room goes to the content.
+   Cap it so prose lines stay readable on very wide screens. */
+@media screen and (min-width: 76.25em) {
+  .md-content {
+    max-width: 58rem;
+  }
+}
