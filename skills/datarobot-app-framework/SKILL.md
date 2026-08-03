@@ -41,20 +41,35 @@ If the user is asking about any of the following, use [`datarobot-oss/datarobot-
 
 ## Component Map
 
-| Component | Role |
-|---|---|
-| af-component-base | Foundation — always first |
-| af-component-llm | LLM connectivity |
-| af-component-agent | Agent orchestration: CrewAI / LangGraph / LlamaIndex |
-| af-component-fastapi-backend | Simple FastAPI app |
-| af-component-react | React frontend |
+Every component lives in the [`datarobot-community`](https://github.com/datarobot-community)
+GitHub org. A `github.com/datarobot/af-component-*` URL is wrong and 404s.
+
+Core components:
+
+| Component | Role | Requires |
+|---|---|---|
+| af-component-base | Foundation: Taskfile, Pulumi project, CI/CD, `.datarobot/` — always first, applied once | — |
+| af-component-llm | LLM connectivity through the LLM Gateway or an external model | base |
+| af-component-agent | Agent orchestration: CrewAI / LangGraph / LlamaIndex / NeMo Agent Toolkit | base + llm |
+| af-component-fastapi-backend | FastAPI server deployed as a Custom Application | base |
+| af-component-react | React + Vite frontend wired to the FastAPI backend | base + fastapi-backend |
+| af-component-datarobot-mcp | FastMCP server with DataRobot predictive tools and third-party integrations | base |
+
+The catalog is the search result, not this table — check
+[`org:datarobot-community af-component`](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories)
+before telling a user a component does or does not exist. Only name a component whose repository resolves for an anonymous reader.
+
+Capabilities the catalog does not cover are still reachable through Pulumi. A vector database,
+for example, is added by writing `infra/infra/vdb.py` with
+[`pulumi_datarobot`](https://github.com/datarobot-community/pulumi-datarobot) — see
+[Adding a vector database](https://af.datarobot.com/guides/vector-database/).
 
 For extended scenarios, load the relevant file from `scenarios/`.
 
 ## Prerequisites
 
 ```bash
-pip install datarobot-cli
+curl https://cli.datarobot.com/install | sh     # macOS / Linux; Windows: irm https://cli.datarobot.com/winstall | iex
 curl -LsSf https://astral.sh/uv/install.sh | sh
 dr auth set-url && dr auth login
 ```
@@ -76,7 +91,7 @@ mkdir recipe-my-agent && cd recipe-my-agent
 ### Step 2 — Scaffold base
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 Answer the interactive questions about your recipe name and settings. Defaults are safe.
@@ -97,7 +112,7 @@ Creates `infra/infra/llm.py` and gateway config files.
 ### Step 4 — Add agent
 
 ```bash
-dr component add agent
+dr component add https://github.com/datarobot-community/af-component-agent .
 ```
 
 Key prompts:
@@ -194,7 +209,8 @@ Edit `agent/agent/myagent.py` to:
 
 ## Resources
 
-- DataRobot CLI: https://docs.datarobot.com/en/docs/more-info/app-framework/cli.html
+- App Framework docs: https://af.datarobot.com — see [Design](https://af.datarobot.com/design/) for the architecture and the interactive diagram
+- DataRobot CLI: https://docs.datarobot.com/en/docs/agentic-ai/cli/overview.html and https://cli.datarobot.com
 - Agent Templates: https://github.com/datarobot-community/datarobot-agent-templates
-- Components: search `af-component` in datarobot / datarobot-community GitHub orgs
+- Components: [`org:datarobot-community af-component`](https://github.com/search?q=org%3Adatarobot-community+af-component&type=repositories) — public repositories only
 

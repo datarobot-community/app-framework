@@ -28,7 +28,7 @@ Key terms and concepts used throughout the App Framework documentation.
 : An App Framework specific configuration file that defines the upstream and possible peer dependencies of an af-component.
 
 **`copier-watch`**
-: A development utility (`tools/copier-watch/copier-watch.py`) that auto-applies [component](#component) template changes to a destination recipe as you edit source files. On each save, it amends a local commit on the source repository and runs `copier update` on the destination — then resets and re-applies the full changeset from scratch, so you can iterate on Jinja templates without pushing remote commits. See the [Developer Guide](../developer.md#copier-watch) for usage and typical workflow.
+: A development utility (`tools/copier-watch/copier-watch.py`) that auto-applies [component](#component) template changes to a destination recipe as you edit source files. On each save, it amends a local commit on the source repository and runs `copier update` on the destination — then resets and re-applies the full changeset from scratch, so you can iterate on Jinja templates without pushing remote commits. See the [Developer Guide](developer.md#copier-watch) for usage and typical workflow.
 
 **Copier**
 : The open-source templating tool ([copier.readthedocs.io](https://copier.readthedocs.io)) that the App Framework uses to apply and update component templates. Unlike Yeoman or Cookiecutter, Copier has Git-native update semantics: it records the source template's commit hash in the answer file and can merge upstream template changes into your recipe with `copier update`, reducing merge conflicts on re-application.

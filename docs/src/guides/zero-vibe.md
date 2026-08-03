@@ -16,9 +16,9 @@ Every App Framework recipe starts the same way, regardless of what you're buildi
 
 ### Step 1: Create your repository
 
-1. Head to the [datarobot-oss](https://github.com/datarobot-oss) GitHub org and create a new repository.
+1. Create a new, empty repository in your GitHub organization.
 2. Name it with a `recipe-` prefix if you're making a reusable template.
-3. Start from [`oss-template-repo`](https://github.com/datarobot-oss/oss-template-repo). It includes the standard project scaffolding.
+3. Leave it empty. The `base` component in Step 4 writes the project scaffolding, including the license, code owners, and CI workflows.
 
 **Important Git settings:**
 
@@ -28,7 +28,7 @@ Every App Framework recipe starts the same way, regardless of what you're buildi
 ### Step 2: Clone and prepare
 
 ```bash
-git clone git@github.com:datarobot-oss/recipe-your-app-name.git
+git clone git@github.com:YOUR_ORG/recipe-your-app-name.git
 cd recipe-your-app-name
 ```
 

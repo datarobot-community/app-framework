@@ -20,7 +20,7 @@ mkdir recipe-my-agent && cd recipe-my-agent
 ## Step 2 — Scaffold base
 
 ```bash
-uvx copier copy https://github.com/datarobot/af-component-base .
+uvx copier copy https://github.com/datarobot-community/af-component-base .
 ```
 
 Answer the interactive questions about your recipe name and settings. Defaults are safe.
@@ -41,7 +41,7 @@ Creates `infra/infra/llm.py` and gateway config files.
 ## Step 4 — Add agent
 
 ```bash
-dr component add agent
+dr component add https://github.com/datarobot-community/af-component-agent .
 ```
 
 Key prompts:

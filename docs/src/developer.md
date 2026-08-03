@@ -37,6 +37,19 @@ This command installs dependencies and starts a local server at [http://localhos
 
 For documentation-only edits in this repository, this section is sufficient.
 
+## Architecture diagram
+
+The architecture diagram exists as one interactive page and four static images, all generated from a single source. Edit only `docs/src/architecture.html`; the images are generated, and hand edits to them are overwritten.
+
+```bash
+python3 tools/architecture-diagram/audit.py    # geometry and cross-reference check
+python3 tools/architecture-diagram/render.py   # regenerate the SVG and PNG, light and dark
+```
+
+`render.py` loads the interactive page in headless Google Chrome once per color scheme and reads the rendered geometry and that scheme's CSS variables out of the page, so the static images cannot drift from the interactive one. Set `CHROME` to use a different browser binary. Commit the page and all four images together.
+
+For the data model inside the page, see [`tools/architecture-diagram/README.md`](https://github.com/datarobot-community/app-framework/blob/main/tools/architecture-diagram/README.md).
+
 ## Copier watch
 
 Use this section only when developing or testing an App Framework component template. It is not required for ordinary documentation edits in this repository.

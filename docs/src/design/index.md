@@ -6,9 +6,18 @@ The App Framework is built around a clear set of architectural decisions. This s
 
 App templates are code-first recipes for building full-stack DataRobot applications. Think Helm charts or full-stack starters like the [FastAPI full-stack template](https://github.com/fastapi/full-stack-fastapi-template), but with DataRobot AI blueprints baked in and everything wired together for production.
 
-![App Framework Architecture Overview](../img/architecture-overview.png)
+![App Framework Architecture Overview](../img/architecture-overview.svg#only-dark)
+![App Framework Architecture Overview](../img/architecture-overview-light.svg#only-light)
 
 The goal is to let teams take a working AI solution pattern, deploy it on DataRobot, and keep it customizable enough for real application development.
+
+### Explore it interactively
+
+Click any box for what it does and which repository it comes from, or press **▶ Walk the flow** to step through the numbered process from `dr component add` to a running application.
+
+<iframe src="../architecture.html" title="DataRobot App Framework interactive architecture" loading="lazy" style="width:100%;height:min(78vh,760px);border:1px solid var(--md-default-fg-color--lightest);border-radius:8px"></iframe>
+
+[Open in a full window](../architecture.html){ target=_blank }
 
 Foundation application templates are the reference implementations built from this framework:
 
