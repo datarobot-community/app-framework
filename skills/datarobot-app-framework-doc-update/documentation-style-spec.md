@@ -48,8 +48,8 @@ For the complete style guide index, see [datarobot-style-guide-github.md](./data
 ### Abbreviations
 
 - ✅ Prefer *that is* and *for example* over *i.e.* and *e.g.*
-- ✅ When *i.e.* or *e.g.* appear in non-code prose, follow with a comma: `(e.g., \`prod\`)`, `(i.e., timeouts)`
-- ❌ Omit the comma after *i.e.* or *e.g.* in prose: `(e.g. \`prod\`)`, `(i.e. timeouts)`
+- ✅ When *i.e.* or *e.g.* appear in non-code prose, follow with a comma: (e.g., `prod`), (i.e., timeouts)
+- ❌ Omit the comma after *i.e.* or *e.g.* in prose: (e.g. `prod`), (i.e. timeouts)
 - Exception: inside code blocks, inline code, or literal strings, follow the code convention
 
 ### Lists
