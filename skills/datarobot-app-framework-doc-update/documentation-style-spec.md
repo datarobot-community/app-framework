@@ -45,6 +45,13 @@ For the complete style guide index, see [datarobot-style-guide-github.md](./data
 - ❌ Simply, It's easy, quickly — filler that adds no value
 - ❌ Exclamation points, emojis, and internet slang
 
+### Abbreviations
+
+- ✅ Prefer *that is* and *for example* over *i.e.* and *e.g.*
+- ✅ When *i.e.* or *e.g.* appear in non-code prose, follow with a comma: `(e.g., \`prod\`)`, `(i.e., timeouts)`
+- ❌ Omit the comma after *i.e.* or *e.g.* in prose: `(e.g. \`prod\`)`, `(i.e. timeouts)`
+- Exception: inside code blocks, inline code, or literal strings, follow the code convention
+
 ### Lists
 
 Two valid description-list styles:
@@ -71,6 +78,8 @@ General list rules:
 - ✅ Keep items parallel in structure within a list
 - ✅ Use numbered lists for ordered steps; bulleted lists for unordered items
 - ✅ Use the Oxford comma in lists of three or more items
+- ✅ Put the colon outside bold labels: `- **Authentication**: Manage credentials.`
+- ❌ Do not bold the colon: `- **Authentication:** Manage credentials.`
 
 ### Contractions
 
@@ -109,11 +118,11 @@ Explain placeholders on first use.
 GitHub does not support MkDocs admonitions. Use blockquotes:
 
 ```markdown
-> **Note:** Useful but non-required information.
+> **Note**: Useful but non-required information.
 
-> **Warning:** This action cannot be undone.
+> **Warning**: This action cannot be undone.
 
-> **Important:** Back up the configuration before proceeding.
+> **Important**: Back up the configuration before proceeding.
 ```
 
 Capitalize the callout type, use a colon, and end with a period.
@@ -155,6 +164,8 @@ When updating component documentation, verify these elements:
 - [ ] Imperative or neutral voice — no we / our; minimal you / your
 - [ ] Present tense, active voice
 - [ ] Lists use consistent punctuation and parallel structure
+- [ ] Non-code *i.e.*/*e.g.* use a trailing comma
+- [ ] Bold labels use a colon outside the bold span
 - [ ] Placeholders use `UPPERCASE_WITH_UNDERSCORES` in procedural text
 - [ ] Code blocks have language tags; single-line commands omit `$` when ambiguous
 - [ ] Links use descriptive text and `.md` extensions for repo-relative paths
@@ -168,16 +179,19 @@ When updating component documentation, verify these elements:
 2. Verify voice: no we / our; imperatives preferred over you can / you must
 3. Confirm present tense and active voice
 4. Verify lists use correct punctuation and parallel structure
-5. Check placeholders use the correct format for context
-6. Confirm no noun possessive contractions
-7. Verify command examples and code blocks follow GitHub Markdown conventions
-8. Confirm timeless language (except in release notes)
-9. Check callouts use blockquote format
+5. Confirm non-code *i.e.*/*e.g.* use a trailing comma
+6. Confirm bold labels place the colon outside the bold span
+7. Check placeholders use the correct format for context
+8. Confirm no noun possessive contractions
+9. Verify command examples and code blocks follow GitHub Markdown conventions
+10. Confirm timeless language (except in release notes)
+11. Check callouts use blockquote format
 
 ## Version history
 
 | Date | Change |
 |------|--------|
+| 2026-08-18 | Require trailing commas after non-code *i.e.*/*e.g.*; require colons outside bold spans in description lists and callouts. |
 | 2026-07-20 | Added [reference dictionary](./references/README.md) with per-file "when to read" guidance for README merges. |
 | 2026-07-17 | Split authoritative guide into [`references/`](./references/) topic files; this spec is now a slim entry point with quick reference and README checklist. |
 | 2026-06-23 | Aligned with DataRobot GitHub style guide: voice/person rules, contractions, GitHub Markdown callouts, timeless docs, accessibility, placeholder formats, and link conventions. |
