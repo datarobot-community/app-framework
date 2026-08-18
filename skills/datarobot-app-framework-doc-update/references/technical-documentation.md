@@ -153,6 +153,12 @@ Follow [Grammar and punctuation](grammar-and-punctuation.md#grammar-and-punctuat
 - Use **em dashes** (—) for breaks in flow — no spaces around the em dash.
 - Use **colons** to separate an item from its description (*Appendix A: Title*), not em dashes.
 - When bold text precedes a colon, put the colon outside the bold span.
+
+  | Preferred | Avoid |
+  | --- | --- |
+  | `- **Authentication**: Manage credentials.` | `- **Authentication:** Manage credentials.` |
+  | `> **Note**: Useful but non-required information.` | `> **Note:** Useful but non-required information.` |
+
 - Uppercase the first word after a colon in running text (unless proper noun, heading, or quotation).
 
 ### Parallel content variants

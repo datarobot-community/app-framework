@@ -86,7 +86,7 @@ Delete `<repo_path>/README.generated.md`.
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `module` | Yes | Component name, matches the GitHub repo name (e.g. `af-component-agent`) |
+| `module` | Yes | Component name, matches the GitHub repo name (e.g., `af-component-agent`) |
 | `short_description` | Yes | One-line description shown below the header |
 | `repeatable` | No | Whether this component can be applied multiple times |
 | `depends_on` | No | Map of required component dependencies (name → url, ref[, repeatable]) |
