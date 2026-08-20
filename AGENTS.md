@@ -22,7 +22,7 @@ in this repository is a component; it documents and tools them.
 |------|----------|
 | `docs/src/` | Markdown pages, images, and `architecture.html`. This is the MkDocs `docs_dir`. |
 | `docs/properdocs.yml` | Site configuration: theme, palette, navigation, Markdown extensions. |
-| `docs/overrides/` | Theme overrides, including `.icons/datarobot/logo.svg` (the nav logo). |
+| `docs/overrides/` | Theme overrides, including `.icons/datarobot/` — `app-framework.svg` (the nav logo) and `logo.svg` (the DataRobot mark). |
 | `docs/site/` | Build output. Generated, gitignored, never edited or committed. |
 | `skills/` | Skills published to AI assistants. One directory per skill, each with `SKILL.md`. |
 | `tools/architecture-diagram/` | `render.py` and `audit.py` for the architecture diagram. |
@@ -63,10 +63,21 @@ is the same command GitHub Actions runs, and it fails on broken navigation entri
 - Colors are defined per palette scheme in `docs/src/stylesheets/extra.css`. Set every
   brand variable inside a `[data-md-color-scheme="slate"]` or `[data-md-color-scheme="default"]`
   block — a shared rule pins one color across both schemes and breaks the palette toggle.
-- The DataRobot mark is installed as `theme.icon.logo` (`docs/overrides/.icons/datarobot/logo.svg`)
-  so Material inlines it as SVG and it inherits the header color. A `theme.logo` `<img>` would not flip.
-- The favicon (`docs/src/img/favicon.svg`) cannot read the docs palette, only the browser's,
-  so it carries its own `prefers-color-scheme` rule.
+- The App Framework mark is installed as `theme.icon.logo`
+  (`docs/overrides/.icons/datarobot/app-framework.svg`) so Material inlines it as SVG and it
+  inherits the header color. A `theme.logo` `<img>` would not flip. That variant leaves the frame
+  rects unfilled so `currentColor` reaches them, and keeps an explicit green core — a frame with
+  its own fill would not flip. `.icons/datarobot/logo.svg` remains the unaltered DataRobot mark.
+- The favicon (`docs/src/img/logo/af-favicon.svg`) cannot read the docs palette, only the
+  browser's, so it carries its own `prefers-color-scheme` rule. `architecture.html` links it
+  directly, being a standalone page outside the theme.
+- The App Framework mark exists in three places that must stay identical: `docs/src/img/logo/`
+  (the asset set), `docs/overrides/.icons/datarobot/app-framework.svg` (the nav logo), and the
+  inline `<svg class="brand">` in `docs/src/architecture.html`. A geometry change has to be
+  applied to all three.
+- The App Framework logo set lives in `docs/src/img/logo/`. `af-mark.svg` carries its own
+  `prefers-color-scheme` rule for the same reason the favicon does; `af-mark-on-light.svg`
+  and `af-mark-on-dark.svg` are the fixed-fill variants for contexts without CSS.
 - Images that differ per scheme use Material's suffixes:
 
   ```markdown
@@ -122,6 +133,11 @@ Everything lives in the single `<script>` block:
   markers define the canvas.
 - `D` holds the per-box drawers, keyed by node id; `STEPS` holds the guided tour.
 - `REPO_URL` maps a category key to its GitHub repository; drawer badges and file links use it.
+
+The `<svg class="brand">` mark in the page header is inlined rather than referenced, because
+this page is self-contained by design and cannot reach `docs/overrides/.icons/`. Keep it
+identical to the other copies of the mark. It is outside the diagram canvas, so a logo change
+needs no re-render.
 
 Conventions enforced by `audit.py` or by review:
 

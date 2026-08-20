@@ -67,7 +67,7 @@ Key terms and concepts used throughout the App Framework documentation.
 ## I
 
 **`infra/` directory**
-: Part of the `af-component-base` scaffold that contains all Pulumi infrastructure-as-code for a recipe. Each component contributes its own `infra/infra/COMPONENT.py` file declaring the DataRobot platform resources it needs — vector databases, LLM deployments, models, agents, and custom applications. The base `Pulumi.yaml` ties these files together and is the entry point for `dr task deploy`.
+: Part of the `af-component-base` scaffold that contains all Pulumi infrastructure-as-code for a recipe. Each component contributes its own `infra/infra/COMPONENT.py` file declaring the DataRobot platform resources it needs — vector databases, LLM deployments, models, agents, and custom applications. The base `Pulumi.yaml` ties these files together and is the entry point for `dr run deploy`.
 
 ---
 

@@ -21,7 +21,7 @@ The App Framework uses the **Python provider** and reduces boilerplate via an in
 - [pulumi-datarobot](https://github.com/datarobot-community/pulumi-datarobot) — the Pulumi provider.
 - [datarobot-pulumi-utils](https://github.com/datarobot-oss/datarobot-pulumi-utils) — App Framework extension with `CustomResources` and helpers.
 
-Each component adds its own `infra/infra/COMPONENT.py` file that declares the DataRobot resources it needs. The base Pulumi project (`Pulumi.yaml` from `af-component-base`) ties everything together. This means infrastructure is version-controlled, reproducible, and promotable across DataRobot environments with a simple `dr auth set-url` + `dr task deploy`.
+Each component adds its own `infra/infra/COMPONENT.py` file that declares the DataRobot resources it needs. The base Pulumi project (`Pulumi.yaml` from `af-component-base`) ties everything together. This means infrastructure is version-controlled, reproducible, and promotable across DataRobot environments with a simple `dr auth set-url` + `dr run deploy`.
 
 ## Reference
 

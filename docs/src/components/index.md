@@ -8,7 +8,7 @@ For new readers, start with `base`. It creates the shared project structure that
 
 | Component | Description | Repeatable |
 |-----------|-------------|-----------|
-| [**base**](base.md) | Task runner, Pulumi project, CI/CD scaffolding, and `.datarobot/` configuration. Required first for every recipe. | No |
+| [**base**](base.md) | The `infra/` Pulumi project every other component extends, plus `.datarobot/` configuration, an optional shared `core` library, and CI scaffolding. Required first for every recipe. | No |
 | [**llm**](llm.md) | LLM Gateway or external model integration via the DataRobot LLM Deployment. | Yes |
 | [**fastapi-backend**](fastapi-backend.md) | FastAPI server deployed as a DataRobot Custom Application. | Yes |
 | [**react**](react.md) | React + Vite frontend wired to a FastAPI backend, with a development proxy and a production asset build. | Yes |
@@ -24,7 +24,7 @@ base → llm → fastapi-backend → react
 base → datarobot-mcp
 ```
 
-`base` must always come first. `agent` requires both `base` and `llm`. `react` requires both `base` and `fastapi-backend`. `datarobot-mcp` only requires `base`.
+`base` must always come first. `agent` requires both `base` and `llm`. `react` requires both `base` and `fastapi-backend`. `datarobot-mcp` only requires `base`. Each component's `copier-module.yaml` is the authority on this, and on whether it is repeatable.
 
 ## Adding a component
 

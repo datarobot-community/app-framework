@@ -43,19 +43,25 @@ When prompted, choose your agent framework:
 |-----------|----------|
 | [base](base.md) | Yes |
 | [llm](llm.md) | Yes |
-| [datarobot-mcp](datarobot-mcp.md) | Yes |
+| [datarobot-mcp](datarobot-mcp.md) | No |
+
+`base` and `llm` are the component's declared dependencies. An MCP backend is optional: the agent picks one up automatically when an MCP instance named `mcp_server` is deployed alongside it, and otherwise reads `MCP_DEPLOYMENT_ID` or `EXTERNAL_MCP_URL` from the environment.
 
 ## What it adds
 
 ```text
 agent/
 ├── agent/myagent.py   # Agent workflow — edit this to customize behavior
-├── cli.py             # Command-line interface for local testing
-├── dev.py             # Local development server
-├── tests/             # Test suite
-└── public/            # UI assets
+├── agent/register.py  # Wires the LLM, MCP tools, and workflow tools together
+├── agent/config.py    # Settings and credential resolution
+├── workflow.yaml      # NeMo Agent Toolkit config the DRAgent server loads
+├── dev.py             # In-process entry point for an IDE debugger
+├── Taskfile.yml       # dev, cli, test, lint
+└── tests/             # Test suite
 infra/infra/agent.py   # Pulumi deployment resources
 ```
+
+The folder name is a copier answer; `agent` is the default. Apply the component again under a different name for a second, independently updatable agent.
 
 ## Configure
 
@@ -68,9 +74,9 @@ The wizard asks for:
 - Agent port (default: 8842).
 - DataRobot execution environment.
 - Execution environment version ID.
-- Pulumi passphrase.
-- DataRobot default use case (optional).
-- LLM Gateway configuration.
+- A memory provider key, if you chose Mem0.
+- Pulumi passphrase and default Use Case (from `base`).
+- LLM configuration (from `llm`).
 
 ## Local development
 
@@ -80,10 +86,12 @@ Start the local server:
 dr run dev
 ```
 
-Run the agent from another terminal:
+`dr run dev` starts the DRAgent server (`nat dragent serve --config_file workflow.yaml`) on `AGENT_PORT`, `8842` by default.
+
+To run the workflow without a server, from another terminal:
 
 ```bash
-uv run python cli.py execute --user_prompt "Write a blog post about AI in healthcare" --show_output
+dr run agent:cli -- execute --user_prompt "Write a blog post about AI in healthcare"
 ```
 
 ## Testing
@@ -109,7 +117,7 @@ task test-cli
 ## Deploy
 
 ```bash
-dr task deploy
+dr run deploy
 ```
 
 After deployment, the agent is available in the DataRobot workbench under your use case, accessible via the agent playground or the deployment API endpoint.

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="App Framework">
+  <!-- Single-colour mark: embossing, etching, one-colour print, stencils.
+       Inherits currentColor. The core is negative space here — filled, it
+       reads as a third block instead of a core. -->
+  <rect x="2" y="2" width="60" height="12" fill="currentColor"/>
+  <rect x="2" y="50" width="60" height="12" fill="currentColor"/>
+  <rect x="2" y="18" width="12" height="28" fill="currentColor"/>
+  <rect x="50" y="18" width="12" height="28" fill="currentColor"/>
+</svg>

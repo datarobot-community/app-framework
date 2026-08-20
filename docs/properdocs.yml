@@ -7,13 +7,14 @@ edit_uri: edit/main/docs/src/
 
 theme:
   name: material
-  # overrides/.icons holds the DataRobot mark; icon.logo is inlined as SVG, so it
-  # inherits the header colour and flips with the palette (a theme.logo <img>
-  # would not).
+  # overrides/.icons holds the marks; icon.logo is inlined as SVG, so it inherits
+  # the header colour and flips with the palette (a theme.logo <img> would not).
+  # app-framework.svg leaves the frame unfilled for exactly that reason, and keeps
+  # an explicit green core.
   custom_dir: overrides
-  favicon: img/favicon.svg
+  favicon: img/logo/af-favicon.svg
   icon:
-    logo: datarobot/logo
+    logo: datarobot/app-framework
   palette:
     - scheme: slate
       primary: custom

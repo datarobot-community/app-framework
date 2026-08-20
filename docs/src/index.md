@@ -37,7 +37,7 @@ The framework is built around three ideas:
 
 | Component | What it adds |
 |-----------|-------------|
-| [**base**](components/base.md) | Task runner, Pulumi project, CI/CD scaffolding, `.datarobot/` configuration. |
+| [**base**](components/base.md) | The `infra/` Pulumi project every other component extends, `.datarobot/` configuration, an optional shared `core` library, CI scaffolding. |
 | [**fastapi-backend**](components/fastapi-backend.md) | FastAPI server, local development loop, Custom Application deployment. |
 | [**react**](components/react.md) | React + Vite frontend with a development proxy and static asset build. |
 | [**llm**](components/llm.md) | LLM Gateway or external model integration. |

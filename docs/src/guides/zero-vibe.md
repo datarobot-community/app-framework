@@ -52,7 +52,7 @@ Copier prompts for the recipe name, the components to include, and other configu
 
     Gave a wrong answer? You can change your answers after the fact without starting over. See [Working with Copier](working-with-copier.md) for how to re-run prompts, override a single answer, or recover from a mistake.
 
-After this step, expect your repository to contain the shared project files that other components build on, including `.datarobot/`, a `Taskfile.yaml`, and Pulumi configuration.
+After this step, expect your repository to contain the shared project files that other components build on: `.datarobot/`, the `infra/` Pulumi project, and an optional `core/` library.
 
 ---
 
@@ -112,7 +112,7 @@ When you're happy locally, deploy:
 dr run deploy
 ```
 
-If your generated project exposes deployment commands through `dr task`, use the project-provided deployment command shown by `dr task --list`. In this guide, the examples use the command produced by the generated Taskfile for each scenario.
+If your generated project exposes deployment commands through the task runner, use the project-provided deployment command shown by `dr task list`. In this guide, the examples use the command produced by the generated Taskfile for each scenario.
 
 The CLI previews the resources to be created and asks for confirmation:
 
@@ -127,7 +127,7 @@ With these steps, the recipe includes unit tests, linters, deployments, fast loc
 **Lifecycle commands:**
 
 ```bash
-dr task infra:down   # Tear down to save costs.
+dr run infra:down   # Tear down to save costs.
 dr run deploy        # Bring it back.
 dr auth set-url      # Switch to a different DR environment.
 ```
@@ -165,7 +165,7 @@ The setup wizard asks for your LLM integration type. For most use cases, select 
 ### Deploy the LLM
 
 ```bash
-dr task deploy
+dr run deploy
 ```
 
 ![Deploy preview showing LLM resources](../img/zero-vibe-deploy-preview.png)
@@ -173,7 +173,7 @@ dr task deploy
 Confirm and deploy. When complete, note the deployment ID for notebook development. Retrieve it again at any time with:
 
 ```bash
-dr task infra:info
+dr run infra:info
 ```
 
 Test the LLM in the DataRobot workbench under the use case → LLM Playground.
@@ -210,7 +210,7 @@ DATAROBOT_ENDPOINT = getenv('DATAROBOT_ENDPOINT')
 ```
 
 ```python
-# Adjust these based on `dr task infra:info`.
+# Adjust these based on `dr run infra:info`.
 LLM_DEPLOYMENT_ID = 'DEPLOYMENT_ID'
 LLM_DEFAULT_MODEL = 'datarobot/azure/gpt-5-mini-2025-08-07'
 DEPLOYMENT_BASE = urljoin(DATAROBOT_ENDPOINT, f'v2/deployments/{LLM_DEPLOYMENT_ID}/chat/completions')
@@ -250,7 +250,7 @@ notebook = Notebook("llm_example_notebook",
     file_path=str(NOTEBOOK_PATH), use_case_id=use_case.id)
 ```
 
-Then run `dr task deploy` again. The notebook appears in your use case in the DataRobot workbench.
+Then run `dr run deploy` again. The notebook appears in your use case in the DataRobot workbench.
 
 !!! tip
     In the DataRobot-hosted notebook, install dependencies via the terminal: `pip install litellm dotenv`
@@ -301,10 +301,11 @@ The component creates the following structure:
 ```text
 agent/
 ├── agent/myagent.py   # Agent workflow
-├── cli.py             # Command-line interface
-├── dev.py             # Local development server
-├── tests/             # Test suite
-└── public/            # UI assets
+├── agent/register.py  # LLM, MCP, and tool wiring
+├── workflow.yaml      # NeMo Agent Toolkit config the DRAgent server loads
+├── dev.py             # In-process entry point for an IDE debugger
+├── Taskfile.yml       # dev, cli, test, lint
+└── tests/             # Test suite
 infra/infra/agent.py   # Pulumi configuration
 ```
 
@@ -338,13 +339,13 @@ In another terminal, run the agent:
 
 ```bash
 # Terminal 2
-uv run python cli.py execute --user_prompt "Write a blog post about AI in healthcare" --show_output
+dr run agent:cli -- execute --user_prompt "Write a blog post about AI in healthcare"
 ```
 
 ### Deploy the agent
 
 ```bash
-dr task deploy
+dr run deploy
 ```
 
 ![Agent deploy preview](../img/zero-vibe-agent-deploy.png)

@@ -35,7 +35,7 @@ The CLI solves two core problems:
 | `dr dotenv setup` | Interactive environment setup wizard. |
 | `dr component add NAME` | Add a component to your recipe. |
 | `dr run dev` | Start the local development server with hot reload. |
-| `dr task deploy` | Deploy all infrastructure to DataRobot. |
-| `dr task infra:info` | Show deployed resource IDs and resource URLs. |
-| `dr task infra:down` | Tear down deployed infrastructure. |
+| `dr run deploy` | Deploy all infrastructure to DataRobot. |
+| `dr run infra:info` | Show deployed resource IDs and resource URLs. |
+| `dr run infra:down` | Tear down deployed infrastructure. |
 

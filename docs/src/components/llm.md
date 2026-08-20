@@ -52,13 +52,13 @@ When prompted for `INFRA_ENABLE_LLM`, choose your integration type:
 ## Deploy
 
 ```bash
-dr task deploy
+dr run deploy
 ```
 
 Retrieve deployment information at any time:
 
 ```bash
-dr task infra:info
+dr run infra:info
 ```
 
 ## Update
