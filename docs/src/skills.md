@@ -4,14 +4,23 @@ App Framework Studio ships a set of AI agent skills that can be installed into a
 
 ## Which skill pack?
 
-DataRobot maintains two skill packs. Use this table to pick the right install command (both packs can be installed in the same assistant).
+DataRobot's official skill pack for coding assistants is [`datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills). Its `datarobot-agent-assist` skill builds a **fully integrated agentic application** — MCP server, agent, backend API, and frontend, all in the box together and tested to work as a whole. It also covers agent observability, the Workload API, and application CI/CD, alongside a smaller set of skills for the platform's AI/ML APIs.
+
+```bash
+npx ai-agent-skills install datarobot-oss/datarobot-agent-skills
+```
+
+The skills in this repository are for when you want **just one piece**, or a **customized
+combination** you assemble yourself: just an agent, just a FastAPI app, a non-default recipe, or a
+component wired up by hand outside what the integrated bundle scaffolds. They also cover authoring
+and documenting `af-component-*` components.
 
 | You want to… | Skill pack | Install |
 |--------------|------------|---------|
-| Scaffold and deploy **App Framework** recipes: `af-component-*`, `dr component add`, copier templates, LLM Gateway, agent frameworks, `dr run deploy` | **App Framework Studio** (this repo) | `npx ai-agent-skills install datarobot-community/app-framework` |
-| Train and operate **tabular ML** models: projects, AutoML, prediction deployments, monitoring, explainability, data prep | [OSS ML skills](https://github.com/datarobot-oss/datarobot-agent-skills) | `npx ai-agent-skills install datarobot-oss/datarobot-agent-skills` |
+| Build a fully integrated agentic application (MCP + agent + API + frontend, bundled and tested together), instrument it, or set up its CI/CD | [`datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) | `npx ai-agent-skills install datarobot-oss/datarobot-agent-skills` |
+| Build just one piece, a customized recipe, or author/document a component | App Framework Studio (this repository) | `npx ai-agent-skills install datarobot-community/app-framework` |
 
-The `datarobot-app-framework` skill includes routing guidance when a request belongs in the OSS pack instead (and vice versa if you install both). If you only install one pack, choose the row that matches your primary work — wrong-pack installs are a common source of incorrect CLI or SDK guidance.
+Both packs can be installed in the same assistant, and the `datarobot-app-framework` skill includes routing guidance for requests that belong in the official pack instead.
 
 ## Installing skills
 
