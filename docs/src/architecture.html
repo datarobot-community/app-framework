@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>DataRobot App Framework — architecture</title>
-<link rel="icon" href="img/favicon.svg" />
+<link rel="icon" href="img/logo/af-favicon.svg" />
 <script>
 /* Pick the scheme before first paint so the page never flashes the wrong one.
    Key and value shape are Material for MkDocs' own palette storage (scope is
@@ -181,7 +181,7 @@
 <body>
 <header>
   <div class="htop">
-    <svg class="brand" viewBox="-0.85 -2.25 80 80" role="img" aria-label="DataRobot"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H39.1527V8.38847H0V0ZM58.7288 8.38859H39.1524V16.7771H58.7288V8.38859ZM0 16.7772H39.1527V25.1656H0V16.7772ZM78.3056 25.1749H58.7292V33.5633H78.3056V25.1749ZM0 33.564H58.7291V41.9524H0V33.564ZM78.3056 41.9526H58.7292V50.341H78.3056V41.9526ZM0 50.3406H39.1527V58.7291H0V50.3406ZM58.7288 58.7292H39.1524V67.1177H58.7288V58.7292ZM39.1527 67.1178H0V75.5062H39.1527V67.1178Z"/></svg>
+    <svg class="brand" viewBox="0 0 64 64" role="img" aria-label="App Framework"><rect x="2" y="2" width="60" height="12"/><rect x="2" y="50" width="60" height="12"/><rect x="2" y="18" width="12" height="28"/><rect x="50" y="18" width="12" height="28"/><rect x="18" y="18" width="28" height="28" fill="#81FBA5"/></svg>
     <h1>DataRobot App Framework — from component catalog to running application <span class="v">· flow is left → right</span></h1>
     <!-- target=_top so the link escapes the iframe this page is embedded in on /design/ -->
     <a class="hcollapse" id="backlink" href="./" target="_top" title="Back to the App Framework documentation">← Docs</a>
@@ -192,7 +192,7 @@
   <div class="sub">
     An App Framework application is <b>composed</b>, not scaffolded once. ⓪ You install the <b>dr</b> CLI and point it at a DataRobot environment. ① The first <code>dr component add</code> lays down <b>af-component-base</b>,
     then ② each further <code>dr component add</code> renders one more <b>af-component-*</b> copier template into the same <b>recipe repository</b> and records its answers under <code>.datarobot/answers/</code>.
-    ③ <code>dr dotenv setup</code> turns the components' CLI schemas into a <code>.env</code>; ④ <code>dr run dev</code> runs the folders locally; ⑤ <code>dr task deploy</code> runs Pulumi, which provisions
+    ③ <code>dr dotenv setup</code> turns the components' CLI schemas into a <code>.env</code>; ④ <code>dr run dev</code> runs the folders locally; ⑤ <code>dr run deploy</code> runs Pulumi, which provisions
     every DataRobot resource. At runtime ⑥ users reach a <b>Custom Application</b>, which calls the ⑦ <b>agent deployment</b> — and that reaches the <b>LLM Gateway</b>, the <b>MCP server</b>, memory and vector databases.
     ⑧ Because every component is version-pinned, <code>dr component update</code> pulls upstream fixes into a project you have already customized.
     The numbered strip at the bottom narrates the whole process — <b>click a step, an arrow label, or any box</b> for details, or hit <b>▶ Walk the flow</b> (bottom-right) to tour it; hovering a box traces its connections.
@@ -264,7 +264,7 @@ const panels=[
   {t:'Application templates', s:'recipes', x:40, y:790, w:290, h:282, c:'base'},
   {t:'Stay current', s:'components are version-pinned', x:370, y:790, w:440, h:282, c:'base'},
   {t:'Local development loop', s:'dr run dev', x:880, y:790, w:440, h:282, c:'api'},
-  {t:'Deploy', s:'dr task deploy', x:1420, y:790, w:660, h:282, c:'tool'},
+  {t:'Deploy', s:'dr run deploy', x:1420, y:790, w:660, h:282, c:'tool'},
 ];
 const subheads=[
   {x:90,  y:722, text:'“a DataRobot API token is all you need” — design principle #5'},
@@ -279,12 +279,12 @@ const N=[
   {id:'cli',    c:'tool', x:90, y:256, w:220, h:66, t:'dr CLI', s:'auth · dotenv · component · task'},
   {id:'copier', c:'tool', x:90, y:344, w:220, h:58, t:'Copier', s:'render + update templates'},
   {id:'gotask', c:'tool', sm:1, x:90, y:424, w:220, h:54, t:'task (go-task)', s:'per-folder task runner'},
-  {id:'uvpnpm', c:'tool', sm:1, x:90, y:500, w:220, h:54, t:'uv · pnpm', s:'Python + Node toolchains'},
+  {id:'uvpnpm', c:'tool', sm:1, x:90, y:500, w:220, h:54, t:'uv · npm', s:'Python + Node toolchains'},
   {id:'pulumi', c:'tool', sm:1, x:90, y:576, w:220, h:54, t:'Pulumi', s:'declarative API client'},
   {id:'token',  c:'ext',  sm:1, x:90, y:652, w:220, h:62, t:'DataRobot API token', s:'dr auth set-url → .env'},
 
   // ---- component catalog
-  {id:'c-base',  c:'base',  x:392, y:172, w:396, h:58, t:'af-component-base', s:'scaffold · answers · Pulumi project · CI'},
+  {id:'c-base',  c:'base',  x:392, y:172, w:396, h:58, t:'af-component-base', s:'infra/ Pulumi project · IaC scaffolding'},
   {id:'c-llm',   c:'llm',   x:392, y:242, w:396, h:58, t:'af-component-llm', s:'six model-access strategies'},
   {id:'c-agent', c:'agent', x:392, y:312, w:396, h:58, t:'af-component-agent', s:'CrewAI · LangGraph · LlamaIndex · NAT'},
   {id:'c-mcp',   c:'mcp',   x:392, y:382, w:396, h:58, t:'af-component-datarobot-mcp', s:'FastMCP tool server'},
@@ -296,12 +296,12 @@ const N=[
   // ---- recipe repository
   {id:'r-answers', c:'base',  x:902, y:172, w:396, h:58, t:'.datarobot/', s:'answers/*.yml · cli/*.yaml env schemas'},
   {id:'r-infra',   c:'base',  x:902, y:242, w:396, h:58, t:'infra/', s:'one Pulumi file per applied component'},
-  {id:'r-agent',   c:'agent', x:902, y:312, w:396, h:58, t:'agent/', s:'workflow · dev server · cli.py'},
+  {id:'r-agent',   c:'agent', x:902, y:312, w:396, h:58, t:'agent/', s:'agent package · workflow.yaml · tests'},
   {id:'r-mcp',     c:'mcp',   x:902, y:382, w:396, h:58, t:'mcp_server/', s:'FastMCP app · Docker context'},
-  {id:'r-api',     c:'api',   x:902, y:452, w:396, h:58, t:'fastapi_server/', s:'app/ · static/ · migrations'},
+  {id:'r-api',     c:'api',   x:902, y:452, w:396, h:58, t:'web/', s:'app/ · static/ · templates/'},
   {id:'r-web',     c:'api',   x:902, y:522, w:396, h:58, t:'frontend_web/', s:'React + Vite → builds into static/'},
   {id:'r-core',    c:'base',  x:902, y:592, w:396, h:58, t:'core/ · Taskfile.yml · .env', s:'shared lib · task runner · config'},
-  {id:'r-ci',      c:'base',  sm:1, x:902, y:662, w:396, h:54, t:'.github/workflows/', s:'component update · test · deploy'},
+  {id:'r-ci',      c:'base',  sm:1, x:902, y:662, w:396, h:54, t:'.github/workflows/', s:'per-folder lint · test · dependabot'},
 
   // ---- consumers
   {id:'user',      c:'ext', x:1445, y:40, w:282, h:62, t:'End users', s:'browser · shared application URL'},
@@ -321,8 +321,8 @@ const N=[
 
   // ---- application templates
   {id:'t-agentapp', c:'base', x:60, y:842, w:250, h:58, t:'datarobot-agent-application', s:'base + llm + agent + mcp'},
-  {id:'t-ttmd',     c:'base', x:60, y:912, w:250, h:58, t:'talk-to-my-data-agent', s:'base + llm + fastapi + react'},
-  {id:'t-mcpt',     c:'base', sm:1, x:60, y:982, w:250, h:54, t:'datarobot-mcp-template', s:'base + mcp'},
+  {id:'t-ttmd',     c:'base', x:60, y:912, w:250, h:58, t:'talk-to-my-data-agent', s:'conversational analytics recipe'},
+  {id:'t-mcpt',     c:'base', sm:1, x:60, y:982, w:250, h:54, t:'datarobot-mcp-template', s:'standalone MCP server recipe'},
 
   // ---- stay current
   {id:'upd', c:'tool', x:392, y:842, w:396, h:58, t:'dr component update', s:'copier update -a .datarobot/answers/*.yml'},
@@ -353,6 +353,8 @@ const A=[
   // ① scaffold  ② compose
   {f:'copier',  t:'c-base',    k:'seam', l:'① scaffold', lo:[0,0]},
   {f:'c-base',  t:'r-answers', k:'seam', l:'② renders + records answers', lo:[0,-44]},
+  {f:'c-base',  t:'r-infra',   k:'reg'},
+  {f:'c-base',  t:'r-ci',      k:'reg', lane:[822,'right','left']},
   {f:'c-llm',   t:'r-infra',   k:'reg'},
   {f:'c-agent', t:'r-agent',   k:'reg'},
   {f:'c-mcp',   t:'r-mcp',     k:'reg'},
@@ -365,11 +367,12 @@ const A=[
   // ④ develop locally
   {f:'r-web',   t:'l-vite',  k:'seam', lane:[866,'left','left'], l:'④ dr run dev', lo:[-30,0]},
   {f:'r-agent', t:'l-agent', k:'call', lane:[858,'left','left']},
+  {f:'r-api',   t:'l-api',   k:'call', lane:[874,'left','left']},
   {f:'l-vite',  t:'l-api',   k:'internal'},
   {f:'l-api',   t:'l-agent', k:'internal'},
 
   // ⑤ deploy
-  {f:'r-infra',  t:'p-pulumi', k:'seam', lane:[1372,'right','left'], l:'⑤ dr task deploy', lo:[0,0]},
+  {f:'r-infra',  t:'p-pulumi', k:'seam', lane:[1372,'right','left'], l:'⑤ dr run deploy', lo:[0,0]},
   {f:'p-pulumi', t:'p-prov',   k:'internal'},
   {f:'p-prov',   t:'p-api',    k:'internal', sides:['bottom','top']},
   {f:'p-api', t:'d-app',   k:'seam', lane:[1432,'left','left']},
@@ -378,7 +381,7 @@ const A=[
 
   // ⑥ serve  ⑦ reason
   {f:'user', t:'d-app', k:'seam', l:'⑥ open the app', lo:[0,4]},
-  {f:'d-app', t:'d-agent', k:'call', l:'AG-UI stream', lo:[0,0]},
+  {f:'d-app', t:'d-agent', k:'call', l:'/generate/stream', lo:[0,0]},
   {f:'d-agent', t:'d-gw',  k:'seam', l:'⑦ chat completions', lo:[0,46]},
   {f:'d-agent', t:'d-mcp', k:'call'},
   {f:'d-agent', t:'d-mem', k:'call'},
@@ -395,32 +398,32 @@ const A=[
 /*==DATA-END==*/
 
 const process={id:'sec-process', x:40, y:1120, w:2040, title:'The end-to-end process', items:[
-  {step:0, c:'ext',  t:'<b>⓪ Install &amp; authenticate</b> — install the <code>dr</code> CLI, then <code>dr auth set-url</code> to pick a DataRobot environment (US / EU / JP / self-managed) and store the API token. The CLI also fronts <code>uv</code>, <code>pnpm</code>, <code>task</code>, <code>copier</code> and <code>pulumi</code> so there is one interface across a polyglot repo.'},
-  {step:1, c:'seam', t:'<b>① Scaffold</b> — <code>dr component add …/af-component-base .</code> (or the <code>dr start</code> shortcut) applies <b>af-component-base</b> into an empty repository: <code>Taskfile.yaml</code>, the Pulumi project under <code>infra/</code>, <code>.github/</code> workflows, <code>LICENSE</code>, <code>CODEOWNERS</code>, and the <code>.datarobot/</code> state directory. Base is applied first and exactly once.'},
+  {step:0, c:'ext',  t:'<b>⓪ Install &amp; authenticate</b> — install the <code>dr</code> CLI, then <code>dr auth set-url</code> to pick a DataRobot environment (US / EU / JP / self-managed) and <code>dr auth login</code> to store credentials. The CLI also fronts <code>uv</code>, <code>npm</code>, <code>task</code>, <code>copier</code> and <code>pulumi</code> so there is one interface across a polyglot repo.'},
+  {step:1, c:'seam', t:'<b>① Scaffold</b> — <code>dr component add …/af-component-base .</code> applies <b>af-component-base</b> into an empty repository. What it exists to lay down is the <b>infrastructure-as-code scaffolding</b>: the Pulumi project under <code>infra/</code> that every other component extends, plus the <code>.datarobot/</code> state directory, an optional shared <code>core</code> library, and per-folder lint and test workflows. Base is applied first and exactly once.'},
   {step:2, c:'seam', t:'<b>② Compose</b> — every further <code>dr component add</code> renders one more copier template into the same repo. Each adds its own top-level folder plus a Pulumi file under <code>infra/infra/</code>, and writes <code>.datarobot/answers/&lt;name&gt;.yml</code>. Order matters: <code>base → llm → agent</code>, <code>base → fastapi-backend → react</code>, <code>base → datarobot-mcp</code>.'},
   {step:3, c:'seam', t:'<b>③ Configure</b> — each component also ships a <code>.datarobot/cli/&lt;name&gt;.yaml</code> environment schema (typed prompts, defaults, help). <code>dr dotenv setup</code> walks those schemas and writes a single <code>.env</code> — LLM strategy, ports, execution environment, Pulumi passphrase, default use case.'},
-  {step:4, c:'seam', t:'<b>④ Develop locally</b> — <code>dr run dev</code> starts the folders that have a dev loop: Vite on <code>:5173</code> proxying <code>/api/</code> to FastAPI on <code>:8080</code>, and the agent dev server on <code>:8842</code> exposing <code>/generate/stream</code>. <code>uv run python cli.py execute</code> drives the agent without any UI.'},
-  {step:5, c:'seam', t:'<b>⑤ Deploy</b> — <code>dr task deploy</code> runs <code>pulumi up</code> over <code>infra/__main__.py</code>. The <code>pulumi-datarobot</code> provider (generated from the Terraform provider) plus <code>datarobot-pulumi-utils</code> turn each component\'s infra file into DataRobot resources over the REST API. The React build runs first, into the FastAPI <code>static/</code> folder.'},
+  {step:4, c:'seam', t:'<b>④ Develop locally</b> — <code>dr run dev</code> starts the folders that have a dev loop: Vite on <code>:5173</code> proxying <code>/api/</code> to FastAPI on <code>:8080</code>, and the agent dev server on <code>:8842</code> exposing <code>/generate/stream</code>. <code>dr run &lt;agent&gt;:cli -- execute</code> drives the agent without any UI.'},
+  {step:5, c:'seam', t:'<b>⑤ Deploy</b> — <code>dr run deploy</code> runs <code>pulumi up</code> over <code>infra/__main__.py</code>. The <code>pulumi-datarobot</code> provider (generated from the Terraform provider) plus <code>datarobot-pulumi-utils</code> turn each component\'s infra file into DataRobot resources over the REST API. The React build runs first, into the FastAPI <code>static/</code> folder.'},
   {step:6, c:'seam', t:'<b>⑥ Serve</b> — end users open the <b>Custom Application</b>: one DataRobot-hosted process serving the built React assets and the FastAPI routes. Authentication is the platform\'s; the app resolves the caller from the DataRobot session.'},
   {step:7, c:'seam', t:'<b>⑦ Reason</b> — the app streams chat to the <b>agent deployment</b> (a custom model exposing chat completions, running on the <code>datarobot-genai</code> runtime). The agent calls the <b>LLM Gateway</b> for models, the <b>MCP deployment</b> for governed tools, and — when those components are applied — a <b>Memory Space</b> and a <b>vector database</b>.'},
-  {step:8, c:'base', t:'<b>⑧ Stay current</b> — every applied component records <code>_src_path</code> and <code>_commit</code> in its answers file. When a component ships a new tag, <code>dr component update .datarobot/answers/&lt;name&gt;.yml</code> replays the copier diff into your customized repo; conflicts surface as ordinary merge conflicts. A generated GitHub workflow can raise that as a PR.'},
+  {step:8, c:'base', t:'<b>⑧ Stay current</b> — every applied component records <code>_src_path</code> and <code>_commit</code> in its answers file. When a component ships a new tag, <code>dr component update .datarobot/answers/&lt;name&gt;.yml</code> replays the copier diff into your customized repo; conflicts surface as ordinary merge conflicts. Because the pin is per instance, a recipe can take a release for one agent and leave a second on the older version.'},
 ]};
 
-const notes={id:'sec-notes', x:40, y:1457, w:2040, title:'Cross-cutting facts', items:[
+const notes={id:'sec-notes', x:40, y:1478, w:2040, title:'Cross-cutting facts', items:[
   {c:'base', t:'<b>Why components, not one scaffold</b> — a fix to five foundation templates with a hundred clones each has to reach five hundred repositories. Copier + recorded answers make that a replayable diff instead of manual propagation.'},
   {c:'base', t:'<b>Repeatable vs one-shot</b> — <code>base</code> applies once. <code>llm</code>, <code>agent</code>, <code>fastapi-backend</code>, <code>react</code>, <code>datarobot-mcp</code> are all repeatable: apply them again under a different name to get a second agent, a second MCP backend, a second API.'},
   {c:'llm', t:'<b>Six model-access strategies</b> — <code>llm</code> asks one question and writes one infra file: LLM Gateway (default), an existing DataRobot deployment, a DataRobot NIM deployment, an LLM blueprint over the gateway, an LLM blueprint over an external provider (Azure · Bedrock · Vertex · Anthropic · Cohere · TogetherAI), or a registered model. Everything downstream sees one <code>datarobot/</code>-prefixed model name.'},
   {c:'agent', t:'<b>Framework choice is a copier answer</b> — <code>base</code>, <code>crewai</code>, <code>langgraph</code>, <code>llamaindex</code> or <code>nat</code> (YAML-driven NeMo Agent Toolkit). All of them sit on the <code>datarobot-genai</code> runtime, so the deployment shape, tracing and chat contract are identical across frameworks.'},
-  {c:'ext', t:'<b>One credential</b> — design principle #5: a DataRobot API token is all you need. Model access, storage, deployment and monitoring all resolve through it, so the same repo promotes across environments with <code>dr auth set-url</code> + <code>dr task deploy</code>.'},
-  {c:'ext', t:'<b>Monorepo, not monolith</b> — principle #7: every top-level folder keeps its own dependency definition (<code>uv</code> for Python, <code>pnpm</code> for the frontend) and its own Taskfile. That is what lets copier update one folder without touching the rest.'},
+  {c:'ext', t:'<b>One credential</b> — design principle #5: a DataRobot API token is all you need. Model access, storage, deployment and monitoring all resolve through it, so the same repo promotes across environments with <code>dr auth set-url</code> + <code>dr run deploy</code>.'},
+  {c:'ext', t:'<b>Monorepo, not monolith</b> — principle #7: every top-level folder keeps its own dependency definition (<code>uv</code> for Python, <code>npm</code> for the frontend) and its own Taskfile. That is what lets copier update one folder without touching the rest.'},
   {c:'tool', t:'<b>Declarative API</b> — the same DataRobot resource model is published as a Terraform provider and, generated from it, Pulumi providers for Python, TypeScript, Go and .NET. The App Framework uses the Python one plus <code>datarobot-pulumi-utils</code> for higher-level <code>ComponentResource</code>s.'},
   {c:'api', t:'<b>One process in production, two in development</b> — locally Vite serves the SPA and proxies <code>/api/</code>; in the deployed Custom Application the React bundle is built into the FastAPI <code>static/</code> directory and served by the same process.'},
 ]};
 
 const gl=(repo,role)=>`<a class="ghlink" href="https://github.com/${repo}" target="_blank" rel="noopener">${repo} ↗</a> — ${role}`;
-const repos={id:'sec-repos', x:40, y:1791, w:2040, title:'Code repositories · click any box for its own repo link', items:[
+const repos={id:'sec-repos', x:40, y:1812, w:2040, title:'Code repositories · click any box for its own repo link', items:[
   {c:'base', t:gl('datarobot-community/app-framework','docs site, component authoring tooling, agent skill pack')},
-  {c:'base', t:gl('datarobot-community/af-component-base','root scaffold — Taskfile, Pulumi project, .datarobot/, CI')},
+  {c:'base', t:gl('datarobot-community/af-component-base','IaC scaffolding — the infra/ Pulumi project, .datarobot/, optional core library')},
   {c:'llm',  t:gl('datarobot-community/af-component-llm','model access — six strategies, infrastructure only')},
   {c:'agent',t:gl('datarobot-community/af-component-agent','agentic core — CrewAI · LangGraph · LlamaIndex · NAT')},
   {c:'mcp',  t:gl('datarobot-community/af-component-datarobot-mcp','FastMCP server deployed as its own DataRobot deployment')},
@@ -432,9 +435,9 @@ const repos={id:'sec-repos', x:40, y:1791, w:2040, title:'Code repositories · c
   {c:'tool', t:gl('datarobot-community/pulumi-datarobot','Pulumi provider for DataRobot resources')},
   {c:'tool', t:gl('datarobot-community/terraform-provider-datarobot','Terraform provider — the source the Pulumi one is generated from')},
   {c:'tool', t:gl('datarobot-oss/datarobot-pulumi-utils','higher-level Pulumi ComponentResources used by the infra files')},
-  {c:'base', t:gl('datarobot-community/datarobot-agent-application','the most complete template — base + llm + agent + mcp')},
-  {c:'base', t:gl('datarobot-community/talk-to-my-data-agent','conversational analytics — base + llm + fastapi + react')},
-  {c:'base', t:gl('datarobot-community/datarobot-mcp-template','standalone MCP server template — base + mcp')},
+  {c:'base', t:gl('datarobot-community/datarobot-agent-application','template composing base + llm + agent + datarobot-mcp')},
+  {c:'base', t:gl('datarobot-community/talk-to-my-data-agent','conversational analytics — FastAPI backend and React frontend, no agent')},
+  {c:'base', t:gl('datarobot-community/datarobot-mcp-template','standalone MCP server template — the MCP capability on its own')},
   {c:'ext',  t:gl('datarobot-oss/datarobot-agent-skills','coding-assistant skills for the DataRobot platform APIs')},
 ]};
 
@@ -471,10 +474,10 @@ const D={
   cli:{r:'tool',gh:'datarobot-oss/cli',t:'dr CLI',role:'The primary interface. A standalone binary for macOS, Linux and Windows that fronts every other tool in the stack.',
     b:`<div class="sec"><h3>Core commands</h3><ul>
       <li><code>dr auth set-url</code> — choose the DataRobot endpoint and store the API token.</li>
-      <li><code>dr start</code> — shortcut for scaffolding a new recipe from base.</li>
-      <li><code>dr component add &lt;url&gt; .</code> · <code>dr component update &lt;answers&gt;</code>.</li>
+      <li><code>dr start</code> — run the current template\'s quickstart: prerequisite checks, then the template\'s own start script.</li>
+      <li><code>dr component add &lt;url&gt; .</code> · <code>dr component update &lt;answers&gt;</code> · <code>dr component list</code>.</li>
       <li><code>dr dotenv setup</code> — walk the components\' env schemas and write <code>.env</code>.</li>
-      <li><code>dr run dev</code> · <code>dr task deploy</code> · <code>dr task infra:info</code> · <code>dr task infra:down</code>.</li></ul></div>
+      <li><code>dr run &lt;task&gt;</code> — the alias for <code>dr task run</code>: <code>dr run dev</code>, <code>dr run deploy</code>, <code>dr run infra:info</code>, <code>dr run infra:down</code>. <code>dr task</code> itself takes only <code>compose</code>, <code>list</code> and <code>run</code>.</li></ul></div>
     <div class="sec"><h3>Why it exists</h3><ul>
       <li><b>Onboarding friction</b> — credentials, environment config and first run used to span several websites and hand-edited files.</li>
       <li><b>Monorepo complexity</b> — several languages and task runners in one repo, behind one interface with tab completion.</li></ul></div>
@@ -490,27 +493,31 @@ const D={
     b:`<div class="sec"><h3>Typical targets</h3><ul><li><code>task dev</code> · <code>task test</code> · <code>task deploy</code> · <code>task infra:info</code> · <code>task test-e2e</code>.</li>
       <li><code>.env</code> is auto-loaded, and tab completion covers the whole tree.</li></ul></div>
     <div class="sec"><h3>Why not make</h3><p>Per-folder Taskfiles compose without a shared global namespace, which matches principle #7 — each top-level folder stays independent.</p></div>`},
-  uvpnpm:{r:'tool',t:'uv · pnpm',role:'Per-folder dependency management. Python folders use uv; the frontend uses pnpm/npm. No shared virtualenv, no root-level lockfile for everything.',
+  uvpnpm:{r:'tool',t:'uv · npm',role:'Per-folder dependency management. Python folders use uv; the React folder uses npm. No shared virtualenv, no root-level lockfile for everything.',
     b:`<div class="sec"><h3>Why isolation matters</h3><p>An agent folder pulling CrewAI, LlamaIndex and NeMo Agent Toolkit must not constrain the FastAPI server\'s dependency solve. Separate <code>pyproject.toml</code> + lockfile per folder is what keeps copier updates merge-conflict-free.</p></div>
-    <div class="sec"><h3>In practice</h3><ul><li><code>uv sync</code> / <code>uv run</code> inside each Python folder.</li><li>The agent component ships per-framework lockfile templates so the solve is reproducible for whichever framework you pick.</li></ul></div>`},
+    <div class="sec"><h3>In practice</h3><ul><li><code>uv sync</code> / <code>uv run</code> inside each Python folder.</li><li>The agent component ships a rendered <code>uv.lock</code> so the solve is reproducible for whichever framework you pick.</li></ul></div>`},
   pulumi:{r:'tool',t:'Pulumi',role:'The infrastructure-as-code engine. Runs locally or in CI, reads the components\' infra files, and reconciles DataRobot resources over the REST API.',
     b:`<div class="sec"><h3>Layout</h3><ul><li><code>infra/Pulumi.yaml</code> + <code>infra/__main__.py</code> come from base.</li><li>Each component drops <code>infra/infra/&lt;name&gt;.py</code>, which <code>__main__.py</code> imports.</li><li>State lives in the Pulumi local backend by default, unlocked with a passphrase from <code>.env</code>.</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('p-pulumi','pulumi up')}${NP('p-prov','pulumi-datarobot')}${NP('r-infra','infra/')}</p></div>`},
   token:{r:'ext',t:'DataRobot API token',role:'The single credential. Model access, deployments, applications, storage and monitoring all authenticate with it.',
     b:`<div class="sec"><h3>Design principle #5</h3><p>“A DataRobot API token is all you need.” Everything but the AI itself is swappable for your preferred stack — but you should never need a second credential to get a template running.</p></div>
     <div class="sec"><h3>Where it lives</h3><ul><li><code>dr auth set-url</code> stores the endpoint; <code>DATAROBOT_ENDPOINT</code> and <code>DATAROBOT_API_TOKEN</code> land in <code>.env</code>.</li>
-      <li>Promoting to another environment is <code>dr auth set-url</code> + <code>dr task deploy</code> — the repo does not change.</li>
+      <li>Promoting to another environment is <code>dr auth set-url</code> + <code>dr run deploy</code> — the repo does not change.</li>
       <li>Extra provider credentials are only needed for the external-LLM strategy, or when a recipe provisions per-user credential resources.</li></ul></div>`},
 
   // ===== component catalog
-  'c-base':{r:'base',t:'af-component-base',role:'The root scaffold every App Framework recipe starts from. Applied first, exactly once — every other component reads the answers it writes.',
-    b:`<div class="sec"><h3>Questions it asks</h3><ul><li>Template name, code name, description, copyright year.</li><li>Whether to include the shared <code>core</code> library (default yes).</li></ul></div>
+  'c-base':{r:'base',t:'af-component-base',role:'The infrastructure-as-code foundation. Its purpose is the <code>infra/</code> Pulumi project every other component plugs a file into — plus the <code>.datarobot/</code> state directory and an optional shared <code>core</code> library. Applied first, exactly once.',
+    b:`<div class="sec"><h3>What it is for</h3><p>Base is not a general-purpose scaffold. It lays down the IaC surface: a Pulumi project whose <code>__main__.py</code> auto-discovers every module under <code>infra/infra/</code>, validates the platform feature flags each component declares, creates the DataRobot <b>Use Case</b> the rest of the stack is organized under, and exports its results to <code>pulumi_config.json</code> for the folders to read. Every other component is written against that surface.</p></div>
+    <div class="sec"><h3>Questions it asks</h3><ul><li>Template name, code name, description, copyright year.</li><li>Whether to include the shared <code>core</code> library (default yes).</li></ul></div>
     <div class="sec"><h3>What it adds</h3><ul>
-      <li><code>Taskfile.yaml</code> — task runner with <code>.env</code> auto-loading.</li>
-      <li><code>infra/</code> — Pulumi project other components plug into.</li>
-      <li><code>.datarobot/answers/base.yml</code> — reused by every subsequent component.</li>
-      <li><code>.github/</code> workflows, <code>LICENSE</code>, <code>CONTRIBUTING.md</code>, <code>CODEOWNERS</code>.</li></ul></div>
-    <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li><li>${P('template/infra/Pulumi.yaml.jinja')}</li></ul></div>
+      <li><code>infra/</code> — <code>Pulumi.yaml</code>, <code>__main__.py</code>, <code>infra/</code>, <code>configurations/</code>, <code>feature_flags/</code>, <code>tests/</code>, and the folder\'s own <code>pyproject.toml</code> and Taskfile.</li>
+      <li><code>.datarobot/answers/base.yml</code> and <code>.datarobot/cli/base.yml</code> — reused by every subsequent component.</li>
+      <li><code>core/</code> — optional shared Python package: a persistent filesystem over DataRobot storage, SQLite and DuckDB drivers on top of it, and a read/write lock.</li>
+      <li><code>.env.template</code>, <code>.gitignore</code>, <code>docs/</code>, and <code>.agents/skills/</code> for coding assistants.</li>
+      <li><code>.github/</code> — per-folder lint and test workflows, Dockerfile lint, shellcheck, yamlfmt, and Dependabot.</li></ul></div>
+    <div class="sec"><h3>Swapping an infra module</h3><p>A component may render several alternative modules under <code>infra/configurations/&lt;name&gt;/</code>; <code>INFRA_ENABLE_&lt;NAME&gt;=&lt;file&gt;.py</code> re-points the symlink at <code>infra/infra/&lt;name&gt;.py</code>. This is how the <code>llm</code> component\'s six strategies are selected without re-rendering the template.</p></div>
+    <div class="sec"><h3>No root Taskfile</h3><p>Base ships a Taskfile per folder, not one at the root. <code>dr task compose</code> builds the root runner from the rendered subdirectories, which is what keeps a copier update from conflicting on a shared file.</p></div>
+    <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li><li>${P('template/infra/Pulumi.yaml.jinja')}</li><li>${P('template/infra/__main__.py.jinja')}</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('r-answers','.datarobot/')}${NP('r-infra','infra/')}${NP('r-ci','.github/workflows/')}</p></div>`},
   'c-llm':{r:'llm',t:'af-component-llm',role:'Model access. Infrastructure only — it adds no application code, just the Pulumi file and runtime parameters that tell everything downstream which model to use and how to reach it.',
     b:`<div class="sec"><h3>The six strategies</h3><ul>
@@ -521,36 +528,40 @@ const D={
       <li><b>LLM blueprint with external LLM</b> — your own Azure OpenAI / Bedrock / Vertex / Anthropic / Cohere / TogetherAI credentials, wrapped in a governed deployment.</li>
       <li><b>LLM from a Registered Model</b> — a registered model not yet deployed.</li></ul></div>
     <div class="sec"><h3>One canonical model name</h3><p>Whatever the strategy, the value handed downstream is a <code>datarobot/</code>-prefixed model name. The runtime routes gateway, deployment and NIM on that prefix directly, and strips it for the external-provider path.</p></div>
-    <div class="sec"><h3>Pre-flight check</h3><p>The infra file sends a one-token completion through LiteLLM before deploying, so a misconfigured model fails at <code>pulumi up</code> rather than at first chat.</p></div>
+    <div class="sec"><h3>One question, six rendered modules</h3><p>The copier question is only the instance name. All six strategies are rendered as modules under <code>infra/configurations/&lt;llm&gt;/</code>, and <code>dr dotenv setup</code> writes <code>INFRA_ENABLE_LLM</code> to pick which one becomes <code>infra/infra/&lt;llm&gt;.py</code> — so changing strategy is an <code>.env</code> edit, not a re-render.</p></div>
+    <div class="sec"><h3>Pre-flight check</h3><p>The infra file sends a probe completion through LiteLLM before deploying, so a misconfigured model fails at <code>pulumi up</code> rather than at first chat.</p></div>
     <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li><li>${P('template/.datarobot/cli/llm.yml.jinja')}</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('d-gw','LLM Gateway')}${NP('d-llm','Deployed LLM · NIM · external')}</p></div>`},
-  'c-agent':{r:'agent',t:'af-component-agent',role:'The agentic core. Scaffolds an agent package for your chosen framework on top of the datarobot-genai runtime, plus a dev server, a CLI, tests and the Pulumi deployment.',
+  'c-agent':{r:'agent',t:'af-component-agent',role:'The agentic core. Scaffolds an agent package for your chosen framework on the datarobot-genai runtime, served by DRAgent — a NeMo Agent Toolkit + FastAPI front server — plus tests and the Pulumi deployment.',
     b:`<div class="sec"><h3>Framework is a copier answer</h3><p><span class="pill">base</span><span class="pill">crewai</span><span class="pill">langgraph</span><span class="pill">llamaindex</span><span class="pill">nat</span> — all on <code>datarobot-genai</code>, so the deployment shape and chat contract are identical whichever you pick. <code>nat</code> is YAML-driven (NVIDIA NeMo Agent Toolkit).</p></div>
-    <div class="sec"><h3>Requires</h3><p>${NP('c-base','base')}${NP('c-llm','llm')}${NP('c-mcp','datarobot-mcp')}</p></div>
+    <div class="sec"><h3>Requires</h3><p>${NP('c-base','base')}${NP('c-llm','llm')}</p><p>Only those two: ${NP('c-mcp','datarobot-mcp')} is optional. An MCP backend is picked up automatically when one is co-deployed under the conventional name, and otherwise through environment variables.</p></div>
     <div class="sec"><h3>What it renders</h3><ul>
-      <li><code>agent/agent/myagent.py</code> — the file you actually edit.</li>
-      <li><code>agent/dev.py</code> (local server) and <code>agent/cli.py</code> (<code>execute --user_prompt …</code>).</li>
-      <li><code>infra/infra/&lt;agent&gt;.py</code> — execution environment, custom model, registered model, deployment, playground and LLM blueprint.</li>
-      <li>Optional agent memory and an A2A (agent-to-agent) server.</li></ul></div>
+      <li><code>&lt;agent&gt;/agent/myagent.py</code> — the file you actually edit — plus <code>register.py</code> (tool and LLM wiring) and <code>config.py</code>.</li>
+      <li><code>&lt;agent&gt;/workflow.yaml</code> — the NeMo Agent Toolkit configuration DRAgent loads at startup, for every framework choice.</li>
+      <li><code>infra/infra/&lt;agent&gt;.py</code> — execution environment, custom model, registered model, deployment, playground and LLM blueprint; plus a feature-flag file.</li>
+      <li>Optional agent memory (DataRobot Memory Service or Mem0) and an A2A (agent-to-agent) server.</li></ul></div>
     <div class="sec"><h3>Repeatable</h3><p>Apply it again with a different <code>agent_app_name</code> to run several independent agentic workflows from one recipe.</p></div>
     <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li></ul></div>`},
   'c-mcp':{r:'mcp',t:'af-component-datarobot-mcp',role:'A FastMCP server deployed as its own DataRobot deployment, giving agents — yours or off-the-shelf clients — a governed set of tools.',
-    b:`<div class="sec"><h3>Tools it ships</h3><ul>
-      <li>DataRobot predictive tools: project management, model training, deployments, batch and real-time predictions.</li>
-      <li>Collaboration integrations: Google Drive, Jira, Confluence, Microsoft Graph.</li></ul></div>
+    b:`<div class="sec"><h3>Tool groups you switch on</h3><ul>
+      <li>DataRobot predictive tools: projects, models, deployments, batch and real-time predictions, vector-database query.</li>
+      <li>Integrations: Google Drive, Microsoft Graph, Jira, Confluence, Perplexity, Tavily.</li>
+      <li>Dynamic registration: tagged DataRobot deployments become callable tools, and prompts register the same way.</li>
+      <li>The tools live in <code>datarobot-genai[drmcp]</code>; the rendered folder holds your own, added with the <code>dr_mcp_tool</code> decorator.</li></ul></div>
     <div class="sec"><h3>How the agent finds it</h3><ul>
-      <li>A co-deployed MCP server named <code>mcp_server</code> is auto-wired into the agent\'s runtime parameters.</li>
+      <li>An MCP instance whose infra module is named <code>mcp_server</code> is auto-wired into the agent\'s runtime parameters.</li>
       <li>Otherwise <code>MCP_DEPLOYMENT_ID</code>, or <code>EXTERNAL_MCP_URL</code> (+ headers, + transport) for a server outside DataRobot. Deployment id wins when both are set.</li></ul></div>
     <div class="sec"><h3>Repeatable</h3><p>Apply it several times under different names for one-to-many MCP backends in a single recipe. Only <code>base</code> is required.</p></div>
     <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('d-mcp','MCP server deployment')}${NP('mcpclient','External MCP clients')}</p></div>`},
   'c-api':{r:'api',t:'af-component-fastapi-backend',role:'A FastAPI server that deploys as a DataRobot Custom Application — a deliberately minimal backend surface to build on.',
     b:`<div class="sec"><h3>What it renders</h3><ul>
-      <li><code>&lt;name&gt;/app/</code> — app factory, config, dependencies, OpenTelemetry wiring, profiling.</li>
-      <li><code>&lt;name&gt;/static/</code> — where the React component builds to.</li>
+      <li><code>&lt;name&gt;/app/</code> — app factory, config, dependencies, and an OpenTelemetry <code>telemetry/</code> package.</li>
+      <li><code>&lt;name&gt;/static/</code> — where the React component builds to — and <code>templates/</code> for the served shell.</li>
       <li><code>build-app.sh</code> / <code>start-app.sh</code> and the folder Taskfile.</li>
-      <li><code>infra/infra/&lt;name&gt;.py</code> — <code>ApplicationSource</code> + <code>CustomApplication</code> on the Python application base environment.</li></ul></div>
-    <div class="sec"><h3>Questions</h3><ul><li>App name and local port (default <code>8080</code>).</li><li>API key scope level.</li><li>Whether to include application telemetry.</li></ul></div>
+      <li><code>infra/infra/&lt;name&gt;.py</code> — <code>ApplicationSource</code> + <code>CustomApplication</code> on the Python 3.12 application base environment.</li></ul></div>
+    <div class="sec"><h3>Questions</h3><ul><li>App name — the folder name, <code>web</code> by default.</li><li>Local port (default <code>8080</code>).</li><li>API key scope level.</li></ul></div>
+    <div class="sec"><h3>Configured later</h3><p>Its <code>.datarobot/cli/</code> schema contributes one prompt to <code>dr dotenv setup</code>: <code>SESSION_SECRET_KEY</code>, generated for you.</p></div>
     <div class="sec"><h3>Files</h3><ul><li>${P('copier.yml')}</li></ul></div>`},
   'c-react':{r:'api',gh:'datarobot-community/af-component-react',t:'af-component-react',role:'A React + Vite single-page frontend on top of the FastAPI backend. Requires base and fastapi-backend.',
     b:`<div class="sec"><h3>Two modes, one bundle</h3><ul>
@@ -582,43 +593,46 @@ const D={
     b:`<div class="sec"><h3>Structure</h3><ul>
       <li><code>Pulumi.yaml</code> and <code>__main__.py</code> — from base.</li>
       <li><code>infra/infra/&lt;component&gt;.py</code> — one per applied component; <code>__main__.py</code> imports them.</li>
-      <li><code>infra/configurations/</code>, <code>infra/feature_flags/</code> — component-supplied config and required platform feature flags.</li>
+      <li><code>infra/configurations/</code> — alternative modules a component renders, selected with <code>INFRA_ENABLE_&lt;NAME&gt;</code>; <code>infra/feature_flags/</code> — the platform feature flags a component requires, checked before anything is created.</li>
       <li><code>infra/tests/</code> — unit tests over the infra code itself.</li></ul></div>
     <div class="sec"><h3>Why one file per component</h3><p>Copier updates a component by replaying a diff. A single shared infra file would conflict on every update; one file per component almost never does.</p></div>
+    <div class="sec"><h3>What it hands back</h3><p><code>__main__.py</code> writes the stack\'s exported values to <code>pulumi_config.json</code> at the repo root. The folders read it through their settings class, which is how the deployed agent endpoint, the Use Case id and the tracing credentials reach local runs without an <code>.env</code> edit.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('p-pulumi','pulumi up')}${NP('p-prov','pulumi-datarobot')}</p></div>`},
-  'r-agent':{r:'agent',t:'agent/',role:'The agentic workflow folder rendered by af-component-agent. Its own pyproject, lockfile and Taskfile.',
+  'r-agent':{r:'agent',t:'agent/',role:'The agentic workflow folder rendered by af-component-agent. Its own pyproject, lockfile and Taskfile. The folder name is a copier answer; agent is the default.',
     b:`<div class="sec"><h3>Inside</h3><ul>
-      <li><code>agent/agent/myagent.py</code> — roles, goals, tasks, tool wiring. This is the file you edit.</li>
-      <li><code>dev.py</code> — the local server on <code>:8842</code>.</li>
-      <li><code>cli.py</code> — <code>uv run python cli.py execute --user_prompt "…" --show_output</code>.</li>
-      <li><code>workflow.yaml</code> / <code>workflow_templates/</code> — used by the NeMo Agent Toolkit framework choice.</li>
-      <li><code>tests/</code> and a full lifecycle <code>task test-e2e</code> (render → build → deploy → test → destroy).</li></ul></div>
+      <li><code>agent/myagent.py</code> — roles, goals, tasks, tool wiring. This is the file you edit.</li>
+      <li><code>agent/register.py</code> — where MCP tools, workflow tools and the LLM are wired together.</li>
+      <li><code>workflow.yaml</code> — at the folder root, not inside the package. DRAgent loads it to build the front server, the tools and the workflow graph.</li>
+      <li><code>dev.py</code> — an in-process entry point so an IDE debugger can attach; the <code>dev</code> task runs <code>nat dragent serve</code> directly, with reload.</li>
+      <li><code>tests/</code>, and a <code>cli</code> task that forwards to <code>nat dragent run</code> for a no-server run.</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('l-agent','Agent dev server')}${NP('d-agent','Agent deployment')}</p></div>`},
   'r-mcp':{r:'mcp',t:'mcp_server/',role:'The FastMCP server folder. Runs locally for development and deploys as its own DataRobot deployment.',
     b:`<div class="sec"><h3>Inside</h3><ul><li><code>app/</code> — the FastMCP server and its tool modules.</li>
       <li><code>docker/</code> — the container context for the deployment.</li>
-      <li><code>mcp_oauth_protected_resource_metadata_config.yaml</code> — OAuth protected-resource metadata for MCP clients.</li>
+      <li>OAuth-backed integrations resolve their credentials through DataRobot OAuth providers, so no client secret lands in the repo.</li>
       <li><code>dev_tools/</code>, <code>test_interactive.py</code> — poke the server by hand.</li></ul></div>
-    <div class="sec"><h3>Naming matters</h3><p>A folder named <code>mcp_server</code> is auto-wired into a co-deployed agent. Renamed or additional MCP backends are wired through environment variables instead.</p></div>`},
-  'r-api':{r:'api',t:'fastapi_server/',role:'The backend folder. In production this is the single process the Custom Application runs.',
+    <div class="sec"><h3>Naming matters</h3><p>An instance named <code>mcp_server</code> is auto-wired into a co-deployed agent, because the agent\'s infra file imports that module by name. Renamed or additional MCP backends are wired through environment variables instead.</p></div>
+    <div class="sec"><h3>Locally</h3><p><code>task dev</code> serves it on <code>:8080</code> with the MCP endpoint at <code>/mcp/</code>, which is what an MCP client is pointed at during development.</p></div>`},
+  'r-api':{r:'api',t:'web/',role:'The backend folder — web by default, renamed per recipe. In production this is the single process the Custom Application runs.',
     b:`<div class="sec"><h3>Inside</h3><ul>
       <li><code>app/</code> — app factory, config, dependencies, auth, telemetry.</li>
-      <li><code>static/</code> — the React bundle lands here at build time.</li>
+      <li><code>static/</code> — the React bundle lands here at build time; <code>templates/</code> holds the served shell.</li>
       <li><code>tests/</code>, <code>Taskfile.yaml</code>, its own <code>pyproject.toml</code>.</li></ul></div>
-    <div class="sec"><h3>What a real template adds</h3><p>The <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-agent-application">datarobot-agent-application</a> template grows this folder into chats, messages, users, memory, an AG-UI bridge to the agent, and Alembic migrations — all on top of the same minimal component surface.</p></div>`},
+    <div class="sec"><h3>What a real template adds</h3><p>The <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-agent-application">datarobot-agent-application</a> template renames it <code>fastapi_server/</code> and grows it into chats, messages, users, memory, an AG-UI bridge to the agent, and Alembic migrations — all on top of the same minimal component surface.</p></div>`},
   'r-web':{r:'api',gh:'datarobot-community/af-component-react',t:'frontend_web/',role:'The React + Vite single-page app. Never deployed on its own — it builds into the FastAPI folder.',
     b:`<div class="sec"><h3>Development</h3><p><code>vite dev</code> on <code>:5173</code> with a proxy: any request under <code>/api/</code> is rewritten and forwarded to <code>http://localhost:8080</code>. In a DataRobot Codespace the base path becomes <code>/notebook-sessions/&lt;id&gt;/ports/5173/</code> automatically.</p></div>
     <div class="sec"><h3>Build</h3><p><code>build.outDir</code> points at the FastAPI component\'s <code>static/</code> directory with <code>manifest: true</code>. Pulumi hashes the frontend sources and rebuilds before uploading the application source.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('l-vite','Vite dev server')}${NP('d-app','Custom Application')}</p></div>`},
   'r-core':{r:'base',t:'core/ · Taskfile.yml · .env',role:'The shared surface at the repo root: an optional shared library, the root task runner, and the single configuration file.',
-    b:`<div class="sec"><h3>core/</h3><p>Optional (a base question). A small shared package for multi-component recipes — deliberately small, because principle #1 prefers co-location over indirection.</p></div>
-    <div class="sec"><h3>Taskfile.yml</h3><p>The root runner; each component folder contributes its own Taskfile underneath. <code>.env</code> is auto-loaded.</p></div>
-    <div class="sec"><h3>.env</h3><p>Written by <code>dr dotenv setup</code> from the components\' CLI schemas. Holds the DataRobot endpoint and token, the chosen LLM strategy and model, ports, execution environment ids, the Pulumi passphrase and the default use case. Never committed.</p></div>`},
-  'r-ci':{r:'base',t:'.github/workflows/',role:'CI/CD scaffolding contributed by base and extended by the components that need it.',
+    b:`<div class="sec"><h3>core/</h3><p>Optional (a base question). A shared package for multi-component recipes — kept small, because principle #1 prefers co-location over indirection. What ships in it is the state a stateless Custom Application cannot keep: a persistent filesystem over DataRobot storage, SQLite and DuckDB drivers on top of it, and a read/write lock.</p></div>
+    <div class="sec"><h3>Taskfile</h3><p>Each component folder contributes its own Taskfile; <code>dr task compose</code> assembles the root runner from them, so no shared file has to be merged on update. <code>.env</code> is auto-loaded.</p></div>
+    <div class="sec"><h3>.env and pulumi_config.json</h3><p><code>.env</code> is written by <code>dr dotenv setup</code> from the components\' CLI schemas: the DataRobot endpoint and token, the LLM strategy and model, ports, execution environment ids, the Pulumi passphrase and the default Use Case. Never committed. Alongside it, <code>pulumi_config.json</code> is written by the deploy and carries the stack outputs — Use Case id, tracing credentials — back to the folders.</p></div>`},
+  'r-ci':{r:'base',t:'.github/workflows/',role:'CI scaffolding contributed by base and extended by the components that need it.',
     b:`<div class="sec"><h3>What runs</h3><ul>
-      <li>Tests and linting per top-level folder.</li>
-      <li>A component-update workflow that can raise upstream component releases as a pull request.</li>
-      <li>Deployment workflows for the promote path.</li></ul></div>
+      <li>Lint and unit tests per top-level folder — base covers <code>infra/</code> and <code>core/</code>, and each component adds a workflow for the folder it renders.</li>
+      <li>Dockerfile lint, shellcheck and yamlfmt across the repo.</li>
+      <li>Dependabot for GitHub Actions and Python dependencies.</li>
+      <li>Taking a component release and deploying are commands you run — <code>dr component update</code> and <code>dr run deploy</code> — not workflows base ships.</li></ul></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('upd','dr component update')}${NP('rel','Component release')}</p></div>`},
 
   // ===== consumers
@@ -627,7 +641,7 @@ const D={
     <div class="sec"><h3>Boxes</h3><p>${NP('d-app','Custom Application')}</p></div>`},
   mcpclient:{r:'ext',t:'External MCP clients',role:'Off-the-shelf MCP clients — Claude Desktop, Cursor, other agents — calling the deployed MCP server directly, without going through your application at all.',
     b:`<div class="sec"><h3>Why this matters</h3><p>The MCP component is not only an internal detail of your agent. Once deployed it is a governed tool surface any MCP client can consume, with DataRobot handling auth and monitoring.</p></div>
-    <div class="sec"><h3>Standalone option</h3><p>If an MCP server is all you need, <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-mcp-template">datarobot-mcp-template</a> is the same capability as a complete template (base + mcp).</p></div>
+    <div class="sec"><h3>Standalone option</h3><p>If an MCP server is all you need, <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-mcp-template">datarobot-mcp-template</a> is the same capability as a complete recipe, with no application around it.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('d-mcp','MCP server deployment')}${NP('c-mcp','af-component-datarobot-mcp')}</p></div>`},
 
   // ===== DataRobot platform
@@ -682,7 +696,7 @@ const D={
     <div class="sec"><h3>Configuration</h3><p><code>DATAROBOT_DEFAULT_USE_CASE</code> in <code>.env</code>, set during <code>dr dotenv setup</code>. Optional — leave it unset and resources are created standalone.</p></div>`},
   'd-obs':{r:'ext',t:'Tracing & monitoring',role:'OpenTelemetry traces, metrics and logs from both the application and the agent, collected by the platform.',
     b:`<div class="sec"><h3>Where it comes from</h3><ul>
-      <li>The FastAPI component ships an <code>app/telemetry/</code> package and an <code>include_app_telemetry</code> answer.</li>
+      <li>The FastAPI component ships an <code>app/telemetry/</code> package wired into the app factory; base writes the exporter endpoint and headers into <code>pulumi_config.json</code> at deploy time, and <code>OTEL_SDK_DISABLED</code> turns it off.</li>
       <li>The agent runtime emits GenAI spans; deployments enable prediction data collection and association ids so requests can be traced end to end.</li>
       <li>Shared semantic conventions live in <a class="ext" target="_blank" href="https://github.com/datarobot-community/datarobot-opentelemetry-integration">datarobot-opentelemetry-integration</a>.</li></ul></div>`},
   'd-cred':{r:'ext',t:'Credentials',role:'DataRobot credential resources created by Pulumi — API tokens, and cloud provider keys when a strategy or component needs them.',
@@ -693,14 +707,15 @@ const D={
     <div class="sec"><h3>Never in the repo</h3><p>Values come from <code>.env</code> (gitignored) and become DataRobot credential resources referenced by id in runtime parameters.</p></div>`},
 
   // ===== application templates
-  't-agentapp':{r:'base',gh:'datarobot-community/datarobot-agent-application',t:'datarobot-agent-application',role:'The most fully composed template: base + llm + agent + mcp, with the FastAPI backend and React frontend coming along with the agent component.',
+  't-agentapp':{r:'base',gh:'datarobot-community/datarobot-agent-application',t:'datarobot-agent-application',role:'The template that composes the widest set of components: base + llm + agent + datarobot-mcp, with a FastAPI backend and React frontend maintained in the repository itself.',
     b:`<div class="sec"><h3>What you get</h3><p>A multi-agent workflow, a FastAPI backend, a React frontend and an MCP server, deployable in one command — with CrewAI, LangGraph, LlamaIndex or NVIDIA NeMo Agent Toolkit selected at scaffold time.</p></div>
-    <div class="sec"><h3>Reading its state</h3><p>Its <code>.datarobot/answers/</code> is the ground truth for how it was composed: <code>base.yml</code>, <code>llm-llm.yml</code>, <code>agent-agent.yml</code>, <code>drmcp-mcp_server.yml</code>.</p></div>
+    <div class="sec"><h3>Reading its state</h3><p>Its <code>.datarobot/answers/</code> is the ground truth for how it was composed: <code>base.yml</code>, <code>llm-llm.yml</code>, <code>agent-agent.yml</code>, <code>drmcp-mcp_server.yml</code>. Its <code>fastapi_server/</code> and <code>frontend_web/</code> folders have no answers file, so they are maintained in the repository rather than updated from a component.</p></div>
     <div class="sec"><h3>Try it</h3><p>Open it directly in a DataRobot Codespace from the badges in the repo README, or clone and run <code>dr dotenv setup</code>.</p></div>`},
-  't-ttmd':{r:'base',gh:'datarobot-community/talk-to-my-data-agent',t:'talk-to-my-data-agent',role:'Conversational analytics over your own datasets — base + llm + fastapi + react, with no agent component at all.',
-    b:`<div class="sec"><h3>Why it is interesting</h3><p>It shows the framework is not agent-only. The same base, the same infra layout and the same deployment path, minus the agent folder.</p></div>
+  't-ttmd':{r:'base',gh:'datarobot-community/talk-to-my-data-agent',t:'talk-to-my-data-agent',role:'Conversational analytics over your own datasets — a FastAPI backend and a React frontend, with no agent component at all.',
+    b:`<div class="sec"><h3>Why it is interesting</h3><p>It shows the framework is not agent-only. The same infra layout and the same deployment path, minus the agent folder.</p></div>
+    <div class="sec"><h3>Reading its state</h3><p>It carries <code>.datarobot/cli/</code> schemas for base, the LLM and its backend, but its folders (<code>app_backend/</code>, <code>app_frontend/</code>) are not driven by component answers files — so it is a recipe in the App Framework shape rather than one composed from the catalog.</p></div>
     <div class="sec"><h3>Siblings</h3><p><a class="ext" target="_blank" href="https://github.com/datarobot-community/talk-to-my-docs-agents">talk-to-my-docs-agents</a> (multi-agent document Q&amp;A), <a class="ext" target="_blank" href="https://github.com/datarobot-community/guarded-rag-assistant">guarded-rag-assistant</a>, <a class="ext" target="_blank" href="https://github.com/datarobot-community/forecast-assistant">forecast-assistant</a>, <a class="ext" target="_blank" href="https://github.com/datarobot-community/predictive-ai-starter">predictive-ai-starter</a>.</p></div>`},
-  't-mcpt':{r:'base',gh:'datarobot-community/datarobot-mcp-template',t:'datarobot-mcp-template',role:'A deployable FastMCP server with DataRobot tools built in — base + mcp, nothing else.',
+  't-mcpt':{r:'base',gh:'datarobot-community/datarobot-mcp-template',t:'datarobot-mcp-template',role:'A deployable FastMCP server with DataRobot tools built in, and nothing else — the MCP capability as a complete recipe, in a <code>dr_mcp/</code> folder.',
     b:`<div class="sec"><h3>Use it when</h3><p>You want to give agents governed tools over DataRobot without building an application around them. Ships pre-built tools, OpenTelemetry tracing, dynamic tool registration and deployment infrastructure.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('c-mcp','af-component-datarobot-mcp')}${NP('d-mcp','MCP server deployment')}</p></div>`},
 
@@ -715,7 +730,7 @@ const D={
     <div class="sec"><h3>Boxes</h3><p>${NP('r-answers','.datarobot/')}${NP('rel','Component release')}</p></div>`},
   rel:{r:'base',t:'Component release',role:'Components are released independently. A new tag on any af-component-* repository is a change every downstream recipe can choose to take.',
     b:`<div class="sec"><h3>The scale problem this solves</h3><p>Five foundation templates with a hundred clones each means a single fix has five hundred destinations. Independent component releases plus recorded answers turn that from manual propagation into a replayable diff.</p></div>
-    <div class="sec"><h3>Automation</h3><p>The <code>.github/</code> scaffolding from base can watch the components a recipe uses and raise the update as a pull request, so taking a release is a code review rather than a chore.</p></div>`},
+    <div class="sec"><h3>Taking one</h3><p>Nothing pulls a release in for you: <code>dr component update .datarobot/answers/&lt;name&gt;.yml</code> replays the diff, and the result is reviewed like any other change. Because the pin is per instance, a release can be taken for one instance and deferred for another.</p></div>`},
   pin:{r:'base',t:'Version pinning',role:'Every answers file records exactly which component and which commit produced the files in your repo.',
     b:`<div class="sec"><h3>What is recorded</h3><ul>
       <li><code>_src_path</code> — the component repository URL.</li>
@@ -730,26 +745,26 @@ const D={
     <div class="sec"><h3>Testing</h3><p>Vitest with jsdom, tests co-located under <code>tests/</code>.</p></div>`},
   'l-api':{r:'api',t:'FastAPI :8080',role:'The backend dev loop. The same app factory that runs in the deployed Custom Application, with reload enabled.',
     b:`<div class="sec"><h3>What it serves</h3><ul><li>Your API routes.</li><li>The <code>static/</code> directory — so you can also test the production shape by building the frontend first.</li><li>Interactive OpenAPI docs at <code>/docs</code>.</li></ul></div>
-    <div class="sec"><h3>Configuration</h3><p>Port comes from the <code>fastapi_local_port</code> answer (default <code>8080</code>) and lands in <code>.env</code>. Everything else — DataRobot endpoint, token, agent endpoint — is read from the same file.</p></div>`},
+    <div class="sec"><h3>Configuration</h3><p>The port comes from the <code>fastapi_local_port</code> copier answer (default <code>8080</code>) and is baked into the folder\'s Taskfile, not into <code>.env</code>. Everything else — DataRobot endpoint, token, agent endpoint — is read from <code>.env</code> and <code>pulumi_config.json</code>.</p></div>`},
   'l-agent':{r:'agent',t:'Agent dev server :8842',role:'The agent dev loop. Serves the same streaming contract as the deployed agent, so the backend code path is identical locally and in production.',
     b:`<div class="sec"><h3>Two ways in</h3><ul>
       <li><code>dr run dev</code> starts it, and the FastAPI server points at <code>http://localhost:8842</code>.</li>
-      <li><code>uv run python cli.py execute --user_prompt "…" --show_output</code> drives the agent with no UI at all.</li></ul></div>
+      <li><code>dr run &lt;agent&gt;:cli -- execute --user_prompt "…"</code> forwards to <code>nat dragent run</code> and drives the workflow in-process, with no server at all.</li></ul></div>
     <div class="sec"><h3>Why the port matters</h3><p>The default is <code>8842</code> and it must be unique per agent instance — a recipe with two agent components needs two ports. The backend builds its agent endpoint from that value locally, and reads an explicit endpoint when deployed.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('r-agent','agent/')}${NP('d-agent','Agent deployment')}</p></div>`},
 
   // ===== deploy
   'p-pulumi':{r:'tool',t:'pulumi up',role:'The deploy step. Reads infra/__main__.py, which imports every component\'s infra file, and reconciles the desired state against DataRobot.',
     b:`<div class="sec"><h3>Ordering</h3><p>Dependencies are expressed as Pulumi resource references, so the graph orders itself: the frontend build runs before the application source is uploaded; the LLM configuration resolves before the agent custom model is created.</p></div>
-    <div class="sec"><h3>Useful targets</h3><ul><li><code>dr task deploy</code> — the whole stack.</li><li><code>dr task infra:info</code> — deployed resource ids and URLs.</li><li><code>dr task infra:down</code> — tear it all down.</li></ul></div>
-    <div class="sec"><h3>Pre-flight</h3><p>Components validate before they create: the llm component sends a one-token completion, and required platform feature flags are evaluated from <code>infra/feature_flags/</code>.</p></div>`},
+    <div class="sec"><h3>Useful targets</h3><ul><li><code>dr run deploy</code> — the whole stack.</li><li><code>dr run infra:info</code> — deployed resource ids and URLs.</li><li><code>dr run infra:down</code> — tear it all down.</li></ul></div>
+    <div class="sec"><h3>Pre-flight</h3><p>Components validate before they create: the llm component sends a probe completion, and required platform feature flags are evaluated from <code>infra/feature_flags/</code>.</p></div>`},
   'p-prov':{r:'tool',gh:'datarobot-community/pulumi-datarobot',t:'pulumi-datarobot + utils',role:'The provider layer. A Pulumi provider generated from the Terraform provider, plus a utility package of higher-level resources.',
     b:`<div class="sec"><h3>Two packages</h3><ul>
       <li><a class="ext" target="_blank" href="https://github.com/datarobot-community/pulumi-datarobot">pulumi-datarobot</a> — the raw resources: <code>CustomModel</code>, <code>Deployment</code>, <code>ApplicationSource</code>, <code>CustomApplication</code>, <code>VectorDatabase</code>, <code>MemorySpace</code>, credentials.</li>
       <li><a class="ext" target="_blank" href="https://github.com/datarobot-oss/datarobot-pulumi-utils">datarobot-pulumi-utils</a> — <code>ComponentResource</code>s such as <code>CustomModelDeployment</code>, plus schema helpers for execution environments and feature flags.</li></ul></div>
     <div class="sec"><h3>Same model, other stacks</h3><p>The resource model is also published as <a class="ext" target="_blank" href="https://github.com/datarobot-community/terraform-provider-datarobot">Terraform</a> and as Pulumi packages for TypeScript, Go and .NET. Templates default to Pulumi Python.</p></div>`},
   'p-api':{r:'ext',t:'DataRobot REST API',role:'The one surface everything reconciles against — and the reason promoting a recipe between environments is a credential change, not a code change.',
-    b:`<div class="sec"><h3>Promotion</h3><p><code>dr auth set-url</code> to point at another environment (US, EU, JP, single-tenant or self-managed), then <code>dr task deploy</code>. The repository is unchanged; the Pulumi stack is what differs.</p></div>
+    b:`<div class="sec"><h3>Promotion</h3><p><code>dr auth set-url</code> to point at another environment (US, EU, JP, single-tenant or self-managed), then <code>dr run deploy</code>. The repository is unchanged; the Pulumi stack is what differs.</p></div>
     <div class="sec"><h3>Boxes</h3><p>${NP('token','DataRobot API token')}${NP('p-prov','pulumi-datarobot')}</p></div>`},
 };
 
@@ -929,28 +944,29 @@ const STEPS=[
   arrows:['dev->cli','cli->copier','cli->gotask','cli->uvpnpm','cli->pulumi','cli->token'],
   b:`<div class="sec"><h3>Do this</h3><ul>
     <li><code>curl https://cli.datarobot.com/install | sh</code> (or <code>irm https://cli.datarobot.com/winstall | iex</code> on Windows).</li>
-    <li><code>dr auth set-url</code> — pick US, EU, JP, single-tenant or self-managed, and store the API token.</li></ul></div>
-  <div class="sec"><h3>Why the CLI fronts everything</h3><p>A recipe is a polyglot monorepo: <code>uv</code> for Python folders, <code>pnpm</code> for the frontend, <code>task</code> per folder, <code>copier</code> for templates, <code>pulumi</code> for infrastructure. The CLI is one interface with tab completion across all of them.</p></div>
+    <li><code>dr auth set-url</code> — pick US, EU, JP, single-tenant or self-managed — then <code>dr auth login</code> to authenticate in the browser, or set the API token directly.</li></ul></div>
+  <div class="sec"><h3>Why the CLI fronts everything</h3><p>A recipe is a polyglot monorepo: <code>uv</code> for Python folders, <code>npm</code> for the frontend, <code>task</code> per folder, <code>copier</code> for templates, <code>pulumi</code> for infrastructure. The CLI is one interface with tab completion across all of them.</p></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('cli','dr CLI')}${NP('token','DataRobot API token')}${NP('copier','Copier')}</p></div>`},
 
- {g:'①',c:'seam',title:'Scaffold — af-component-base',role:'Base is applied first and exactly once. It creates the structure every other component reads and writes.',
+ {g:'①',c:'seam',title:'Scaffold — af-component-base',role:'Base is applied first and exactly once. What it exists to provide is the infra/ folder and the infrastructure-as-code scaffolding every other component extends.',
   nodes:['cli','copier','c-base','r-answers','r-infra','r-core','r-ci'],
-  arrows:['cli->copier','copier->c-base','c-base->r-answers'],
-  b:`<div class="sec"><h3>Command</h3><p><code>dr component add https://github.com/datarobot-community/af-component-base .</code> — or the <code>dr start</code> shortcut. Copier directly: <code>uvx copier copy https://github.com/datarobot-community/af-component-base .</code></p></div>
+  arrows:['cli->copier','copier->c-base','c-base->r-answers','c-base->r-infra','c-base->r-ci'],
+  b:`<div class="sec"><h3>Command</h3><p><code>dr component add https://github.com/datarobot-community/af-component-base .</code> Copier directly: <code>uvx copier copy https://github.com/datarobot-community/af-component-base .</code></p></div>
   <div class="sec"><h3>Questions</h3><ul><li>Template name, code name, description, copyright year.</li><li>Whether to include the shared <code>core</code> library.</li></ul></div>
   <div class="sec"><h3>What lands in the repo</h3><ul>
-    <li><code>Taskfile.yaml</code>, <code>infra/</code> (Pulumi project), <code>.github/</code> workflows.</li>
-    <li><code>.datarobot/answers/base.yml</code> — every later component reads it through <code>_external_data</code>.</li>
-    <li><code>LICENSE</code>, <code>CONTRIBUTING.md</code>, <code>CODEOWNERS</code>.</li></ul></div>
+    <li><code>infra/</code> — the Pulumi project: <code>Pulumi.yaml</code>, an <code>__main__.py</code> that auto-discovers every module under <code>infra/infra/</code>, <code>configurations/</code>, <code>feature_flags/</code>, and the folder\'s own Taskfile and <code>pyproject.toml</code>. This is the point of the component.</li>
+    <li><code>.datarobot/answers/base.yml</code> — every later component reads it through <code>_external_data</code> — and <code>.datarobot/cli/base.yml</code>.</li>
+    <li>An optional <code>core/</code> library, <code>.env.template</code>, <code>docs/</code>, <code>.agents/skills/</code>, and <code>.github/</code> lint and test workflows.</li></ul></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('c-base','af-component-base')}${NP('r-answers','.datarobot/')}${NP('r-infra','infra/')}</p></div>`},
 
  {g:'②',c:'seam',title:'Compose — layer the components you need',role:'Each dr component add renders one more copier template into the same repository.',
   nodes:['c-llm','c-agent','c-mcp','c-api','c-react','c-aux','r-infra','r-agent','r-mcp','r-api','r-web'],
   arrows:['c-llm->r-infra','c-agent->r-agent','c-mcp->r-mcp','c-api->r-api','c-react->r-web'],
   b:`<div class="sec"><h3>Dependency order</h3><ul>
-    <li><code>base</code> → <code>llm</code> → <code>agent</code> (agent also expects <code>datarobot-mcp</code>).</li>
+    <li><code>base</code> → <code>llm</code> → <code>agent</code>. Those are the agent\'s only declared dependencies; <code>datarobot-mcp</code> is optional.</li>
     <li><code>base</code> → <code>fastapi-backend</code> → <code>react</code>.</li>
-    <li><code>base</code> → <code>datarobot-mcp</code>.</li></ul></div>
+    <li><code>base</code> → <code>datarobot-mcp</code>.</li>
+    <li>Each component\'s <code>copier-module.yaml</code> is the authority on this, and on whether it is repeatable.</li></ul></div>
   <div class="sec"><h3>What each application adds</h3><ul>
     <li>A top-level folder with its own <code>pyproject.toml</code>/<code>package.json</code>, lockfile and Taskfile.</li>
     <li>Exactly one file under <code>infra/infra/</code>.</li>
@@ -963,33 +979,33 @@ const STEPS=[
   b:`<div class="sec"><h3>Command</h3><p><code>dr dotenv setup</code> — an interactive wizard driven by the <code>.datarobot/cli/*.yaml</code> schemas each component shipped.</p></div>
   <div class="sec"><h3>Typical prompts</h3><ul>
     <li><b>llm</b> — which of the six strategies, then a live pick from the LLM Gateway catalog.</li>
-    <li><b>agent</b> — agent port (default <code>8842</code>), execution environment and version id, optional default use case.</li>
-    <li><b>fastapi</b> — local port (default <code>8080</code>).</li>
-    <li><b>base</b> — Pulumi passphrase.</li></ul></div>
+    <li><b>agent</b> — agent port (default <code>8842</code>), execution environment and version id, and a memory-provider key if you chose one.</li>
+    <li><b>fastapi</b> — <code>SESSION_SECRET_KEY</code>, generated for you.</li>
+    <li><b>base</b> — Pulumi passphrase, default Use Case, and whether to disable tracing.</li></ul></div>
   <div class="sec"><h3>Result</h3><p>A single gitignored <code>.env</code> at the repo root, auto-loaded by the task runner and read by every folder.</p></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('r-core','.env')}${NP('c-llm','af-component-llm')}</p></div>`},
 
  {g:'④',c:'seam',title:'Develop locally',role:'Three processes, the same contracts as production.',
   nodes:['r-web','r-agent','r-api','l-vite','l-api','l-agent'],
-  arrows:['r-web->l-vite','r-agent->l-agent','l-vite->l-api','l-api->l-agent'],
+  arrows:['r-web->l-vite','r-api->l-api','r-agent->l-agent','l-vite->l-api','l-api->l-agent'],
   b:`<div class="sec"><h3>Command</h3><p><code>dr run dev</code> — or <code>task dev</code> inside any single folder.</p></div>
   <div class="sec"><h3>The loop</h3><ul>
     <li>Vite on <code>:5173</code> with hot module replacement, proxying <code>/api/</code> → <code>http://localhost:8080</code>.</li>
     <li>FastAPI on <code>:8080</code> with reload, serving your routes and <code>static/</code>.</li>
     <li>The agent dev server on <code>:8842</code> exposing <code>/generate/stream</code> — the same endpoint the deployed agent serves.</li></ul></div>
-  <div class="sec"><h3>Without a UI</h3><p><code>uv run python cli.py execute --user_prompt "Write a blog post about AI in healthcare" --show_output</code>.</p></div>
+  <div class="sec"><h3>Without a UI</h3><p><code>dr run &lt;agent&gt;:cli -- execute --user_prompt "Write a blog post about AI in healthcare"</code>, which forwards to <code>nat dragent run</code>.</p></div>
   <div class="sec"><h3>Codespaces</h3><p>Vite detects <code>NOTEBOOK_ID</code> and rewrites its base path to <code>/notebook-sessions/&lt;id&gt;/ports/5173/</code>, so the same loop works inside a DataRobot codespace.</p></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('l-vite','Vite dev server')}${NP('l-api','FastAPI')}${NP('l-agent','Agent dev server')}</p></div>`},
 
  {g:'⑤',c:'seam',title:'Deploy — Pulumi provisions everything',role:'One command turns the repository into DataRobot resources.',
   nodes:['r-infra','p-pulumi','p-prov','p-api','d-app','d-agent','d-mcp'],
   arrows:['r-infra->p-pulumi','p-pulumi->p-prov','p-prov->p-api','p-api->d-app','p-api->d-agent','p-api->d-mcp'],
-  b:`<div class="sec"><h3>Command</h3><p><code>dr task deploy</code> → <code>pulumi up</code> over <code>infra/__main__.py</code>, which imports every <code>infra/infra/&lt;component&gt;.py</code>.</p></div>
+  b:`<div class="sec"><h3>Command</h3><p><code>dr run deploy</code> → <code>pulumi up</code> over <code>infra/__main__.py</code>, which imports every <code>infra/infra/&lt;component&gt;.py</code>.</p></div>
   <div class="sec"><h3>What gets created</h3><ul>
     <li><code>ApplicationSource</code> + <code>CustomApplication</code> for the backend (React built into <code>static/</code> first).</li>
     <li><code>ExecutionEnvironment</code> → <code>CustomModel</code> → <code>RegisteredModel</code> → <code>Deployment</code> for the agent and for the MCP server.</li>
     <li><code>Playground</code> + <code>LlmBlueprint</code>, credentials, and — where applied — <code>MemorySpace</code> and <code>VectorDatabase</code>.</li></ul></div>
-  <div class="sec"><h3>Afterwards</h3><ul><li><code>dr task infra:info</code> — resource ids and URLs.</li><li><code>dr task infra:down</code> — tear it down.</li></ul></div>
+  <div class="sec"><h3>Afterwards</h3><ul><li><code>dr run infra:info</code> — resource ids and URLs.</li><li><code>dr run infra:down</code> — tear it down.</li></ul></div>
   <div class="sec"><h3>Boxes</h3><p>${NP('p-pulumi','pulumi up')}${NP('p-prov','pulumi-datarobot')}${NP('p-api','DataRobot REST API')}</p></div>`},
 
  {g:'⑥',c:'seam',title:'Serve — the Custom Application',role:'The deployed front door: one process, platform authentication, a shareable URL.',

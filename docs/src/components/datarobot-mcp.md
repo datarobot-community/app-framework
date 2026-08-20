@@ -79,7 +79,7 @@ uv run python -m MCP_APP_NAME
 ## Deploy
 
 ```bash
-dr task deploy
+dr run deploy
 ```
 
 ## Update

@@ -8,7 +8,7 @@ DataRobot maintains two skill packs. Use this table to pick the right install co
 
 | You want to… | Skill pack | Install |
 |--------------|------------|---------|
-| Scaffold and deploy **App Framework** recipes: `af-component-*`, `dr component add`, copier templates, LLM Gateway, agent frameworks, `dr task deploy` | **App Framework Studio** (this repo) | `npx ai-agent-skills install datarobot-community/app-framework` |
+| Scaffold and deploy **App Framework** recipes: `af-component-*`, `dr component add`, copier templates, LLM Gateway, agent frameworks, `dr run deploy` | **App Framework Studio** (this repo) | `npx ai-agent-skills install datarobot-community/app-framework` |
 | Train and operate **tabular ML** models: projects, AutoML, prediction deployments, monitoring, explainability, data prep | [OSS ML skills](https://github.com/datarobot-oss/datarobot-agent-skills) | `npx ai-agent-skills install datarobot-oss/datarobot-agent-skills` |
 
 The `datarobot-app-framework` skill includes routing guidance when a request belongs in the OSS pack instead (and vice versa if you install both). If you only install one pack, choose the row that matches your primary work — wrong-pack installs are a common source of incorrect CLI or SDK guidance.

@@ -15,7 +15,7 @@ These appear once per application template:
 
 | Component | Repository | Description |
 |-----------|------------|-------------|
-| **Base** | [af-component-base](https://github.com/datarobot-community/af-component-base) | Pulumi project, task runner, `.datarobot/` configuration, CI/CD scaffolding, `LICENSE`, `CODEOWNERS`. |
+| **Base** | [af-component-base](https://github.com/datarobot-community/af-component-base) | The `infra/` Pulumi project every other component extends, `.datarobot/` configuration, an optional shared `core` library, CI scaffolding. |
 | **LLM** | [af-component-llm](https://github.com/datarobot-community/af-component-llm) | LLM Gateway or external model integration via the DataRobot LLM Deployment. |
 
 ## One-to-many components

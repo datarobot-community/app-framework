@@ -2,9 +2,9 @@
 
 **Repository:** [github.com/datarobot-community/af-component-base](https://github.com/datarobot-community/af-component-base)
 
-The foundational scaffold required for every App Framework recipe. Apply this first — all other components build on top of it.
+The infrastructure-as-code foundation required for every App Framework recipe. Apply this first — all other components build on top of it.
 
-`af-component-base` sets up the task runner, Pulumi project structure, CI/CD scaffolding, and the `.datarobot/` configuration directory. It runs a short wizard and writes the answers to `.datarobot/answers/base.yml`, which subsequent components inherit.
+`af-component-base` exists to provide the `infra/` folder: the Pulumi project every other component contributes a resource module to. Alongside it come the `.datarobot/` configuration directory, an optional shared `core` library, and per-folder lint and test workflows. It runs a short wizard and writes the answers to `.datarobot/answers/base.yml`, which subsequent components inherit.
 
 ## Prerequisites
 
@@ -46,11 +46,13 @@ dr component update .datarobot/answers/base.yml
 
 ## What it adds
 
-- `Taskfile.yaml` — task runner with `.env` auto-loading and tab completion.
-- `Pulumi.yaml` + `infra/` — base Pulumi project that other components plug into.
-- `.datarobot/answers/base.yml` — recorded answers reused by all subsequent components.
-- `.github/` — CI/CD workflows for updates, tests, and deployment.
-- `LICENSE`, `CONTRIBUTING.md`, `.github/CODEOWNERS`.
+- `infra/` — the Pulumi project other components plug into: `Pulumi.yaml`, an `__main__.py` that auto-discovers every module under `infra/infra/`, `configurations/` for swappable modules, `feature_flags/` for the platform flags a component requires, `tests/`, and the folder's own Taskfile and `pyproject.toml`.
+- `.datarobot/answers/base.yml` — recorded answers reused by all subsequent components — and `.datarobot/cli/base.yml`, the environment schema `dr dotenv setup` reads.
+- `core/` — optional shared Python package: a persistent filesystem over DataRobot storage, SQLite and DuckDB drivers on top of it, and a read/write lock.
+- `.env.template`, `.gitignore`, `docs/`, and `.agents/skills/` for coding assistants.
+- `.github/` — per-folder lint and test workflows, Dockerfile lint, shellcheck, yamlfmt, and Dependabot.
+
+Base ships a Taskfile per folder rather than one at the repository root; `dr task compose` assembles the root runner from the rendered subdirectories.
 
 ## Troubleshooting
 

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-3 -3 70 70" role="img" aria-label="App Framework">
+  <!-- Favicon. A tab strip cannot see the docs palette, only the
+       browser theme, so the frame follows that; the core stays green. -->
+  <style>
+    .frame { fill: #0B0B0B }
+    @media (prefers-color-scheme: dark) { .frame { fill: #FFFFFF } }
+  </style>
+  <rect x="2" y="2" width="60" height="12" class="frame"/>
+  <rect x="2" y="50" width="60" height="12" class="frame"/>
+  <rect x="2" y="18" width="12" height="28" class="frame"/>
+  <rect x="50" y="18" width="12" height="28" class="frame"/>
+  <rect x="18" y="18" width="28" height="28" fill="#81FBA5"/>
+</svg>
