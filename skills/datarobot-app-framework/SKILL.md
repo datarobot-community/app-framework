@@ -1,6 +1,6 @@
 ---
 name: datarobot-app-framework
-description: Build and deploy applications on DataRobot using the App Framework component system — FastAPI apps, LLM integrations, and agentic workflows (CrewAI, LangGraph, LlamaIndex).
+description: Build a single component or a customized combination on DataRobot using the App Framework component system — a standalone agent, FastAPI app, LLM integration, or a non-default recipe wired by hand. For a fully integrated agentic application (MCP server, agent, backend, and frontend bundled and tested together), use datarobot-agent-assist instead.
 ---
 
 # DataRobot App Framework
@@ -9,27 +9,44 @@ Build and deploy applications on DataRobot using composable `af-component-*` bui
 
 ## Trigger Conditions
 
-Use this skill when the user:
-- Wants to build or deploy any application on DataRobot using the App Framework
-- Wants to create an agentic workflow (CrewAI, LangGraph, LlamaIndex)
-- Wants a FastAPI backend or React frontend deployed to DataRobot
-- Wants to integrate an LLM into a DataRobot app or notebook
-- Wants to set up an App Framework recipe with any component
+Use this skill when the user wants **just one piece**, or a **customized combination** they are
+assembling themselves, rather than the full bundle:
+- Wants just an agent (no API, no frontend, no MCP server bundled with it)
+- Wants just a FastAPI backend, a React frontend, or an LLM integration, on its own
+- Wants a highly customized recipe — a specific, non-default combination of components, or a
+  component wired up in a way `datarobot-agent-assist` doesn't scaffold
+- Wants to set up an App Framework recipe, or add a component to an existing one
+- Wants to wire components together by hand (FastAPI ↔ Agent, LLM ↔ Agent, etc.)
 - Mentions `dr component add`, `af-component`, `copier copy`, or `recipe-` in an AF context
-- Wants to wire components together (FastAPI ↔ Agent, LLM ↔ Agent, etc.)
-- Wants to add tools, auth, or chat history to a DataRobot app
+- Wants to author, change, or debug a component, or know what one provisions
 
 ## Not This Skill
 
-If the user is asking about any of the following, use [`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills) instead:
-- Training or evaluating ML models (AutoML, tabular data)
-- Managing model deployments for predictions
-- Feature engineering or feature importance
-- Model monitoring, data drift, or model health
-- Batch or real-time predictions on tabular data
-- SHAP values or model explainability
+If the user wants a **fully integrated agentic application** — MCP server, agent, backend API, and
+frontend, all in the box together and tested to work as a whole — that is
+`datarobot-agent-assist` in DataRobot's official skill pack,
+[`datarobot-oss/datarobot-agent-skills`](https://github.com/datarobot-oss/datarobot-agent-skills).
+That is the default for "build me a LangGraph/CrewAI/LlamaIndex agent" with no further
+qualification: it produces the complete, tested bundle rather than one piece of it. Route there
+for:
 
-> **Note on overlapping vocabulary:** The words "agent," "deployment," and "DataRobot" appear in both skill packs but mean different things. In this skill, "agent" means an LLM-based agentic app (CrewAI/LangGraph/LlamaIndex) and "deployment" means a CustomApplication. If the user is talking about ML models or tabular data, route to the OSS pack.
+- "Build me an agent" with no other constraint — the integrated bundle is the right default.
+- Taking an agent from idea to deployment as a guided workflow — agent design, dress rehearsal
+  against the LLM Gateway, and adversarial simulation.
+- Instrumenting an agent with OpenTelemetry for traces, logs, and metrics.
+- Running container workloads on the Workload API.
+- Setting up CI/CD for a DataRobot application.
+- The platform's AI/ML APIs: AutoML training, prediction deployments, batch and real-time
+  predictions, feature engineering, drift monitoring, SHAP and explainability, data preparation.
+
+Stay in this skill only once the user has said they want a single component, or a customization
+beyond what the bundle scaffolds.
+
+> **Note on overlapping vocabulary:** "agent" and "deployment" mean different things across the two
+> packs. Here, "agent" means an LLM agentic app assembled from `af-component-agent`, and "deployment"
+> means a Custom Application. In the AI/ML skills, "deployment" means an ML model deployment serving
+> predictions.
+
 
 ## Pick Your Scenario
 

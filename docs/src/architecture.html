@@ -422,7 +422,7 @@ const notes={id:'sec-notes', x:40, y:1478, w:2040, title:'Cross-cutting facts', 
 
 const gl=(repo,role)=>`<a class="ghlink" href="https://github.com/${repo}" target="_blank" rel="noopener">${repo} ↗</a> — ${role}`;
 const repos={id:'sec-repos', x:40, y:1812, w:2040, title:'Code repositories · click any box for its own repo link', items:[
-  {c:'base', t:gl('datarobot-community/app-framework','docs site, component authoring tooling, agent skill pack')},
+  {c:'base', t:gl('datarobot-community/app-framework','docs site, component authoring tooling, App Framework skill pack')},
   {c:'base', t:gl('datarobot-community/af-component-base','IaC scaffolding — the infra/ Pulumi project, .datarobot/, optional core library')},
   {c:'llm',  t:gl('datarobot-community/af-component-llm','model access — six strategies, infrastructure only')},
   {c:'agent',t:gl('datarobot-community/af-component-agent','agentic core — CrewAI · LangGraph · LlamaIndex · NAT')},
@@ -438,7 +438,7 @@ const repos={id:'sec-repos', x:40, y:1812, w:2040, title:'Code repositories · c
   {c:'base', t:gl('datarobot-community/datarobot-agent-application','template composing base + llm + agent + datarobot-mcp')},
   {c:'base', t:gl('datarobot-community/talk-to-my-data-agent','conversational analytics — FastAPI backend and React frontend, no agent')},
   {c:'base', t:gl('datarobot-community/datarobot-mcp-template','standalone MCP server template — the MCP capability on its own')},
-  {c:'ext',  t:gl('datarobot-oss/datarobot-agent-skills','coding-assistant skills for the DataRobot platform APIs')},
+  {c:'ext',  t:gl('datarobot-oss/datarobot-agent-skills','the official DataRobot skill pack — agent building, monitoring, CI/CD')},
 ]};
 
 /* ---------- drawers ---------- */
@@ -469,7 +469,7 @@ const D={
   dev:{r:'ext',t:'Developer',role:'A developer or data scientist working in a normal editor — increasingly with a coding assistant driving the same CLI.',
     b:`<div class="sec"><h3>What the agent reads</h3><ul>
       <li><code>AGENTS.md</code> and <code>.agents/skills/</code> are rendered into the recipe by the components themselves, so an assistant learns the project\'s conventions from the repo.</li>
-      <li>Two skill packs exist: <a class="ext" target="_blank" href="https://github.com/datarobot-community/app-framework">app-framework</a> for building recipes, and <a class="ext" target="_blank" href="https://github.com/datarobot-oss/datarobot-agent-skills">datarobot-agent-skills</a> for the tabular ML platform APIs.</li></ul></div>
+      <li>Two skill packs exist: <a class="ext" target="_blank" href="https://github.com/datarobot-oss/datarobot-agent-skills">datarobot-agent-skills</a>, the official pack, builds a fully integrated agentic application through <code>datarobot-agent-assist</code> — MCP server, agent, backend, and frontend, bundled and tested together. <a class="ext" target="_blank" href="https://github.com/datarobot-community/app-framework">app-framework</a> is for just one piece, a customized recipe, or authoring a new component.</li></ul></div>
     <div class="sec"><h3>Target audience</h3><p>Design principle: mid-maturity developers and data scientists who want a code-first starting point they own outright — not a hosted builder.</p></div>`},
   cli:{r:'tool',gh:'datarobot-oss/cli',t:'dr CLI',role:'The primary interface. A standalone binary for macOS, Linux and Windows that fronts every other tool in the stack.',
     b:`<div class="sec"><h3>Core commands</h3><ul>
