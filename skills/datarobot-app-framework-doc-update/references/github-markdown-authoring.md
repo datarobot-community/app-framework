@@ -24,19 +24,19 @@ GitHub does not support `!!! note` or `??? tip` syntax. Use blockquotes or colla
 **Note, tip, or supplemental information**:
 
 ```markdown
-> **Note:** Useful but non-required information.
+> **Note**: Useful but non-required information.
 ```
 
 **Warning or potential data loss**:
 
 ```markdown
-> **Warning:** This action cannot be undone.
+> **Warning**: This action cannot be undone.
 ```
 
 **Required action or high-consequence outcome**:
 
 ```markdown
-> **Important:** Back up the configuration before proceeding.
+> **Important**: Back up the configuration before proceeding.
 ```
 
 **Long optional content** (for example, release feature lists):

@@ -37,6 +37,14 @@ Use a comma before the final conjunction in lists of three or more items.
 - If the first mention is in a heading, use the abbreviation in the heading and spell it out in the first paragraph below.
 - Do not create nonstandard abbreviations; use industry-standard forms.
 - Prefer *that is* and *for example* over *i.e.* and *e.g.*.
+- When *i.e.* or *e.g.* appear in non-code prose, always follow with a comma.
+
+  | Preferred | Avoid |
+  | --- | --- |
+  | Use a deployment label (e.g., `prod`) for production. | Use a deployment label (e.g. `prod`) for production. |
+  | The service retries transient errors (i.e., timeouts and 503 responses). | The service retries transient errors (i.e. timeouts and 503 responses). |
+
+  Exception: inside code blocks, inline code, or literal strings, follow the code convention — do not insert commas into code tokens.
 - Do not use internet slang (*tl;dr*, *ymmv*, *RTFM*).
 - Pluralize abbreviations like ordinary words (*APIs*, *LLMs*, *OSes*).
 
